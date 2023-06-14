@@ -1,17 +1,7 @@
 import { Link } from 'react-router-dom'
-import { useState } from 'react'
-import { useFloating, useHover, useInteractions } from '@floating-ui/react'
+import Popover from '../Popover/Popover'
 
 export default function Header() {
-    const [isOpen, setIsOpen] = useState(false)
-    const { refs, floatingStyles, context } = useFloating({
-        open: isOpen,
-        onOpenChange: setIsOpen,
-        middleware: []
-    })
-    const hover = useHover(context)
-    const { getReferenceProps, getFloatingProps } = useInteractions([hover])
-
     return (
         <header className='bg-[linear-gradient(-180deg,#f53d2d,#f63)] text-sm text-white'>
             <div className='container'>
@@ -44,10 +34,16 @@ export default function Header() {
                         </div>
                     </div>
                     <div className='flex items-center'>
-                        <div
+                        <Popover
+                            renderPopover={
+                                <div className='relative rounded-sm bg-white shadow-md'>
+                                    <div className='flex flex-col px-2 py-1'>
+                                        <button className='px-3 py-2 hover:text-orange'>Tiếng Việt</button>
+                                        <button className='px-3 py-2 hover:text-orange'>Tiếng Anh</button>
+                                    </div>
+                                </div>
+                            }
                             className='flex cursor-pointer items-center hover:text-gray-300'
-                            ref={refs.setReference}
-                            {...getReferenceProps()}
                         >
                             <svg
                                 xmlns='http://www.w3.org/2000/svg'
@@ -74,13 +70,23 @@ export default function Header() {
                             >
                                 <path strokeLinecap='round' strokeLinejoin='round' d='M19.5 8.25l-7.5 7.5-7.5-7.5' />
                             </svg>
-                        </div>
-                        {isOpen && (
-                            <div ref={refs.setFloating} style={floatingStyles} {...getFloatingProps()}>
-                                Floating element
-                            </div>
-                        )}
-                        <div className='ml-4 flex cursor-pointer items-center hover:text-gray-200'>
+                        </Popover>
+                        <Popover
+                            className='ml-4 flex cursor-pointer items-center hover:text-gray-200'
+                            renderPopover={
+                                <div className='relative rounded-sm bg-white shadow-md'>
+                                    <div className='flex flex-col px-2 py-1 '>
+                                        <Link to='' className='px-3 py-2 text-left hover:text-orange'>
+                                            Tài khoản của tôi
+                                        </Link>
+                                        <Link to='' className='px-3 py-2 text-left hover:text-orange'>
+                                            Đơn mua
+                                        </Link>
+                                        <button className='px-3 py-2 text-left hover:text-orange'>Đăng xuất</button>
+                                    </div>
+                                </div>
+                            }
+                        >
                             <div className='mr-1 h-5 w-5 overflow-hidden rounded-full '>
                                 <img
                                     src='https://down-vn.img.susercontent.com/file/657996985c86d99f5d48333707a2f3e1_tn'
@@ -89,7 +95,7 @@ export default function Header() {
                                 />
                             </div>
                             <span>nguyenkhoinguyen</span>
-                        </div>
+                        </Popover>
                     </div>
                 </div>
                 <div className='grid grid-cols-12 items-end gap-4 py-4'>
