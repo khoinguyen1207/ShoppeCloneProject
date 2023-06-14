@@ -1,5 +1,4 @@
 import React, { useRef, useState } from 'react'
-
 import {
     useFloating,
     arrow,
@@ -9,7 +8,8 @@ import {
     useHover,
     FloatingArrow,
     useInteractions,
-    safePolygon
+    safePolygon,
+    Placement
 } from '@floating-ui/react'
 import { motion, AnimatePresence } from 'framer-motion'
 
@@ -17,16 +17,26 @@ interface Props {
     children: React.ReactNode
     renderPopover: React.ReactNode
     className?: string
+    setPlacement?: Placement
+    crossAxis?: number
 }
 
-export default function Popover({ children, renderPopover, className }: Props) {
+export default function Popover({ children, renderPopover, className, crossAxis = 0, setPlacement }: Props) {
     const [isOpen, setIsOpen] = useState(false)
     const arrowRef = useRef(null)
 
     const { refs, x, y, strategy, middlewareData, context } = useFloating({
+        placement: setPlacement,
         open: isOpen,
         onOpenChange: setIsOpen,
-        middleware: [arrow({ element: arrowRef }), shift(), offset(6)]
+        middleware: [
+            arrow({ element: arrowRef }),
+            shift(),
+            offset({
+                mainAxis: 6,
+                crossAxis: crossAxis
+            })
+        ]
     })
 
     const hover = useHover(context, {
@@ -55,7 +65,14 @@ export default function Popover({ children, renderPopover, className }: Props) {
                             exit={{ opacity: 0, transform: 'scale(0)' }}
                             transition={{ duration: 0.2 }}
                         >
-                            <FloatingArrow ref={arrowRef} context={context} fill='white' height={8} width={20} />
+                            <FloatingArrow
+                                ref={arrowRef}
+                                context={context}
+                                fill='white'
+                                height={8}
+                                width={20}
+                                staticOffset={middlewareData.offset?.x}
+                            />
                             {renderPopover}
                         </motion.div>
                     </AnimatePresence>
