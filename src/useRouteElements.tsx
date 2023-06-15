@@ -5,13 +5,17 @@ import Register from './pages/Register'
 import RegisterLayout from './layouts/RegisterLayout'
 import MainLayout from './layouts/MainLayout'
 import Profile from './pages/Profile'
+import { getAccessTokenFromLS } from './utils/auth'
+import { useContext } from 'react'
+import { AppContext } from './contexts/app.context'
 
-const isAuthenticated = true
 const ProtectedRoute = () => {
+    const { isAuthenticated } = useContext(AppContext)
     return isAuthenticated ? <Outlet /> : <Navigate to='/login' />
 }
 
 const RejectedRoute = () => {
+    const { isAuthenticated } = useContext(AppContext)
     return !isAuthenticated ? <Outlet /> : <Navigate to='/' />
 }
 

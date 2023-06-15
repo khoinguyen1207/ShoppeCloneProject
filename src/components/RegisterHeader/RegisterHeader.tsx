@@ -1,6 +1,7 @@
-import { Link } from 'react-router-dom'
+import { Link, useMatch } from 'react-router-dom'
 
 export default function RegisterHeader() {
+    const isModeRegister = useMatch('/register')
     return (
         <header className='py-3 lg:py-5'>
             <div className='container'>
@@ -13,7 +14,7 @@ export default function RegisterHeader() {
                                 </g>
                             </svg>
                         </Link>
-                        <div className='px-4 text-base lg:text-2xl'>Register</div>
+                        <div className='px-4 text-base lg:text-2xl'>{isModeRegister ? 'Đăng ký' : 'Đăng nhập'}</div>
                     </div>
                     <div className=' cursor-pointer text-sm text-orange lg:text-sm'>Bạn cần giúp đỡ ?</div>
                 </nav>

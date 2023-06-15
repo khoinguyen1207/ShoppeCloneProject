@@ -1,7 +1,22 @@
 import { Link } from 'react-router-dom'
 import Popover from '../Popover/Popover'
+import { useMutation } from '@tanstack/react-query'
+import { logout } from 'src/apis/auth.api'
+import { useContext } from 'react'
+import { AppContext } from 'src/contexts/app.context'
 
 export default function Header() {
+    const { setIsAuthenticated, isAuthenticated } = useContext(AppContext)
+    const logoutMutation = useMutation({
+        mutationFn: () => logout(),
+        onSuccess: () => {
+            setIsAuthenticated(false)
+        }
+    })
+
+    const handleLogout = () => {
+        logoutMutation.mutate()
+    }
     return (
         <header className='bg-[linear-gradient(-180deg,#f53d2d,#f63)] text-sm text-white'>
             <div className='container'>
@@ -43,7 +58,7 @@ export default function Header() {
                                     </div>
                                 </div>
                             }
-                            className='flex cursor-pointer items-center hover:text-gray-300'
+                            className='flex cursor-pointer items-center hover:text-gray-200'
                         >
                             <svg
                                 xmlns='http://www.w3.org/2000/svg'
@@ -71,31 +86,49 @@ export default function Header() {
                                 <path strokeLinecap='round' strokeLinejoin='round' d='M19.5 8.25l-7.5 7.5-7.5-7.5' />
                             </svg>
                         </Popover>
-                        <Popover
-                            className='ml-4 flex cursor-pointer items-center hover:text-gray-200'
-                            renderPopover={
-                                <div className='relative rounded-sm bg-white shadow-md'>
-                                    <div className='flex flex-col px-2 py-1 '>
-                                        <Link to='' className='px-3 py-2 text-left hover:text-orange'>
-                                            Tài khoản của tôi
-                                        </Link>
-                                        <Link to='' className='px-3 py-2 text-left hover:text-orange'>
-                                            Đơn mua
-                                        </Link>
-                                        <button className='px-3 py-2 text-left hover:text-orange'>Đăng xuất</button>
-                                    </div>
-                                </div>
-                            }
-                        >
-                            <div className='mr-1 h-5 w-5 overflow-hidden rounded-full '>
-                                <img
-                                    src='https://down-vn.img.susercontent.com/file/657996985c86d99f5d48333707a2f3e1_tn'
-                                    alt='Avatar'
-                                    className='h-full w-full'
-                                />
+                        {!isAuthenticated && (
+                            <div className='ml-2 flex items-center'>
+                                <Link to='/login' className='mx-3 cursor-pointer hover:text-gray-200'>
+                                    Đăng nhập
+                                </Link>
+                                <div className='h-4 border-r border-r-white' />
+                                <Link to='/register' className='ml-3 cursor-pointer hover:text-gray-200'>
+                                    Đăng ký
+                                </Link>
                             </div>
-                            <span>nguyenkhoinguyen</span>
-                        </Popover>
+                        )}
+                        {isAuthenticated && (
+                            <Popover
+                                className='ml-4 flex cursor-pointer items-center hover:text-gray-200'
+                                renderPopover={
+                                    <div className='relative rounded-sm bg-white shadow-md'>
+                                        <div className='flex flex-col px-2 py-1 '>
+                                            <Link to='/profile' className='px-3 py-2 text-left hover:text-orange'>
+                                                Tài khoản của tôi
+                                            </Link>
+                                            <Link to='' className='px-3 py-2 text-left hover:text-orange'>
+                                                Đơn mua
+                                            </Link>
+                                            <button
+                                                onClick={handleLogout}
+                                                className='px-3 py-2 text-left hover:text-orange'
+                                            >
+                                                Đăng xuất
+                                            </button>
+                                        </div>
+                                    </div>
+                                }
+                            >
+                                <div className='mr-1 h-5 w-5 overflow-hidden rounded-full '>
+                                    <img
+                                        src='https://down-vn.img.susercontent.com/file/657996985c86d99f5d48333707a2f3e1_tn'
+                                        alt='Avatar'
+                                        className='h-full w-full'
+                                    />
+                                </div>
+                                <span>nguyenkhoinguyen</span>
+                            </Popover>
+                        )}
                     </div>
                 </div>
                 <div className='grid grid-cols-12 items-end gap-4 py-4'>
