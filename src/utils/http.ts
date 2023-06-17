@@ -2,7 +2,8 @@ import axios, { AxiosError, type AxiosInstance } from 'axios'
 import { toast } from 'react-toastify'
 import HttpStatusCode from 'src/constants/httpStatusCode'
 import { AuthResponse } from 'src/types/auth.type'
-import { clearAccessTokenFromLS, getAccessTokenFromLS, saveAccessTokenToLS } from './auth'
+import { clearLocalStorage, getAccessTokenFromLS, setAccessTokenToLS, setProfileToLS } from './auth'
+import { path } from 'src/constants/path'
 
 class Http {
     instance: AxiosInstance
@@ -10,7 +11,7 @@ class Http {
     constructor() {
         this.accessToken = getAccessTokenFromLS()
         this.instance = axios.create({
-            baseURL: 'https://api-ecom.duthanhduoc.com/',
+            baseURL: 'https://api-ecom.duthanhduoc.com',
             timeout: 10000,
             headers: {
                 'Content-Type': 'application/json'
@@ -29,12 +30,13 @@ class Http {
         )
         this.instance.interceptors.response.use(
             (response) => {
-                if (response.config.url === 'login' || response.config.url === 'register') {
+                if (response.config.url === path.login || response.config.url === path.register) {
                     this.accessToken = (response.data as AuthResponse).data.access_token
-                    saveAccessTokenToLS(this.accessToken)
-                } else if (response.config.url === 'logout') {
+                    setAccessTokenToLS(this.accessToken)
+                    setProfileToLS((response.data as AuthResponse).data.user)
+                } else if (response.config.url === path.logout) {
                     this.accessToken = ''
-                    clearAccessTokenFromLS()
+                    clearLocalStorage()
                 }
                 return response
             },

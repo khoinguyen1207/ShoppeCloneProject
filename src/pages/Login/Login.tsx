@@ -9,12 +9,14 @@ import { ErrorResponse } from 'src/types/utils.type'
 import Input from 'src/components/Input'
 import { useContext } from 'react'
 import { AppContext } from 'src/contexts/app.context'
+import Button from 'src/components/Button'
+import { path } from 'src/constants/path'
 
 type FormData = Omit<Schema, 'confirm_password'>
 const loginSchema = schema.omit(['confirm_password'])
 
 export default function Login() {
-    const { setIsAuthenticated } = useContext(AppContext)
+    const { setIsAuthenticated, setProfile } = useContext(AppContext)
     const navigate = useNavigate()
     const {
         register,
@@ -31,8 +33,9 @@ export default function Login() {
 
     const onSubmit = handleSubmit((data) => {
         loginMutation.mutate(data, {
-            onSuccess: () => {
+            onSuccess: (res) => {
                 setIsAuthenticated(true)
+                setProfile(res.data.data.user)
                 navigate('/')
             },
             onError(error) {
@@ -78,17 +81,19 @@ export default function Login() {
                                 errorMessage={errors.password?.message}
                             />
                             <div className='mt-2'>
-                                <button
+                                <Button
                                     type='submit'
-                                    className='w-full rounded-sm  bg-red-500 py-4 text-center uppercase text-white hover:bg-red-400'
+                                    className='w-full rounded-sm bg-red-500 py-4 text-center uppercase text-white hover:bg-red-400'
+                                    isLoading={loginMutation.isLoading}
+                                    disabled={loginMutation.isLoading}
                                 >
                                     Đăng nhập
-                                </button>
+                                </Button>
                             </div>
                             <div className='mt-8'>
                                 <div className='flex justify-center'>
                                     <span className='text-gray-400'>Bạn chưa có tài khoản?</span>
-                                    <Link to='/register' className='ml-2 text-red-500'>
+                                    <Link to={path.register} className='ml-2 text-red-500'>
                                         Đăng ký
                                     </Link>
                                 </div>

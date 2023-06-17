@@ -10,11 +10,13 @@ import { isAxiosUnprocessableEntityError } from 'src/utils/utils'
 import { ErrorResponse } from 'src/types/utils.type'
 import { useContext } from 'react'
 import { AppContext } from 'src/contexts/app.context'
+import Button from 'src/components/Button'
+import { path } from 'src/constants/path'
 
 type FormData = Schema
 
 export default function Register() {
-    const { setIsAuthenticated } = useContext(AppContext)
+    const { setIsAuthenticated, setProfile } = useContext(AppContext)
     const navigate = useNavigate()
     const {
         register,
@@ -32,8 +34,9 @@ export default function Register() {
     const onSubmit = handleSubmit((data) => {
         const body = omit(data, ['confirm_password'])
         registerAccountMutation.mutate(body, {
-            onSuccess: () => {
+            onSuccess: (res) => {
                 setIsAuthenticated(true)
+                setProfile(res.data.data.user)
                 navigate('/')
             },
             onError(error) {
@@ -88,17 +91,19 @@ export default function Register() {
                                 errorMessage={errors.confirm_password?.message}
                             />
                             <div className='mt-2'>
-                                <button
+                                <Button
                                     type='submit'
-                                    className='w-full rounded-sm  bg-red-500 py-4 text-center uppercase text-white hover:bg-red-400'
+                                    className='w-full rounded-sm bg-red-500 py-4 text-center uppercase text-white hover:bg-red-400'
+                                    isLoading={registerAccountMutation.isLoading}
+                                    disabled={registerAccountMutation.isLoading}
                                 >
                                     Đăng ký
-                                </button>
+                                </Button>
                             </div>
                             <div className='mt-8'>
                                 <div className='flex justify-center'>
                                     <span className='text-gray-400'>Bạn đã có tài khoản?</span>
-                                    <Link to='/login' className='ml-2 text-red-500'>
+                                    <Link to={path.login} className='ml-2 text-red-500'>
                                         Đăng nhập
                                     </Link>
                                 </div>

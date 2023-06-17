@@ -4,13 +4,15 @@ import { useMutation } from '@tanstack/react-query'
 import { logout } from 'src/apis/auth.api'
 import { useContext } from 'react'
 import { AppContext } from 'src/contexts/app.context'
+import { path } from 'src/constants/path'
 
 export default function Header() {
-    const { setIsAuthenticated, isAuthenticated } = useContext(AppContext)
+    const { setIsAuthenticated, isAuthenticated, setProfile, profile } = useContext(AppContext)
     const logoutMutation = useMutation({
         mutationFn: () => logout(),
         onSuccess: () => {
             setIsAuthenticated(false)
+            setProfile(null)
         }
     })
 
@@ -88,11 +90,11 @@ export default function Header() {
                         </Popover>
                         {!isAuthenticated && (
                             <div className='ml-2 flex items-center'>
-                                <Link to='/login' className='mx-3 cursor-pointer hover:text-gray-200'>
+                                <Link to={path.login} className='mx-3 cursor-pointer hover:text-gray-200'>
                                     Đăng nhập
                                 </Link>
                                 <div className='h-4 border-r border-r-white' />
-                                <Link to='/register' className='ml-3 cursor-pointer hover:text-gray-200'>
+                                <Link to={path.register} className='ml-3 cursor-pointer hover:text-gray-200'>
                                     Đăng ký
                                 </Link>
                             </div>
@@ -126,7 +128,7 @@ export default function Header() {
                                         className='h-full w-full'
                                     />
                                 </div>
-                                <span>nguyenkhoinguyen</span>
+                                <span>{profile?.email}</span>
                             </Popover>
                         )}
                     </div>
@@ -172,9 +174,9 @@ export default function Header() {
                     <div className='col-span-1 ml-6 justify-self-start'>
                         <Popover
                             renderPopover={
-                                <div className='relative max-w-[400px] rounded-sm border border-gray-200 bg-white text-sm shadow-md'>
+                                <div className='relative max-w-[400px] rounded-sm  bg-white text-sm shadow-md'>
                                     <div>
-                                        <div className='my-3 px-2 capitalize text-gray-400'>Sản phẩm mới thêm</div>
+                                        <div className='px-2 py-3 capitalize text-gray-400'>Sản phẩm mới thêm</div>
                                         <div className=''>
                                             <div className='flex cursor-pointer items-center px-2 py-3 hover:bg-[#f8f8f8]'>
                                                 <div className='flex-shrink-0 border border-gray-300'>
@@ -216,7 +218,7 @@ export default function Header() {
                                                 <div className='flex-shrink-0 text-orange'>₫325.000</div>
                                             </div>
                                         </div>
-                                        <div className='my-3 flex items-center justify-between px-2'>
+                                        <div className='flex items-center justify-between px-2 py-3'>
                                             <div className=' text-xs text-gray-500'>3 Thêm hàng vào giỏ</div>
                                             <button className='rounded-sm bg-orange px-4 py-2 capitalize text-white hover:opacity-60'>
                                                 Xem giỏ hàng
