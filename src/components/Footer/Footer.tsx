@@ -1,6 +1,6 @@
 export default function Footer() {
     return (
-        <footer className='bg-neutral-100 py-16 text-center text-sm  text-[#0000008a]'>
+        <footer className='bg-[#EDEDED] py-16 text-center text-sm  text-[#0000008a]'>
             <div className='container'>
                 <div className='grid grid-cols-1 gap-4 lg:grid-cols-3  lg:text-start'>
                     <div className='lg:col-span-1'>
