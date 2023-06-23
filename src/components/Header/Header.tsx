@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 import Popover from '../Popover/Popover'
 import { useMutation } from '@tanstack/react-query'
-import { logout } from 'src/apis/auth.api'
+import authApi from 'src/apis/auth.api'
 import { useContext, useState } from 'react'
 import { AppContext } from 'src/contexts/app.context'
 import { path } from 'src/constants/path'
@@ -9,9 +9,8 @@ import { path } from 'src/constants/path'
 export default function Header() {
     const { setIsAuthenticated, isAuthenticated, setProfile, profile } = useContext(AppContext)
     const [isOpen, setIsOpen] = useState(false)
-
     const logoutMutation = useMutation({
-        mutationFn: () => logout(),
+        mutationFn: () => authApi.logout(),
         onSuccess: () => {
             setIsAuthenticated(false)
             setProfile(null)
@@ -24,7 +23,7 @@ export default function Header() {
     return (
         <header className='bg-[linear-gradient(-180deg,#f53d2d,#f63)] text-sm text-white'>
             <div className='container'>
-                <div className='flex h-auto flex-wrap items-center justify-center pt-2 md:justify-between'>
+                <div className='flex h-auto flex-wrap items-center justify-center pt-2 text-xs sm:text-sm md:justify-between'>
                     <div className='flex items-center justify-center'>
                         <div className='cursor-pointer pr-2 hover:text-gray-200'>Kênh người bán</div>
                         <div className='cursor-pointer border-l-[1px] px-2 hover:text-gray-200'>Tải ứng dụng</div>
