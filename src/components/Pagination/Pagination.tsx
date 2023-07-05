@@ -3,11 +3,6 @@ import { Link, createSearchParams } from 'react-router-dom'
 import { path } from 'src/constants/path'
 import { QueryConfig } from 'src/pages/ProductList/ProductList'
 
-interface PropsType {
-    queryConfig: QueryConfig
-    pageSize: number
-}
-
 /*
 Case 1: 
 [1] 2 3 ... 19 20
@@ -27,7 +22,12 @@ Case 3:
 1 2 ... 16 17 [18] 19 20
 1 2 ... 17 18 [19] 20
 1 2 ... 18 19 [20]
- */
+*/
+
+interface PropsType {
+    queryConfig: QueryConfig
+    pageSize: number
+}
 const RANGE = 2
 
 export default function Pagination({ queryConfig, pageSize }: PropsType) {

@@ -64,14 +64,14 @@ export default function Register() {
             <div className='container'>
                 <div className='grid grid-cols-1 py-10 lg:grid-cols-5 lg:py-28 lg:pr-12'>
                     <div className='lg:col-span-2 lg:col-start-4'>
-                        <form className='rounded bg-white p-10 shadow-sm' onSubmit={onSubmit}>
-                            <div className='text-2xl'>Đăng ký</div>
+                        <form className='rounded bg-white p-5 shadow-sm sm:p-10' onSubmit={onSubmit}>
+                            <div className='text-xl sm:text-2xl'>Đăng ký</div>
                             <Input
                                 type='text'
                                 register={register}
                                 name='email'
                                 placeholder='Email'
-                                className='mt-6'
+                                className='mt-2 sm:mt-6'
                                 errorMessage={errors.email?.message}
                             />
                             <Input
@@ -93,17 +93,17 @@ export default function Register() {
                             <div className='mt-2'>
                                 <Button
                                     type='submit'
-                                    className='w-full rounded-sm bg-red-500 py-4 text-center uppercase text-white hover:bg-red-400'
+                                    className='w-full rounded-sm bg-red-500 py-2 text-center text-sm uppercase text-white hover:bg-red-400 sm:py-4'
                                     isLoading={registerAccountMutation.isLoading}
                                     disabled={registerAccountMutation.isLoading}
                                 >
                                     Đăng ký
                                 </Button>
                             </div>
-                            <div className='mt-8'>
-                                <div className='flex justify-center'>
-                                    <span className='text-gray-400'>Bạn đã có tài khoản?</span>
-                                    <Link to={path.login} className='ml-2 text-red-500'>
+                            <div className='mt-3 sm:mt-4'>
+                                <div className='flex flex-wrap justify-center'>
+                                    <span className='text-xs text-gray-400 sm:text-base'>Bạn đã có tài khoản?</span>
+                                    <Link to={path.login} className='ml-2 text-xs text-red-500 sm:text-base'>
                                         Đăng nhập
                                     </Link>
                                 </div>

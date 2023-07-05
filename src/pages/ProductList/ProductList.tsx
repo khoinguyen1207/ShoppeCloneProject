@@ -17,7 +17,7 @@ export default function ProductList() {
     const queryConfig: QueryConfig = omitBy(
         {
             page: queryParams.page || '1',
-            limit: queryParams.limit || '10',
+            limit: queryParams.limit || '5',
             sort_by: queryParams.sort_by,
             order: queryParams.order,
             exclude: queryParams.exclude,
@@ -43,23 +43,21 @@ export default function ProductList() {
                     <div className='md:col-span-3'>
                         <AsideFilter />
                     </div>
-                    <div className='md:col-span-9'>
-                        <SortProductList />
-                        {data && (
-                            <>
-                                <div className='mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5'>
-                                    {data.data.data.products.map((product) => {
-                                        return (
-                                            <div className='col-span-1' key={product._id}>
-                                                <Product product={product} />
-                                            </div>
-                                        )
-                                    })}
-                                </div>
-                                <Pagination queryConfig={queryConfig} pageSize={data.data.data.pagination.page_size} />
-                            </>
-                        )}
-                    </div>
+                    {data && (
+                        <div className='md:col-span-9'>
+                            <SortProductList queryConfig={queryConfig} pageSize={data.data.data.pagination.page_size} />
+                            <div className='mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5'>
+                                {data.data.data.products.map((product) => {
+                                    return (
+                                        <div className='col-span-1' key={product._id}>
+                                            <Product product={product} />
+                                        </div>
+                                    )
+                                })}
+                            </div>
+                            <Pagination queryConfig={queryConfig} pageSize={data.data.data.pagination.page_size} />
+                        </div>
+                    )}
                 </div>
             </div>
         </div>
