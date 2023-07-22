@@ -1,12 +1,28 @@
-import { Link } from 'react-router-dom'
+import { Link, createSearchParams } from 'react-router-dom'
 import { path } from 'src/constants/path'
 import Button from '../Button'
+import { QueryConfig } from 'src/pages/ProductList/ProductList'
+import { Category } from 'src/types/category.type'
+import classNames from 'classnames'
 
-export default function AsideFilter() {
+interface Props {
+    queryConfig: QueryConfig
+    categories: Category[]
+}
+
+export default function AsideFilter({ queryConfig, categories }: Props) {
+    const { category } = queryConfig
+
     return (
         <div className='mr-0 py-4 font-bold md:mr-6 '>
-            <Link to={path.home} className='flex items-center capitalize'>
-                <svg viewBox='0 0 12 10' className='mr-3 h-3 w-3 font-bold'>
+            <Link
+                to={path.home}
+                className={classNames('flex items-center capitalize', {
+                    'text-orange': !category,
+                    'text-black': category
+                })}
+            >
+                <svg viewBox='0 0 12 10' className='mr-3 h-3 w-3 fill-current font-bold'>
                     <g fillRule='evenodd' stroke='none' strokeWidth={1}>
                         <g transform='translate(-373 -208)'>
                             <g transform='translate(155 191)'>
@@ -24,55 +40,37 @@ export default function AsideFilter() {
             <div className='mt-3 border-[1px] border-gray-200' />
             <div className='my-3'>
                 <ul className='text-sm font-medium '>
-                    <li className='py-2'>
-                        <Link to={path.home} className='flex items-center font-semibold capitalize text-orange'>
-                            <svg viewBox='0 0 4 7' className='mr-3 h-2 w-2 fill-orange'>
-                                <polygon points='4 3.5 0 0 0 7' />
-                            </svg>
-                            Thời Trang Nam
-                        </Link>
-                    </li>
-
-                    <li className='py-2'>
-                        <Link to='' className='flex items-center capitalize text-black'>
-                            <svg viewBox='0 0 4 7' className='mr-3 h-2 w-2 fill-white'>
-                                <polygon points='4 3.5 0 0 0 7' />
-                            </svg>
-                            Túi sách
-                        </Link>
-                    </li>
-                    <li className='py-2'>
-                        <Link to='' className='flex items-center capitalize text-black'>
-                            <svg viewBox='0 0 4 7' className='mr-3 h-2 w-2 fill-white'>
-                                <polygon points='4 3.5 0 0 0 7' />
-                            </svg>
-                            Áo khoác
-                        </Link>
-                    </li>
-                    <li className='py-2'>
-                        <Link to='' className='flex items-center capitalize text-black'>
-                            <svg viewBox='0 0 4 7' className='mr-3 h-2 w-2 fill-white'>
-                                <polygon points='4 3.5 0 0 0 7' />
-                            </svg>
-                            Quần Jeans
-                        </Link>
-                    </li>
-                    <li className='py-2'>
-                        <Link to='' className='flex items-center capitalize text-black'>
-                            <svg viewBox='0 0 4 7' className='mr-3 h-2 w-2 fill-white'>
-                                <polygon points='4 3.5 0 0 0 7' />
-                            </svg>
-                            Điện thoại
-                        </Link>
-                    </li>
-                    <li className='py-2'>
-                        <Link to='' className='flex items-center capitalize text-black'>
-                            <svg viewBox='0 0 4 7' className='mr-3 h-2 w-2 fill-white'>
-                                <polygon points='4 3.5 0 0 0 7' />
-                            </svg>
-                            Đồng hồ
-                        </Link>
-                    </li>
+                    {categories.map((categoryItem) => {
+                        const isActive = categoryItem._id === category
+                        return (
+                            <li className='py-2' key={categoryItem._id}>
+                                <Link
+                                    to={{
+                                        pathname: path.home,
+                                        search: createSearchParams({
+                                            ...queryConfig,
+                                            category: categoryItem._id
+                                        }).toString()
+                                    }}
+                                    className={classNames('flex items-center capitalize ', {
+                                        'font-semibold text-orange': isActive,
+                                        'text-black': !isActive
+                                    })}
+                                >
+                                    <svg
+                                        viewBox='0 0 4 7'
+                                        className={classNames('mr-3 h-2 w-2 fill-orange', {
+                                            'fill-orange': isActive,
+                                            'fill-[#F5F5F5]': !isActive
+                                        })}
+                                    >
+                                        <polygon points='4 3.5 0 0 0 7' />
+                                    </svg>
+                                    {categoryItem.name}
+                                </Link>
+                            </li>
+                        )
+                    })}
                 </ul>
             </div>
             <Link to={path.home} className='flex items-center pt-5 uppercase'>

@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import { isUndefined, omitBy } from 'lodash'
+import categoryApi from 'src/apis/category.api'
 import productApi from 'src/apis/product.api'
 import AsideFilter from 'src/components/AsideFilter'
 import Pagination from 'src/components/Pagination'
@@ -30,10 +31,15 @@ export default function ProductList() {
         isUndefined
     )
 
-    const { data } = useQuery({
+    const { data: productData } = useQuery({
         queryKey: ['products', queryConfig],
         queryFn: () => productApi.getProduct(queryConfig as ProductListConfig),
         keepPreviousData: true
+    })
+
+    const { data: categoryData } = useQuery({
+        queryKey: ['categories'],
+        queryFn: () => categoryApi.getCategories()
     })
 
     return (
@@ -41,13 +47,16 @@ export default function ProductList() {
             <div className='container'>
                 <div className='grid grid-cols-1 md:grid-cols-12'>
                     <div className='md:col-span-3'>
-                        <AsideFilter />
+                        <AsideFilter categories={categoryData?.data.data || []} queryConfig={queryConfig} />
                     </div>
-                    {data && (
+                    {productData && (
                         <div className='md:col-span-9'>
-                            <SortProductList queryConfig={queryConfig} pageSize={data.data.data.pagination.page_size} />
+                            <SortProductList
+                                queryConfig={queryConfig}
+                                pageSize={productData.data.data.pagination.page_size}
+                            />
                             <div className='mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5'>
-                                {data.data.data.products.map((product) => {
+                                {productData.data.data.products.map((product) => {
                                     return (
                                         <div className='col-span-1' key={product._id}>
                                             <Product product={product} />
@@ -55,7 +64,10 @@ export default function ProductList() {
                                     )
                                 })}
                             </div>
-                            <Pagination queryConfig={queryConfig} pageSize={data.data.data.pagination.page_size} />
+                            <Pagination
+                                queryConfig={queryConfig}
+                                pageSize={productData.data.data.pagination.page_size}
+                            />
                         </div>
                     )}
                 </div>
