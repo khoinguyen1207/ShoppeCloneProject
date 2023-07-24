@@ -12,7 +12,7 @@ interface PropsType {
 }
 
 export default function SortProductList({ queryConfig, pageSize }: PropsType) {
-    const sort_by = queryConfig.sort_by || sortBy.view
+    const sort_by = queryConfig.sort_by || sortBy.createdAt
     const page = Number(queryConfig.page)
     const order = queryConfig.order
     const navigate = useNavigate()

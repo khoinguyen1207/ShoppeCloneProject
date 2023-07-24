@@ -1,17 +1,50 @@
-import { Link, createSearchParams } from 'react-router-dom'
+import { Link, createSearchParams, useNavigate } from 'react-router-dom'
 import { path } from 'src/constants/path'
 import Button from '../Button'
 import { QueryConfig } from 'src/pages/ProductList/ProductList'
 import { Category } from 'src/types/category.type'
 import classNames from 'classnames'
+import InputNumber from '../InputNumber'
+import { Controller, useForm } from 'react-hook-form'
+import { Schema, schema } from 'src/utils/rules'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { NoUndefinedField } from 'src/types/utils.type'
 
 interface Props {
     queryConfig: QueryConfig
     categories: Category[]
 }
 
+type FormData = NoUndefinedField<Pick<Schema, 'price_max' | 'price_min'>>
+const priceSchema = schema.pick(['price_max', 'price_min'])
+
 export default function AsideFilter({ queryConfig, categories }: Props) {
     const { category } = queryConfig
+    const navigate = useNavigate()
+
+    const {
+        control,
+        handleSubmit,
+        trigger,
+        formState: { errors }
+    } = useForm<FormData>({
+        defaultValues: {
+            price_min: '',
+            price_max: ''
+        },
+        resolver: yupResolver(priceSchema)
+    })
+
+    const onSubmit = handleSubmit((data) => {
+        navigate({
+            pathname: path.home,
+            search: createSearchParams({
+                ...queryConfig,
+                price_min: data.price_min,
+                price_max: data.price_max
+            }).toString()
+        })
+    })
 
     return (
         <div className='mr-0 py-4 font-bold md:mr-6 '>
@@ -61,7 +94,7 @@ export default function AsideFilter({ queryConfig, categories }: Props) {
                                         viewBox='0 0 4 7'
                                         className={classNames('mr-3 h-2 w-2 fill-orange', {
                                             'fill-orange': isActive,
-                                            'fill-[#F5F5F5]': !isActive
+                                            'fill-white': !isActive
                                         })}
                                     >
                                         <polygon points='4 3.5 0 0 0 7' />
@@ -96,20 +129,43 @@ export default function AsideFilter({ queryConfig, categories }: Props) {
             <div className='mt-3 border-[1px] border-gray-200' />
             <div className='py-3 text-sm font-normal'>
                 <div>Khoản Giá</div>
-                <form>
-                    <div className='my-4 flex items-center justify-between'>
-                        <input
-                            type='text'
-                            placeholder='₫ TỪ'
-                            className='w-full rounded-sm border border-gray-400 px-2 py-1 outline-none focus:shadow-sm'
+                <form onSubmit={onSubmit}>
+                    <div className='mt-4 flex items-center justify-between'>
+                        <Controller
+                            name='price_min'
+                            control={control}
+                            render={({ field }) => {
+                                return (
+                                    <InputNumber
+                                        value={field.value}
+                                        placeholder='₫ TỪ'
+                                        onChange={(event) => {
+                                            field.onChange(event)
+                                            trigger('price_max')
+                                        }}
+                                    />
+                                )
+                            }}
                         />
                         <div className='mx-5 shrink-0 font-bold'>-</div>
-                        <input
-                            type='text'
-                            placeholder='₫ ĐẾN'
-                            className='w-full rounded-sm border border-gray-400 px-2 py-1 outline-none focus:shadow-sm'
+                        <Controller
+                            name='price_max'
+                            control={control}
+                            render={({ field }) => {
+                                return (
+                                    <InputNumber
+                                        value={field.value}
+                                        placeholder='₫ ĐẾN'
+                                        onChange={(event) => {
+                                            field.onChange(event)
+                                            trigger('price_min')
+                                        }}
+                                    />
+                                )
+                            }}
                         />
                     </div>
+                    <div className='py-2  text-center text-orange'>{errors.price_min?.message}</div>
                     <Button className='w-full rounded-sm bg-orange p-[5px] text-sm uppercase text-white'>
                         Áp dụng
                     </Button>

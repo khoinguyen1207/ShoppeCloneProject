@@ -1,62 +1,4 @@
-// import type { RegisterOptions, UseFormGetValues } from 'react-hook-form'
 import * as yup from 'yup'
-
-// type Rules = {
-//     [key in 'email' | 'password' | 'confirm_password']?: RegisterOptions
-// }
-
-// export const getRules = (getValue?: UseFormGetValues<any>): Rules => ({
-//     email: {
-//         required: {
-//             value: true,
-//             message: 'Email không được để trống'
-//         },
-//         pattern: {
-//             value: /^\S+@\S+\.\S+$/,
-//             message: 'Email không đúng định dạng'
-//         },
-//         maxLength: {
-//             value: 160,
-//             message: 'Độ dài phải từ 5 - 160 ký tự'
-//         },
-//         minLength: {
-//             value: 5,
-//             message: 'Độ dài phải từ 5 - 160 ký tự'
-//         }
-//     },
-//     password: {
-//         required: {
-//             value: true,
-//             message: 'Password không được để trống'
-//         },
-//         maxLength: {
-//             value: 160,
-//             message: 'Độ dài phải từ 6 - 160 ký tự'
-//         },
-//         minLength: {
-//             value: 6,
-//             message: 'Độ dài phải từ 6 - 160 ký tự'
-//         }
-//     },
-//     confirm_password: {
-//         required: {
-//             value: true,
-//             message: 'Confirm password không được để trống'
-//         },
-//         maxLength: {
-//             value: 160,
-//             message: 'Độ dài phải từ 6 - 160 ký tự'
-//         },
-//         minLength: {
-//             value: 6,
-//             message: 'Độ dài phải từ 6 - 160 ký tự'
-//         },
-//         validate:
-//             typeof getValue === 'function'
-//                 ? (value) => value === getValue('password') || 'Confirm password không khớp'
-//                 : undefined
-//     }
-// })
 
 export const schema = yup.object({
     email: yup
@@ -75,7 +17,31 @@ export const schema = yup.object({
         .required('Confirm password không được để trống')
         .min(6, 'Độ dài phải từ 6 - 160 ký tự')
         .max(160, 'Độ dài phải từ 6 - 160 ký tự')
-        .oneOf([yup.ref('password')], 'Nhập lại password không khớp')
+        .oneOf([yup.ref('password')], 'Nhập lại password không khớp'),
+    price_min: yup.string().test({
+        name: 'price-not-allowed',
+        message: 'Giá không phù hợp',
+        test: function (value) {
+            const price_min = value
+            const price_max = this.parent.price_max as string
+            if (price_min !== '' && price_max !== '') {
+                return Number(price_max) >= Number(price_min)
+            }
+            return price_min !== '' || price_max !== ''
+        }
+    }),
+    price_max: yup.string().test({
+        name: 'price-not-allowed',
+        message: 'Giá không phù hợp',
+        test: function (value) {
+            const price_max = value
+            const price_min = this.parent.price_min as string
+            if (price_min !== '' && price_max !== '') {
+                return Number(price_max) >= Number(price_min)
+            }
+            return price_min !== '' || price_max !== ''
+        }
+    })
 })
 
 export type Schema = yup.InferType<typeof schema>
