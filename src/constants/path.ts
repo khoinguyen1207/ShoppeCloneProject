@@ -4,5 +4,6 @@ export const path = {
     logout: '/logout',
     login: '/login',
     register: '/register',
-    products: '/products'
+    products: '/products',
+    productDetail: '/:id'
 } as const

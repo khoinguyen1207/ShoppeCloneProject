@@ -93,10 +93,15 @@ export default function AsideFilter({ queryConfig, categories }: Props) {
                                 <Link
                                     to={{
                                         pathname: path.home,
-                                        search: createSearchParams({
-                                            ...queryConfig,
-                                            category: categoryItem._id
-                                        }).toString()
+                                        search: createSearchParams(
+                                            omit(
+                                                {
+                                                    ...queryConfig,
+                                                    category: categoryItem._id
+                                                },
+                                                ['page']
+                                            )
+                                        ).toString()
                                     }}
                                     className={classNames('flex items-center capitalize ', {
                                         'font-semibold text-orange': isActive,
@@ -152,6 +157,7 @@ export default function AsideFilter({ queryConfig, categories }: Props) {
                                     <InputNumber
                                         value={field.value}
                                         placeholder='₫ TỪ'
+                                        classNameInput='w-full rounded-sm border border-gray-400 px-2 py-1 outline-none focus:shadow-sm'
                                         onChange={(event) => {
                                             field.onChange(event)
                                             trigger('price_max')
@@ -169,6 +175,7 @@ export default function AsideFilter({ queryConfig, categories }: Props) {
                                     <InputNumber
                                         value={field.value}
                                         placeholder='₫ ĐẾN'
+                                        classNameInput='w-full rounded-sm border border-gray-400 px-2 py-1 outline-none focus:shadow-sm'
                                         onChange={(event) => {
                                             field.onChange(event)
                                             trigger('price_min')

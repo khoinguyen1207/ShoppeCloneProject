@@ -9,7 +9,7 @@ interface PropsType {
 
 export default function Product({ product }: PropsType) {
     return (
-        <Link to={`/products/${product._id}`}>
+        <Link to={`/${product._id}`}>
             <div className='overflow-hidden rounded-sm border border-gray-200 bg-[#FFFFFF] shadow transition-transform duration-100 hover:translate-y-[-0.0625rem] hover:shadow-md'>
                 <div className='relative w-full pt-[100%]'>
                     <img

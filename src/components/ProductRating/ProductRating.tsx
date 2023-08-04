@@ -1,13 +1,32 @@
-export default function ProductRating({ rating }: { rating: number }) {
+/* Ví dụ rating 3.4
+1 < 3.4 => 100%
+2 < 3.4 => 100%
+3 < 3.4 => 100%
+4 > 3.4 => 40%  (3.4 - 3 = 0.4  * 100)
+5 > 3.4 => 0%
+*/
+
+interface Props {
+    rating: number
+    activeClassName?: string
+    nonActiveClassName?: string
+}
+
+export default function ProductRating({
+    rating,
+    activeClassName = 'h-3 w-3 fill-[#FFCE3D] text-[#FFCE3D]',
+    nonActiveClassName = 'h-3 w-3 fill-gray-400 text-gray-400'
+}: Props) {
     const handleWidth = (order: number) => {
         if (order <= rating) {
             return '100%'
         }
         if (order > rating && order - rating < 1) {
-            return (order - Math.floor(rating)) * 100 + '%'
+            return (rating - Math.floor(rating)) * 100 + '%'
         }
         return '0%'
     }
+
     return (
         <div className='flex items-center'>
             {Array(5)
@@ -24,7 +43,7 @@ export default function ProductRating({ rating }: { rating: number }) {
                                     viewBox='0 0 15 15'
                                     x={0}
                                     y={0}
-                                    className='h-3 w-3 fill-[#FFCE3D] text-[#FFCE3D]'
+                                    className={activeClassName}
                                 >
                                     <polygon
                                         points='7.5 .8 9.7 5.4 14.5 5.9 10.7 9.1 11.8 14.2 7.5 11.6 3.2 14.2 4.3 9.1 .5 5.9 5.3 5.4'
@@ -39,7 +58,7 @@ export default function ProductRating({ rating }: { rating: number }) {
                                 viewBox='0 0 15 15'
                                 x={0}
                                 y={0}
-                                className='h-3 w-3 fill-gray-400 text-gray-400'
+                                className={nonActiveClassName}
                             >
                                 <polygon
                                     points='7.5 .8 9.7 5.4 14.5 5.9 10.7 9.1 11.8 14.2 7.5 11.6 3.2 14.2 4.3 9.1 .5 5.9 5.3 5.4'
