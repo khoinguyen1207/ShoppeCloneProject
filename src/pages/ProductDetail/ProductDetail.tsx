@@ -1,9 +1,11 @@
 import { useQuery } from '@tanstack/react-query'
 import DOMPurify from 'dompurify'
+import { useEffect, useMemo, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import productApi from 'src/apis/product.api'
 import InputNumber from 'src/components/InputNumber'
 import ProductRating from 'src/components/ProductRating'
+import { Product } from 'src/types/product.type'
 import { formatCurrency, formatNumberToSocialStyle, rateSale } from 'src/utils/utils'
 
 export default function ProductDetail() {
@@ -13,6 +15,45 @@ export default function ProductDetail() {
         queryFn: () => productApi.getProductDetail(id as string)
     })
     const product = productDetailData?.data.data
+    const [currentIndexImages, setCurrentIndexImages] = useState({ start: 0, end: 5 })
+    const [activeImage, setActiveImage] = useState('')
+    const currentImages = useMemo(
+        () => (product ? product.images.slice(currentIndexImages.start, currentIndexImages.end) : []),
+        [product, currentIndexImages]
+    )
+
+    useEffect(() => {
+        if (product && product.images.length > 0) {
+            setActiveImage(product.images[0])
+        }
+    }, [product])
+
+    const chooseImages = (img: string) => {
+        setActiveImage(img)
+    }
+
+    const next = () => {
+        if (currentIndexImages.end < (product as Product).images.length) {
+            setCurrentIndexImages((prevState) => {
+                return {
+                    start: prevState.start + 1,
+                    end: prevState.end + 1
+                }
+            })
+        }
+    }
+
+    const previous = () => {
+        if (currentIndexImages.start > 0) {
+            setCurrentIndexImages((prevState) => {
+                return {
+                    start: prevState.start - 1,
+                    end: prevState.end - 1
+                }
+            })
+        }
+    }
+
     if (!product) return null
     return (
         <div className='bg-[#F5F5F5] py-6'>
@@ -22,13 +63,16 @@ export default function ProductDetail() {
                         <div className='md:col-span-5'>
                             <div className='relative w-full pt-[100%]'>
                                 <img
-                                    src={product.image}
+                                    src={activeImage}
                                     alt={product.name}
                                     className='absolute left-0 top-0 h-full w-full bg-white object-cover'
                                 />
                             </div>
                             <div className='relative mt-4 grid grid-cols-5 gap-2'>
-                                <button className='absolute left-0 top-1/2 z-10 h-9 w-5 -translate-y-1/2 bg-black/30'>
+                                <button
+                                    onClick={previous}
+                                    className='absolute left-0 top-1/2 z-10 h-9 w-5 -translate-y-1/2 bg-black/30'
+                                >
                                     <svg
                                         xmlns='http://www.w3.org/2000/svg'
                                         fill='none'
@@ -44,20 +88,27 @@ export default function ProductDetail() {
                                         />
                                     </svg>
                                 </button>
-                                {product.images.slice(0, 5).map((img, index) => {
-                                    const isActive = index === 0
+                                {currentImages.map((img) => {
+                                    const isActive = img === activeImage
                                     return (
-                                        <div key={img} className='relative w-full pt-[100%]'>
+                                        <div
+                                            key={img}
+                                            className='relative w-full pt-[100%]'
+                                            onMouseEnter={() => chooseImages(img)}
+                                        >
                                             <img
                                                 src={img}
-                                                alt={img}
+                                                alt={product.name}
                                                 className='absolute left-0 top-0 h-full w-full cursor-pointer bg-white object-cover'
                                             />
                                             {isActive && <div className='absolute inset-0 border-2 border-orange' />}
                                         </div>
                                     )
                                 })}
-                                <button className='absolute right-0 top-1/2 z-10 h-9 w-5 -translate-y-1/2 bg-black/30'>
+                                <button
+                                    onClick={next}
+                                    className='absolute right-0 top-1/2 z-10 h-9 w-5 -translate-y-1/2 bg-black/30'
+                                >
                                     <svg
                                         xmlns='http://www.w3.org/2000/svg'
                                         fill='none'
