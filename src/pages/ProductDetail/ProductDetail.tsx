@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import DOMPurify from 'dompurify'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import productApi from 'src/apis/product.api'
 import InputNumber from 'src/components/InputNumber'
@@ -21,6 +21,7 @@ export default function ProductDetail() {
         () => (product ? product.images.slice(currentIndexImages.start, currentIndexImages.end) : []),
         [product, currentIndexImages]
     )
+    const imageRef = useRef<HTMLImageElement>(null)
 
     useEffect(() => {
         if (product && product.images.length > 0) {
@@ -54,6 +55,22 @@ export default function ProductDetail() {
         }
     }
 
+    const handleZoom = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+        const image = imageRef.current as HTMLImageElement
+        const { naturalWidth, naturalHeight } = image
+        const { offsetX, offsetY } = event.nativeEvent
+        const rect = event.currentTarget.getBoundingClientRect()
+        image.style.width = naturalWidth + 'px'
+        image.style.height = naturalHeight + 'px'
+        image.style.maxWidth = 'unset'
+        image.style.top = offsetY * (1 - naturalHeight / rect.height) + 'px'
+        image.style.left = offsetX * (1 - naturalWidth / rect.width) + 'px'
+    }
+
+    const handleRemoveZoom = () => {
+        imageRef.current?.removeAttribute('style')
+    }
+
     if (!product) return null
     return (
         <div className='bg-[#F5F5F5] py-6'>
@@ -61,11 +78,16 @@ export default function ProductDetail() {
                 <div className='bg-white p-4 shadow-sm'>
                     <div className='grid grid-cols-1 gap-5 sm:gap-9 md:grid-cols-12'>
                         <div className='md:col-span-5'>
-                            <div className='relative w-full pt-[100%]'>
+                            <div
+                                className='relative w-full cursor-zoom-in overflow-hidden pt-[100%]'
+                                onMouseMove={handleZoom}
+                                onMouseLeave={handleRemoveZoom}
+                            >
                                 <img
                                     src={activeImage}
                                     alt={product.name}
-                                    className='absolute left-0 top-0 h-full w-full bg-white object-cover'
+                                    ref={imageRef}
+                                    className='pointer-events-none absolute left-0 top-0 h-full w-full bg-white object-cover'
                                 />
                             </div>
                             <div className='relative mt-4 grid grid-cols-5 gap-2'>
