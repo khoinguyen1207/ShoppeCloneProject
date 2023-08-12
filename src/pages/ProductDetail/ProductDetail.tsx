@@ -4,8 +4,9 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import productApi from 'src/apis/product.api'
 import InputNumber from 'src/components/InputNumber'
+import Product from 'src/components/Product'
 import ProductRating from 'src/components/ProductRating'
-import { Product } from 'src/types/product.type'
+import { Product as ProductType, ProductListConfig } from 'src/types/product.type'
 import { formatCurrency, formatNumberToSocialStyle, getIdFromNameId, rateSale } from 'src/utils/utils'
 
 export default function ProductDetail() {
@@ -16,6 +17,15 @@ export default function ProductDetail() {
         queryFn: () => productApi.getProductDetail(id as string)
     })
     const product = productDetailData?.data.data
+
+    const queryConfig: ProductListConfig = { limit: '20', page: '1', category: product?.category._id }
+    const { data: productData } = useQuery({
+        queryKey: ['products', queryConfig],
+        queryFn: () => productApi.getProduct(queryConfig),
+        enabled: Boolean(product),
+        staleTime: 3 * 60 * 1000
+    })
+
     const [currentIndexImages, setCurrentIndexImages] = useState({ start: 0, end: 5 })
     const [activeImage, setActiveImage] = useState('')
     const currentImages = useMemo(
@@ -35,7 +45,7 @@ export default function ProductDetail() {
     }
 
     const next = () => {
-        if (currentIndexImages.end < (product as Product).images.length) {
+        if (currentIndexImages.end < (product as ProductType).images.length) {
             setCurrentIndexImages((prevState) => {
                 return {
                     start: prevState.start + 1,
@@ -423,6 +433,20 @@ export default function ProductDetail() {
                     <div className='mt-4 px-4 text-xs sm:mt-8 sm:text-base'>
                         <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(product.description) }} />
                     </div>
+                </div>
+                <div className='mt-8'>
+                    <div className='uppercase'>CÓ THỂ BẠN CŨNG THÍCH</div>
+                    {productData && (
+                        <div className='mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6'>
+                            {productData.data.data.products.map((product) => {
+                                return (
+                                    <div className='col-span-1' key={product._id}>
+                                        <Product product={product} />
+                                    </div>
+                                )
+                            })}
+                        </div>
+                    )}
                 </div>
             </div>
         </div>

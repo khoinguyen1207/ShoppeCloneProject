@@ -1,7 +1,6 @@
 import { Link, createSearchParams, useNavigate } from 'react-router-dom'
 import { path } from 'src/constants/path'
 import Button from '../Button'
-import { QueryConfig } from 'src/pages/ProductList/ProductList'
 import { Category } from 'src/types/category.type'
 import classNames from 'classnames'
 import InputNumber from '../InputNumber'
@@ -11,6 +10,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { NoUndefinedField } from 'src/types/utils.type'
 import RatingStars from '../RatingStars'
 import { omit } from 'lodash'
+import { QueryConfig } from 'src/hooks/useQueryConfig'
 
 interface Props {
     queryConfig: QueryConfig
@@ -53,7 +53,7 @@ export default function AsideFilter({ queryConfig, categories }: Props) {
         navigate({
             pathname: path.home,
             search: createSearchParams(
-                omit(queryConfig, ['price_min', 'price_max', 'category', 'rating_filter'])
+                omit(queryConfig, ['price_min', 'price_max', 'category', 'rating_filter', 'name'])
             ).toString()
         })
         reset()
