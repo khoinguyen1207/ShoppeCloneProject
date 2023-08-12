@@ -1,14 +1,29 @@
-import { Link } from 'react-router-dom'
+import { Link, createSearchParams, useNavigate } from 'react-router-dom'
 import Popover from '../Popover/Popover'
 import { useMutation } from '@tanstack/react-query'
 import authApi from 'src/apis/auth.api'
 import { useContext, useState } from 'react'
 import { AppContext } from 'src/contexts/app.context'
 import { path } from 'src/constants/path'
+import useQueryConfig from 'src/hooks/useQueryConfig'
+import { useForm } from 'react-hook-form'
+import { Schema, schema } from 'src/utils/rules'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { omit } from 'lodash'
+
+type FormData = Pick<Schema, 'name'>
+const nameSchema = schema.pick(['name'])
 
 export default function Header() {
+    const queryConfig = useQueryConfig()
+    const { register, handleSubmit } = useForm<FormData>({
+        defaultValues: { name: '' },
+        resolver: yupResolver(nameSchema)
+    })
     const { setIsAuthenticated, isAuthenticated, setProfile, profile } = useContext(AppContext)
     const [isOpen, setIsOpen] = useState(false)
+    const navigate = useNavigate()
+
     const logoutMutation = useMutation({
         mutationFn: () => authApi.logout(),
         onSuccess: () => {
@@ -20,6 +35,30 @@ export default function Header() {
     const handleLogout = () => {
         logoutMutation.mutate()
     }
+
+    const onSubmitSearch = handleSubmit((data) => {
+        const config = queryConfig.order
+            ? omit(
+                  {
+                      ...queryConfig,
+                      name: data.name
+                  },
+                  ['order', 'sort_by', 'page']
+              )
+            : omit(
+                  {
+                      ...queryConfig,
+                      name: data.name
+                  },
+                  ['page']
+              )
+
+        navigate({
+            pathname: path.home,
+            search: createSearchParams(config).toString()
+        })
+    })
+
     return (
         <header className='bg-[linear-gradient(-180deg,#f53d2d,#f63)] text-sm text-white'>
             <div className='container'>
@@ -144,12 +183,16 @@ export default function Header() {
                             </svg>
                         </Link>
                     </div>
-                    <form className='mx-6 hidden flex-grow bg-slate-500 sm:block md:mx-10 lg:mx-28'>
+                    <form
+                        onSubmit={onSubmitSearch}
+                        className='mx-6 hidden flex-grow bg-slate-500 sm:block md:mx-10 lg:mx-28'
+                    >
                         <div className='flex rounded-sm bg-white p-1'>
                             <input
                                 type='text'
                                 placeholder='LÀM ĐẸP LÊN SHOPEE'
                                 className='flex-grow px-2 text-black outline-none'
+                                {...register('name')}
                             />
                             <button
                                 type='submit'
@@ -265,6 +308,7 @@ export default function Header() {
                                 type='text'
                                 placeholder='Áo thun giá rẻ'
                                 className='flex-grow px-2 text-black outline-none'
+                                {...register('name')}
                             />
                             <button
                                 type='submit'
