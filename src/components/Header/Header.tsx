@@ -1,6 +1,6 @@
 import { Link, createSearchParams, useNavigate } from 'react-router-dom'
 import Popover from '../Popover/Popover'
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import authApi from 'src/apis/auth.api'
 import { useContext, useState } from 'react'
 import { AppContext } from 'src/contexts/app.context'
@@ -10,6 +10,10 @@ import { useForm } from 'react-hook-form'
 import { Schema, schema } from 'src/utils/rules'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { omit } from 'lodash'
+import { purchaseStatus } from 'src/constants/purchases'
+import purchasesApi from 'src/apis/purchases.api'
+import { formatCurrency } from 'src/utils/utils'
+import noproduct from 'src/assets/no-product.png'
 
 type FormData = Pick<Schema, 'name'>
 const nameSchema = schema.pick(['name'])
@@ -31,6 +35,12 @@ export default function Header() {
             setProfile(null)
         }
     })
+
+    const { data: purchaseInCartData } = useQuery({
+        queryKey: ['purchases', { status: purchaseStatus.inCart }],
+        queryFn: () => purchasesApi.getPurchases({ status: purchaseStatus.inCart })
+    })
+    const purchaseInCart = purchaseInCartData?.data.data
 
     const handleLogout = () => {
         logoutMutation.mutate()
@@ -235,60 +245,58 @@ export default function Header() {
                         <Popover
                             renderPopover={
                                 <div className='relative max-w-[400px] rounded-sm  bg-white text-sm shadow-md'>
-                                    <div className='px-2 py-3 capitalize text-gray-400'>Sản phẩm mới thêm</div>
-                                    <div className=''>
-                                        <div className='flex cursor-pointer items-center px-2 py-3 hover:bg-[#f8f8f8]'>
-                                            <div className='flex-shrink-0 border border-gray-300'>
-                                                <img
-                                                    src='https://down-vn.img.susercontent.com/file/vn-11134207-7qukw-lgpzt9dq6c4zaf_tn'
-                                                    alt='item-avatar'
-                                                    className='h-11 w-11'
-                                                />
+                                    {!purchaseInCart ? (
+                                        <div className='w-[300px] py-10 text-center'>
+                                            <div className='m-auto w-fit'>
+                                                <img src={noproduct} alt='no-purchase' className='h-24 w-24' />
                                             </div>
-                                            <div className='ml-3 mr-10 flex-grow-0 truncate'>
-                                                Túi đeo chéo nam nữ thời trang Premium Gadino DCS0134
-                                            </div>
-                                            <div className='flex-shrink-0 text-orange'>₫325.000</div>
+                                            <div className='mt-3 capitalize'>Chưa có sản phẩm</div>
                                         </div>
-                                        <div className='flex cursor-pointer items-center px-2 py-3 hover:bg-[#f8f8f8]'>
-                                            <div className='flex-shrink-0 border border-gray-300'>
-                                                <img
-                                                    src='https://down-vn.img.susercontent.com/file/vn-11134207-7qukw-lgpzt9dq6c4zaf_tn'
-                                                    alt='item-avatar'
-                                                    className='h-11 w-11'
-                                                />
+                                    ) : (
+                                        <>
+                                            <div className='px-2 py-3 capitalize text-gray-400'>Sản phẩm mới thêm</div>
+                                            {purchaseInCart.slice(0, 5).map((purchase) => {
+                                                return (
+                                                    <div
+                                                        key={purchase._id}
+                                                        className='flex cursor-pointer items-center px-2 py-3 hover:bg-[#f8f8f8]'
+                                                    >
+                                                        <div className='flex-shrink-0 border border-gray-300'>
+                                                            <img
+                                                                src={purchase.product.image}
+                                                                alt='item-avatar'
+                                                                className='h-11 w-11'
+                                                            />
+                                                        </div>
+                                                        <div className='ml-3 mr-10 flex-grow-0 truncate'>
+                                                            {purchase.product.name}
+                                                        </div>
+                                                        <div className='flex-shrink-0 text-orange'>
+                                                            ₫{formatCurrency(purchase.product.price)}
+                                                        </div>
+                                                    </div>
+                                                )
+                                            })}
+                                            <div className='flex items-center justify-between px-2 py-3'>
+                                                <div className=' text-xs text-gray-500'>
+                                                    {purchaseInCart.length > 5 && purchaseInCart.length - 5} Thêm hàng
+                                                    vào giỏ
+                                                </div>
+                                                <Link
+                                                    to={'/'}
+                                                    className='rounded-sm bg-orange px-4 py-2 capitalize text-white hover:opacity-60'
+                                                >
+                                                    Xem giỏ hàng
+                                                </Link>
                                             </div>
-                                            <div className='ml-3 mr-10 flex-grow-0 truncate'>
-                                                Túi đeo chéo nam nữ thời trang Premium Gadino DCS0134
-                                            </div>
-                                            <div className='flex-shrink-0 text-orange'>₫325.000</div>
-                                        </div>
-                                        <div className='flex cursor-pointer items-center px-2 py-3 hover:bg-[#f8f8f8]'>
-                                            <div className='flex-shrink-0 border border-gray-300'>
-                                                <img
-                                                    src='https://down-vn.img.susercontent.com/file/vn-11134207-7qukw-lgpzt9dq6c4zaf_tn'
-                                                    alt='item-avatar'
-                                                    className='h-11 w-11'
-                                                />
-                                            </div>
-                                            <div className='ml-3 mr-10 flex-grow-0 truncate'>
-                                                Túi đeo chéo nam nữ thời trang Premium Gadino DCS0134
-                                            </div>
-                                            <div className='flex-shrink-0 text-orange'>₫325.000</div>
-                                        </div>
-                                    </div>
-                                    <div className='flex items-center justify-between px-2 py-3'>
-                                        <div className=' text-xs text-gray-500'>3 Thêm hàng vào giỏ</div>
-                                        <button className='rounded-sm bg-orange px-4 py-2 capitalize text-white hover:opacity-60'>
-                                            Xem giỏ hàng
-                                        </button>
-                                    </div>
+                                        </>
+                                    )}
                                 </div>
                             }
                             setPlacement='bottom-end'
                             crossAxis={20}
                         >
-                            <Link to='/'>
+                            <Link to='/' className='relative'>
                                 <svg
                                     xmlns='http://www.w3.org/2000/svg'
                                     viewBox='0 0 20 20'
@@ -297,6 +305,11 @@ export default function Header() {
                                 >
                                     <path d='M1 1.75A.75.75 0 011.75 1h1.628a1.75 1.75 0 011.734 1.51L5.18 3a65.25 65.25 0 0113.36 1.412.75.75 0 01.58.875 48.645 48.645 0 01-1.618 6.2.75.75 0 01-.712.513H6a2.503 2.503 0 00-2.292 1.5H17.25a.75.75 0 010 1.5H2.76a.75.75 0 01-.748-.807 4.002 4.002 0 012.716-3.486L3.626 2.716a.25.25 0 00-.248-.216H1.75A.75.75 0 011 1.75zM6 17.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM15.5 19a1.5 1.5 0 100-3 1.5 1.5 0 000 3z' />
                                 </svg>
+                                {purchaseInCart && purchaseInCart?.length > 0 && (
+                                    <span className='absolute left-[15px] top-[-10px] rounded-full border-2 border-orange bg-white px-2 text-center text-xs text-orange'>
+                                        {purchaseInCart?.length}
+                                    </span>
+                                )}
                             </Link>
                         </Popover>
                     </div>

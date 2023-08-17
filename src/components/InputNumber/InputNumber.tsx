@@ -1,11 +1,10 @@
 import { InputHTMLAttributes } from 'react'
 
-interface Props extends InputHTMLAttributes<HTMLInputElement> {
-    name?: string
+export interface InputNumberProps extends InputHTMLAttributes<HTMLInputElement> {
     classNameInput?: string
 }
 
-export default function InputNumber({ placeholder, onChange, classNameInput, ...rest }: Props) {
+export default function InputNumber({ placeholder, onChange, classNameInput, ...rest }: InputNumberProps) {
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { value } = event.target
         if ((value.match(/^[0-9]+$/) || value === '') && onChange) {
