@@ -1,6 +1,6 @@
 import { Link, createSearchParams, useNavigate } from 'react-router-dom'
 import Popover from '../Popover/Popover'
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import authApi from 'src/apis/auth.api'
 import { useContext, useState } from 'react'
 import { AppContext } from 'src/contexts/app.context'
@@ -12,13 +12,14 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { omit } from 'lodash'
 import { purchaseStatus } from 'src/constants/purchases'
 import purchasesApi from 'src/apis/purchases.api'
-import { formatCurrency } from 'src/utils/utils'
+import { formatCurrency, generateNameId } from 'src/utils/utils'
 import noproduct from 'src/assets/no-product.png'
 
 type FormData = Pick<Schema, 'name'>
 const nameSchema = schema.pick(['name'])
 
 export default function Header() {
+    const queryClient = useQueryClient()
     const queryConfig = useQueryConfig()
     const { register, handleSubmit } = useForm<FormData>({
         defaultValues: { name: '' },
@@ -33,12 +34,14 @@ export default function Header() {
         onSuccess: () => {
             setIsAuthenticated(false)
             setProfile(null)
+            queryClient.removeQueries({ queryKey: ['purchases', { status: purchaseStatus.inCart }] })
         }
     })
 
     const { data: purchaseInCartData } = useQuery({
         queryKey: ['purchases', { status: purchaseStatus.inCart }],
-        queryFn: () => purchasesApi.getPurchases({ status: purchaseStatus.inCart })
+        queryFn: () => purchasesApi.getPurchases({ status: purchaseStatus.inCart }),
+        enabled: isAuthenticated
     })
     const purchaseInCart = purchaseInCartData?.data.data
 
@@ -245,58 +248,76 @@ export default function Header() {
                         <Popover
                             renderPopover={
                                 <div className='relative max-w-[400px] rounded-sm  bg-white text-sm shadow-md'>
-                                    {!purchaseInCart ? (
+                                    {purchaseInCart ? (
+                                        <div>
+                                            {purchaseInCart.length > 0 ? (
+                                                <>
+                                                    <div className='px-2 py-3 capitalize text-gray-400'>
+                                                        Sản phẩm mới thêm
+                                                    </div>
+                                                    {purchaseInCart.slice(0, 5).map((purchase) => {
+                                                        return (
+                                                            <Link
+                                                                to={`/${generateNameId(
+                                                                    purchase.product.name,
+                                                                    purchase.product._id
+                                                                )}`}
+                                                                key={purchase._id}
+                                                            >
+                                                                <div className='flex cursor-pointer items-center px-2 py-3 hover:bg-[#f8f8f8]'>
+                                                                    <div className='flex-shrink-0 border border-gray-300'>
+                                                                        <img
+                                                                            src={purchase.product.image}
+                                                                            alt='item-avatar'
+                                                                            className='h-11 w-11'
+                                                                        />
+                                                                    </div>
+                                                                    <div className='ml-3 mr-10 flex-grow-0 truncate'>
+                                                                        {purchase.product.name}
+                                                                    </div>
+                                                                    <div className='flex-shrink-0 text-orange'>
+                                                                        ₫{formatCurrency(purchase.product.price)}
+                                                                    </div>
+                                                                </div>
+                                                            </Link>
+                                                        )
+                                                    })}
+                                                    <div className='flex items-center justify-between px-2 py-3'>
+                                                        <div className=' text-xs text-gray-500'>
+                                                            {purchaseInCart.length > 5 && purchaseInCart.length - 5}{' '}
+                                                            Thêm hàng vào giỏ
+                                                        </div>
+                                                        <Link
+                                                            to={path.cart}
+                                                            className='rounded-sm bg-orange px-4 py-2 capitalize text-white hover:opacity-60'
+                                                        >
+                                                            Xem giỏ hàng
+                                                        </Link>
+                                                    </div>
+                                                </>
+                                            ) : (
+                                                <div className='w-[300px] py-10 text-center'>
+                                                    <div className='m-auto w-fit'>
+                                                        <img src={noproduct} alt='no-purchase' className='h-24 w-24' />
+                                                    </div>
+                                                    <div className='mt-3 capitalize'>Chưa có sản phẩm</div>
+                                                </div>
+                                            )}
+                                        </div>
+                                    ) : (
                                         <div className='w-[300px] py-10 text-center'>
                                             <div className='m-auto w-fit'>
                                                 <img src={noproduct} alt='no-purchase' className='h-24 w-24' />
                                             </div>
                                             <div className='mt-3 capitalize'>Chưa có sản phẩm</div>
                                         </div>
-                                    ) : (
-                                        <>
-                                            <div className='px-2 py-3 capitalize text-gray-400'>Sản phẩm mới thêm</div>
-                                            {purchaseInCart.slice(0, 5).map((purchase) => {
-                                                return (
-                                                    <div
-                                                        key={purchase._id}
-                                                        className='flex cursor-pointer items-center px-2 py-3 hover:bg-[#f8f8f8]'
-                                                    >
-                                                        <div className='flex-shrink-0 border border-gray-300'>
-                                                            <img
-                                                                src={purchase.product.image}
-                                                                alt='item-avatar'
-                                                                className='h-11 w-11'
-                                                            />
-                                                        </div>
-                                                        <div className='ml-3 mr-10 flex-grow-0 truncate'>
-                                                            {purchase.product.name}
-                                                        </div>
-                                                        <div className='flex-shrink-0 text-orange'>
-                                                            ₫{formatCurrency(purchase.product.price)}
-                                                        </div>
-                                                    </div>
-                                                )
-                                            })}
-                                            <div className='flex items-center justify-between px-2 py-3'>
-                                                <div className=' text-xs text-gray-500'>
-                                                    {purchaseInCart.length > 5 && purchaseInCart.length - 5} Thêm hàng
-                                                    vào giỏ
-                                                </div>
-                                                <Link
-                                                    to={'/'}
-                                                    className='rounded-sm bg-orange px-4 py-2 capitalize text-white hover:opacity-60'
-                                                >
-                                                    Xem giỏ hàng
-                                                </Link>
-                                            </div>
-                                        </>
                                     )}
                                 </div>
                             }
                             setPlacement='bottom-end'
                             crossAxis={20}
                         >
-                            <Link to='/' className='relative'>
+                            <Link to={path.cart} className='relative'>
                                 <svg
                                     xmlns='http://www.w3.org/2000/svg'
                                     viewBox='0 0 20 20'

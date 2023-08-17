@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import InputNumber, { InputNumberProps } from '../InputNumber'
 
 interface Props extends InputNumberProps {
@@ -17,6 +18,8 @@ export default function QuantityController({
     classNameWrapper = 'mr-4 sm:mr-8',
     ...rest
 }: Props) {
+    const [localValue, setLocalValue] = useState<number>(Number(value) || 0)
+
     const handleOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         let _value = Number(event.target.value)
         if (max !== undefined && _value > max) {
@@ -25,22 +28,25 @@ export default function QuantityController({
             _value = 1
         }
         onType && onType(_value)
+        setLocalValue(_value)
     }
 
     const handleIncrease = () => {
-        let _value = Number(value) + 1
+        let _value = Number(localValue) + 1
         if (max !== undefined && _value > max) {
             _value = max
         }
         onIncrease && onIncrease(_value)
+        setLocalValue(_value)
     }
 
     const handleDecrease = () => {
-        let _value = Number(value) - 1
+        let _value = Number(localValue) - 1
         if (_value < 1) {
             _value = 1
         }
         onDecrease && onDecrease(_value)
+        setLocalValue(_value)
     }
     return (
         <div className={'flex items-center' + classNameWrapper}>
@@ -60,7 +66,7 @@ export default function QuantityController({
                 </svg>
             </button>
             <InputNumber
-                value={value}
+                value={localValue}
                 {...rest}
                 classNameInput='h-8 w-14 border-b border-t border-gray-300 px-2 text-center outline-none'
                 onChange={handleOnChange}

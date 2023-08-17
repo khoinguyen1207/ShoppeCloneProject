@@ -371,7 +371,7 @@ export default function ProductDetail() {
                                     value={buyCount}
                                     max={product.quantity}
                                 />
-                                <div className='text-xs text-gray-500 sm:text-sm'>
+                                <div className='ml-4 text-xs text-gray-500 sm:text-sm'>
                                     {product.quantity} sản phẩm có sẵn
                                 </div>
                             </div>
