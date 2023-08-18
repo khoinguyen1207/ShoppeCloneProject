@@ -7,6 +7,7 @@ interface Props extends InputNumberProps {
     onIncrease?: (value: number) => void
     onType?: (value: number) => void
     classNameWrapper?: string
+    loading?: boolean
 }
 
 export default function QuantityController({
@@ -15,11 +16,11 @@ export default function QuantityController({
     onIncrease,
     onType,
     value,
+    loading,
     classNameWrapper = 'mr-4 sm:mr-8',
     ...rest
 }: Props) {
     const [localValue, setLocalValue] = useState<number>(Number(value) || 0)
-
     const handleOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         let _value = Number(event.target.value)
         if (max !== undefined && _value > max) {
@@ -52,6 +53,7 @@ export default function QuantityController({
         <div className={'flex items-center' + classNameWrapper}>
             <button
                 onClick={handleDecrease}
+                disabled={loading}
                 className='flex h-8 w-8 items-center justify-center rounded-l-sm border border-gray-300 text-gray-600'
             >
                 <svg
@@ -70,9 +72,11 @@ export default function QuantityController({
                 {...rest}
                 classNameInput='h-8 w-14 border-b border-t border-gray-300 px-2 text-center outline-none'
                 onChange={handleOnChange}
+                disabled={loading}
             />
             <button
                 onClick={handleIncrease}
+                disabled={loading}
                 className='flex h-8 w-8 items-center justify-center rounded-r-sm border border-gray-300 text-gray-600'
             >
                 <svg
