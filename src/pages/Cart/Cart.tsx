@@ -1,24 +1,21 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
-import { useEffect, useMemo, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { useContext, useEffect, useMemo } from 'react'
+import { Link, useLocation } from 'react-router-dom'
 import purchasesApi from 'src/apis/purchases.api'
 import QuantityController from 'src/components/QuantityController'
 import { purchaseStatus } from 'src/constants/purchases'
-import { Purchases } from 'src/types/purchases.type'
 import { formatCurrency, formatNumberToSocialStyle, generateNameId } from 'src/utils/utils'
 import { produce } from 'immer'
 import classNames from 'classnames'
 import { toast } from 'react-toastify'
 import noproduct from 'src/assets/no-product.png'
 import { path } from 'src/constants/path'
-
-interface ExtendPurchase extends Purchases {
-    disable: boolean
-    checked: boolean
-}
+import { AppContext } from 'src/contexts/app.context'
 
 export default function Cart() {
-    const [extendPurchase, setExtendPurchase] = useState<ExtendPurchase[]>([])
+    const { extendPurchase, setExtendPurchase } = useContext(AppContext)
+    const location = useLocation()
+    const purchaseIdFromLocation = (location.state as { purchaseId: string } | null)?.purchaseId
 
     // Get data cart
     const { data: purchaseInCartData, refetch } = useQuery({
@@ -77,15 +74,19 @@ export default function Cart() {
         setExtendPurchase((prev) => {
             return (
                 purchaseInCart?.map((purchase, index) => {
+                    const isCheckedPurchaseFromLocation = purchaseIdFromLocation === purchase._id
                     return {
                         ...purchase,
                         disable: false,
-                        checked: Boolean(prev[index]?.checked)
+                        checked: isCheckedPurchaseFromLocation || Boolean(prev[index]?.checked)
                     }
                 }) || []
             )
         })
-    }, [purchaseInCart])
+        return () => {
+            history.replaceState(null, '')
+        }
+    }, [purchaseInCart, purchaseIdFromLocation])
 
     const handleChecked = (purchaseIndex: number) => (event: React.ChangeEvent<HTMLInputElement>) => {
         setExtendPurchase(

@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import DOMPurify from 'dompurify'
-import { useEffect, useMemo, useRef, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useContext, useEffect, useMemo, useRef, useState } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
 import productApi from 'src/apis/product.api'
 import purchasesApi from 'src/apis/purchases.api'
 import Product from 'src/components/Product'
@@ -11,6 +11,8 @@ import { Product as ProductType, ProductListConfig } from 'src/types/product.typ
 import { formatCurrency, formatNumberToSocialStyle, getIdFromNameId, rateSale } from 'src/utils/utils'
 import { toast } from 'react-toastify'
 import { purchaseStatus } from 'src/constants/purchases'
+import { AppContext } from 'src/contexts/app.context'
+import { path } from 'src/constants/path'
 
 export default function ProductDetail() {
     const { nameId } = useParams()
@@ -20,6 +22,8 @@ export default function ProductDetail() {
     const [activeImage, setActiveImage] = useState('')
     const imageRef = useRef<HTMLImageElement>(null)
     const queryClient = useQueryClient()
+    const { isAuthenticated } = useContext(AppContext)
+    const navigate = useNavigate()
 
     //Call api chi tiết sản phẩm
     const { data: productDetailData } = useQuery({
@@ -97,15 +101,33 @@ export default function ProductDetail() {
     }
 
     const handleAddToCart = () => {
-        addToCartMutation.mutate(
-            { buy_count: buyCount, product_id: product?._id as string },
-            {
-                onSuccess: (res) => {
-                    toast.success(res.data.message, { autoClose: 1000 })
-                    queryClient.invalidateQueries(['purchases', { status: purchaseStatus.inCart }])
+        if (isAuthenticated) {
+            addToCartMutation.mutate(
+                { buy_count: buyCount, product_id: product?._id as string },
+                {
+                    onSuccess: (res) => {
+                        toast.success(res.data.message, { autoClose: 1000 })
+                        queryClient.invalidateQueries(['purchases', { status: purchaseStatus.inCart }])
+                    }
                 }
-            }
-        )
+            )
+        } else {
+            navigate(path.login)
+        }
+    }
+
+    const buyNow = async () => {
+        if (isAuthenticated) {
+            const res = await addToCartMutation.mutateAsync({ buy_count: buyCount, product_id: product?._id as string })
+            const purchaseId = res.data.data._id
+            navigate(path.cart, {
+                state: {
+                    purchaseId
+                }
+            })
+        } else {
+            navigate(path.login)
+        }
     }
 
     if (!product) return null
@@ -421,7 +443,10 @@ export default function ProductDetail() {
                                     </svg>
                                     Thêm vào giỏ hàng
                                 </button>
-                                <button className='ml-6 rounded-sm bg-orange px-3 py-2 text-white hover:bg-orange/80 sm:px-5 sm:py-3'>
+                                <button
+                                    onClick={buyNow}
+                                    className='ml-6 rounded-sm bg-orange px-3 py-2 text-white hover:bg-orange/80 sm:px-5 sm:py-3'
+                                >
                                     Mua ngay
                                 </button>
                             </div>
