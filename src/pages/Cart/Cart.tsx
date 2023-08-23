@@ -86,7 +86,7 @@ export default function Cart() {
         return () => {
             history.replaceState(null, '')
         }
-    }, [purchaseInCart, purchaseIdFromLocation])
+    }, [purchaseIdFromLocation, purchaseInCart, setExtendPurchase])
 
     const handleChecked = (purchaseIndex: number) => (event: React.ChangeEvent<HTMLInputElement>) => {
         setExtendPurchase(

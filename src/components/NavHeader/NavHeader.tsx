@@ -106,10 +106,10 @@ export default function NavHeader() {
                         renderPopover={
                             <div className='relative rounded-sm bg-white shadow-md'>
                                 <div className='flex flex-col px-2 py-1 '>
-                                    <Link to='/profile' className='px-3 py-2 text-left hover:text-orange'>
+                                    <Link to={path.profile} className='px-3 py-2 text-left hover:text-orange'>
                                         Tài khoản của tôi
                                     </Link>
-                                    <Link to='' className='px-3 py-2 text-left hover:text-orange'>
+                                    <Link to={path.historyPurchase} className='px-3 py-2 text-left hover:text-orange'>
                                         Đơn mua
                                     </Link>
                                     <button onClick={handleLogout} className='px-3 py-2 text-left hover:text-orange'>
