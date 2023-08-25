@@ -26,7 +26,7 @@ export default function Header() {
         <header className='bg-[linear-gradient(-180deg,#f53d2d,#f63)] text-sm text-white'>
             <div className='container'>
                 <NavHeader />
-                <div className='flex items-end  justify-between py-4'>
+                <div className='flex items-end justify-between py-4'>
                     <div>
                         <Link to='/'>
                             <svg viewBox='0 0 192 65' className='h-10 w-full fill-white lg:h-11'>
