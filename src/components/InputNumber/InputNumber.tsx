@@ -2,9 +2,19 @@ import { InputHTMLAttributes, useState } from 'react'
 
 export interface InputNumberProps extends InputHTMLAttributes<HTMLInputElement> {
     classNameInput?: string
+    errorMessage?: string
+    classNameError?: string
 }
 
-export default function InputNumber({ placeholder, onChange, classNameInput, value = '', ...rest }: InputNumberProps) {
+export default function InputNumber({
+    placeholder,
+    onChange,
+    classNameInput,
+    value = '',
+    errorMessage,
+    classNameError,
+    ...rest
+}: InputNumberProps) {
     const [localValue, setLocalValue] = useState<string>(value as string)
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { value } = event.target
@@ -23,6 +33,7 @@ export default function InputNumber({ placeholder, onChange, classNameInput, val
                 onChange={handleChange}
                 {...rest}
             />
+            <div className={classNameError}>{errorMessage}</div>
         </div>
     )
 }

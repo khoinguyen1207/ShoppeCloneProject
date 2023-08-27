@@ -1,19 +1,22 @@
+import { useContext } from 'react'
 import { Link } from 'react-router-dom'
 import { path } from 'src/constants/path'
+import { AppContext } from 'src/contexts/app.context'
 
 export default function UserSideNav() {
+    const { profile } = useContext(AppContext)
     return (
-        <div className=' text-base md:pr-12'>
+        <div className='text-base'>
             <div className='flex items-center justify-center md:justify-start md:py-8'>
-                <Link to={path.profile} className='mr-3 h-12 w-12 overflow-hidden rounded-full'>
+                <Link to={path.profile} className='mr-3 h-12 w-12 flex-shrink-0 overflow-hidden rounded-full'>
                     <img
                         className='h-full w-full'
                         src='https://down-vn.img.susercontent.com/file/657996985c86d99f5d48333707a2f3e1_tn'
                         alt=''
                     />
                 </Link>
-                <div>
-                    <div className='truncate font-semibold'>khoinguyenazx</div>
+                <div className='truncate'>
+                    <div className='truncate font-semibold'>{profile?.name || profile?.email}</div>
                     <Link to={path.profile} className='flex items-center text-sm capitalize text-gray-500'>
                         <svg
                             width={12}
@@ -43,7 +46,7 @@ export default function UserSideNav() {
                     </div>
                     <div className='flex-1 capitalize'>Tài khoản của tôi</div>
                 </Link>
-                <Link to={path.profile} className='mb-4 flex items-center px-3 md:px-0'>
+                <Link to={path.changePassword} className='mb-4 flex items-center px-3 md:px-0'>
                     <div className='mr-2 h-5 w-5'>
                         <svg
                             xmlns='http://www.w3.org/2000/svg'
@@ -62,7 +65,7 @@ export default function UserSideNav() {
                     </div>
                     <div className='flex-1 capitalize'>Đổi mật khẩu</div>
                 </Link>
-                <Link to={path.profile} className='mb-4 flex items-center px-3 md:px-0'>
+                <Link to={path.historyPurchase} className='mb-4 flex items-center px-3 md:px-0'>
                     <div className='mr-2 h-5 w-5'>
                         <img
                             className='h-full w-full object-cover'

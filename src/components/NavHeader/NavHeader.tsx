@@ -126,7 +126,7 @@ export default function NavHeader() {
                                 className='h-full w-full'
                             />
                         </div>
-                        <span>{profile?.email}</span>
+                        <span className='max-w-[130px] truncate'>{profile?.name || profile?.email}</span>
                     </Popover>
                 )}
             </div>
