@@ -1,4 +1,6 @@
+import userImage from 'src/assets/user-image.svg'
 import axios, { AxiosError } from 'axios'
+import { config } from 'src/constants/config'
 import HttpStatusCode from 'src/constants/httpStatusCode'
 
 // Nếu isAxiosError trả về true thì error có type là AxiosError
@@ -43,3 +45,6 @@ export const getIdFromNameId = (nameId: string) => {
     const arr = nameId.split('-i-')
     return arr[arr.length - 1]
 }
+
+export const getAvatarUrl = (avatarName?: string) =>
+    avatarName ? `${config.BASE_URL}/images/${avatarName}` : userImage
