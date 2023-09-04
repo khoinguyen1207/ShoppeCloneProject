@@ -1,3 +1,124 @@
+import { yupResolver } from '@hookform/resolvers/yup'
+import { useMutation } from '@tanstack/react-query'
+import { omit } from 'lodash'
+import { useForm } from 'react-hook-form'
+import { toast } from 'react-toastify'
+import userApi from 'src/apis/user.api'
+import Button from 'src/components/Button'
+import Input from 'src/components/Input'
+import { ErrorResponse } from 'src/types/utils.type'
+import { UserSchema, userSchema } from 'src/utils/rules'
+import { isAxiosUnprocessableEntityError } from 'src/utils/utils'
+
+type FormData = Pick<UserSchema, 'password' | 'new_password' | 'confirm_password'>
+const passwordSchema = userSchema.pick(['password', 'new_password', 'confirm_password'])
+
 export default function ChangePassword() {
-    return <div>ChangePassword</div>
+    const {
+        register,
+        handleSubmit,
+        setError,
+        reset,
+        formState: { errors }
+    } = useForm<FormData>({
+        defaultValues: {
+            password: '',
+            new_password: '',
+            confirm_password: ''
+        },
+        resolver: yupResolver(passwordSchema)
+    })
+    const updateMutation = useMutation({ mutationFn: userApi.updateProfile })
+
+    const updatePassword = handleSubmit(async (data) => {
+        try {
+            const res = await updateMutation.mutateAsync(omit(data, ['confirm_password']))
+            reset()
+            toast.success(res.data.message, { autoClose: 1000 })
+        } catch (error) {
+            if (isAxiosUnprocessableEntityError<ErrorResponse<FormData>>(error)) {
+                const formError = error.response?.data.data
+                if (formError) {
+                    Object.keys(formError).forEach((key) =>
+                        setError(key as keyof FormData, {
+                            message: formError[key as keyof FormData],
+                            type: 'Server'
+                        })
+                    )
+                }
+            }
+        }
+    })
+
+    return (
+        <div className='rounded bg-[#FFFFFF] px-4 py-4 shadow sm:px-8 sm:py-8'>
+            <div className='border-b border-gray-300 pb-5'>
+                <h1 className='text-lg'>Đổi mật khẩu</h1>
+                <p className='text-sm text-gray-500'>
+                    Để bảo mật tài khoản, vui lòng không chia sẻ mật khẩu cho người khác
+                </p>
+            </div>
+            <form className='mt-8 max-w-2xl text-sm' onSubmit={updatePassword}>
+                <div className='items-center md:flex'>
+                    <div className='truncate capitalize text-gray-500 md:w-[20%] md:pb-5 md:text-right'>Mật khẩu</div>
+                    <div className='md:w-[80%] md:pl-5'>
+                        <Input
+                            placeholder='Mật khẩu'
+                            register={register}
+                            name='password'
+                            type='password'
+                            errorMessage={errors.password?.message}
+                            classNameError='mt-1 min-h-[1rem] text-red-600 text-xs'
+                            classNameInput='w-full rounded-sm border border-gray-300 px-3 py-2 outline-none focus:border-gray-500'
+                        />
+                    </div>
+                </div>
+                <div className='mt-3 items-center md:mt-3 md:flex'>
+                    <div className='truncate capitalize text-gray-500 md:w-[20%] md:pb-5 md:text-right'>
+                        Mật khẩu mới
+                    </div>
+                    <div className='md:w-[80%] md:pl-5'>
+                        <Input
+                            register={register}
+                            placeholder='Mật khẩu mới'
+                            name='new_password'
+                            type='password'
+                            errorMessage={errors.new_password?.message}
+                            classNameError='mt-1 min-h-[1rem] text-red-600 text-xs'
+                            classNameInput='w-full rounded-sm border border-gray-300 px-3 py-2 outline-none focus:border-gray-500'
+                        />
+                    </div>
+                </div>
+                <div className='mt-3 items-center md:mt-3 md:flex'>
+                    <div className='truncate capitalize text-gray-500 md:w-[20%] md:pb-5 md:text-right'>
+                        Xác nhận mật khẩu
+                    </div>
+                    <div className='md:w-[80%] md:pl-5'>
+                        <Input
+                            register={register}
+                            placeholder='Xác nhận mật khẩu'
+                            name='confirm_password'
+                            type='password'
+                            errorMessage={errors.confirm_password?.message}
+                            classNameError='mt-1 min-h-[1rem] text-red-600 text-xs'
+                            classNameInput='w-full rounded-sm border border-gray-300 px-3 py-2 outline-none focus:border-gray-500'
+                        />
+                    </div>
+                </div>
+                <div className='mt-3 items-center md:flex'>
+                    <div className='truncate capitalize text-gray-500 md:w-[20%] md:pb-5 md:text-right' />
+                    <div className='md:w-[80%] md:pl-5'>
+                        <Button
+                            type='submit'
+                            // isLoading={updateMutation.isLoading}
+                            // disabled={updateMutation.isLoading}
+                            className='rounded-sm bg-orange px-5 py-2 text-white hover:bg-orange/80'
+                        >
+                            Lưu
+                        </Button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    )
 }

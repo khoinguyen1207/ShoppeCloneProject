@@ -1,5 +1,14 @@
 import * as yup from 'yup'
 
+const handlePasswordSchema = (refString: string) => {
+    return yup
+        .string()
+        .required('Confirm password không được để trống')
+        .min(6, 'Độ dài phải từ 6 - 160 ký tự')
+        .max(160, 'Độ dài phải từ 6 - 160 ký tự')
+        .oneOf([yup.ref(refString)], 'Nhập lại password không khớp')
+}
+
 export const schema = yup.object({
     email: yup
         .string()
@@ -12,12 +21,7 @@ export const schema = yup.object({
         .required('Password không được để trống')
         .min(6, 'Độ dài phải từ 6 - 160 ký tự')
         .max(160, 'Độ dài phải từ 6 - 160 ký tự'),
-    confirm_password: yup
-        .string()
-        .required('Confirm password không được để trống')
-        .min(6, 'Độ dài phải từ 6 - 160 ký tự')
-        .max(160, 'Độ dài phải từ 6 - 160 ký tự')
-        .oneOf([yup.ref('password')], 'Nhập lại password không khớp'),
+    confirm_password: handlePasswordSchema('password'),
     price_min: yup.string().test({
         name: 'price-not-allowed',
         message: 'Giá không phù hợp',
@@ -51,9 +55,9 @@ export const userSchema = yup.object({
     address: yup.string().max(160, 'Độ dài phải dưới 160 ký tự'),
     avatar: yup.string().max(1000, 'Độ dài phải dưới 1000 ký tự'),
     date_of_birth: yup.date().max(new Date(), 'Hãy chọn ngày trong quá khứ'),
-    password: schema.fields['password'],
-    new_password: schema.fields['password'],
-    confirm_password: schema.fields['confirm_password']
+    password: schema.fields['password'] as yup.StringSchema<string | undefined, yup.AnyObject, undefined, ''>,
+    new_password: schema.fields['password'] as yup.StringSchema<string | undefined, yup.AnyObject, undefined, ''>,
+    confirm_password: handlePasswordSchema('new_password')
 })
 
 export type UserSchema = yup.InferType<typeof userSchema>

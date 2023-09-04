@@ -6,7 +6,7 @@ import Input from 'src/components/Input'
 import { path } from 'src/constants/path'
 import { UserSchema, userSchema } from 'src/utils/rules'
 import { Controller, useForm } from 'react-hook-form'
-import { useContext, useEffect, useMemo, useRef, useState } from 'react'
+import { useContext, useEffect, useMemo, useState } from 'react'
 import InputNumber from 'src/components/InputNumber'
 import { yupResolver } from '@hookform/resolvers/yup'
 import DateSelect from '../../components/DateSelect'
@@ -15,6 +15,7 @@ import { setProfileToLS } from 'src/utils/auth'
 import { toast } from 'react-toastify'
 import { getAvatarUrl, isAxiosUnprocessableEntityError } from 'src/utils/utils'
 import { ErrorResponse } from 'src/types/utils.type'
+import InputFile from 'src/components/InputFile'
 
 type FormData = Pick<UserSchema, 'name' | 'address' | 'avatar' | 'phone' | 'date_of_birth'>
 type FormDataError = Omit<FormData, 'date_of_birth'> & {
@@ -42,7 +43,6 @@ export default function Profile() {
         resolver: yupResolver(profileSchema)
     })
     const { setProfile } = useContext(AppContext)
-    const fileInputRef = useRef<HTMLInputElement>(null)
     const [file, setFile] = useState<File>()
     const avatar = watch('avatar')
 
@@ -103,14 +103,8 @@ export default function Profile() {
         }
     })
 
-    const handleUpload = () => {
-        fileInputRef.current?.click()
-    }
-
-    const handleOnChangeFile = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const fileFromLocal = event.target.files?.[0]
-        console.log(event.target.files)
-        setFile(fileFromLocal)
+    const handleChangeFile = (file?: File) => {
+        setFile(file)
     }
 
     return (
@@ -219,21 +213,8 @@ export default function Profile() {
                                 alt=''
                             />
                         </div>
-                        <input
-                            hidden
-                            type='file'
-                            ref={fileInputRef}
-                            accept='.jpg,.jpeg,.png'
-                            onChange={handleOnChangeFile}
-                        ></input>
-                        <button
-                            type='button'
-                            onClick={handleUpload}
-                            className='border border-gray-300 px-3 py-2 capitalize'
-                        >
-                            Chọn ảnh
-                        </button>
-                        <div className='mt-3 text-gray-400'>Dụng lượng file tối đa 1 MB </div>
+                        <InputFile onChange={handleChangeFile} />
+                        <div className='mt-3 text-gray-400'>Dung lượng file tối đa 1 MB </div>
                         <div className='text-gray-400'>Định dạng: .JPG, .JPEG, .PNG</div>
                     </div>
                 </div>

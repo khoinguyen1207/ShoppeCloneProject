@@ -1,5 +1,5 @@
 import { useContext } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, NavLink } from 'react-router-dom'
 import { path } from 'src/constants/path'
 import { AppContext } from 'src/contexts/app.context'
 import { getAvatarUrl } from 'src/utils/utils'
@@ -32,8 +32,15 @@ export default function UserSideNav() {
                     </Link>
                 </div>
             </div>
-            <div className='mt-6 flex flex-wrap justify-center text-sm md:flex-col'>
-                <Link to={path.profile} className='mb-4 flex items-center px-3 md:px-0'>
+            <div className='mt-6 flex flex-wrap justify-center text-sm md:mt-0 md:flex-col'>
+                <NavLink
+                    to={path.profile}
+                    className={({ isActive }) =>
+                        isActive
+                            ? 'mb-4 flex items-center px-3 font-semibold text-orange md:px-0'
+                            : 'mb-4 flex items-center px-3 md:px-0'
+                    }
+                >
                     <div className='mr-2 h-5 w-5'>
                         <img
                             className='h-full w-full object-cover'
@@ -41,9 +48,17 @@ export default function UserSideNav() {
                             alt=''
                         />
                     </div>
+
                     <div className='flex-1 capitalize'>Tài khoản của tôi</div>
-                </Link>
-                <Link to={path.changePassword} className='mb-4 flex items-center px-3 md:px-0'>
+                </NavLink>
+                <NavLink
+                    to={path.changePassword}
+                    className={({ isActive }) =>
+                        isActive
+                            ? 'mb-4 flex items-center px-3 font-semibold text-orange md:px-0'
+                            : 'mb-4 flex items-center px-3 md:px-0'
+                    }
+                >
                     <div className='mr-2 h-5 w-5'>
                         <svg
                             xmlns='http://www.w3.org/2000/svg'
@@ -61,8 +76,15 @@ export default function UserSideNav() {
                         </svg>
                     </div>
                     <div className='flex-1 capitalize'>Đổi mật khẩu</div>
-                </Link>
-                <Link to={path.historyPurchase} className='mb-4 flex items-center px-3 md:px-0'>
+                </NavLink>
+                <NavLink
+                    to={path.historyPurchase}
+                    className={({ isActive }) =>
+                        isActive
+                            ? 'mb-4 flex items-center px-3 font-semibold text-orange md:px-0'
+                            : 'mb-4 flex items-center px-3 md:px-0'
+                    }
+                >
                     <div className='mr-2 h-5 w-5'>
                         <img
                             className='h-full w-full object-cover'
@@ -71,8 +93,8 @@ export default function UserSideNav() {
                         />
                     </div>
                     <div className='flex-1 capitalize'>Đơn mua</div>
-                </Link>
-                <Link to={path.profile} className='mb-4 flex items-center px-3 md:px-0'>
+                </NavLink>
+                <NavLink to={path.profile} className='mb-4 flex items-center px-3 md:px-0'>
                     <div className='mr-2 h-5 w-5'>
                         <img
                             className='h-full w-full object-cover'
@@ -81,8 +103,8 @@ export default function UserSideNav() {
                         />
                     </div>
                     <div className='flex-1 capitalize'>Thông báo</div>
-                </Link>
-                <Link to={path.profile} className='mb-4 flex items-center px-3 md:px-0'>
+                </NavLink>
+                <NavLink to={path.profile} className='mb-4 flex items-center px-3 md:px-0'>
                     <div className='mr-2 h-5 w-5'>
                         <img
                             className='h-full w-full object-cover'
@@ -91,8 +113,8 @@ export default function UserSideNav() {
                         />
                     </div>
                     <div className='flex-1 capitalize'>Kho voucher</div>
-                </Link>
-                <Link to={path.profile} className='mb-4 flex items-center px-3 md:px-0'>
+                </NavLink>
+                <NavLink to={path.profile} className='mb-4 flex items-center px-3 md:px-0'>
                     <div className='mr-2 h-5 w-5'>
                         <img
                             className='h-full w-full object-cover'
@@ -101,7 +123,7 @@ export default function UserSideNav() {
                         />
                     </div>
                     <div className='flex-1 capitalize'>Shoppe xu</div>
-                </Link>
+                </NavLink>
             </div>
         </div>
     )
