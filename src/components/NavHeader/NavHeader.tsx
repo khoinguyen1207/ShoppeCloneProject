@@ -24,7 +24,7 @@ export default function NavHeader() {
         logoutMutation.mutate()
     }
     return (
-        <div className='flex h-auto flex-wrap items-center justify-center py-2 text-xs sm:text-sm md:justify-between'>
+        <div className='flex h-auto flex-wrap items-center justify-center py-2 text-xs sm:justify-between sm:text-sm'>
             <div className='flex items-center justify-center'>
                 <div className='cursor-pointer pr-2 hover:text-gray-200'>Kênh người bán</div>
                 <div className='cursor-pointer border-l-[1px] px-2 hover:text-gray-200'>Tải ứng dụng</div>

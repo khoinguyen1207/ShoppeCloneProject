@@ -6,7 +6,8 @@ import { path } from 'src/constants/path'
 import { purchaseStatus } from 'src/constants/purchases'
 import useQueryParams from 'src/hooks/useQueryParams'
 import { PurchasesListStatus } from 'src/types/purchases.type'
-import { formatCurrency } from 'src/utils/utils'
+import { formatCurrency, generateNameId } from 'src/utils/utils'
+import nopurchase from 'src/assets/no-purchase.png'
 
 const tabLinkList = [
     {
@@ -38,39 +39,46 @@ const tabLinkList = [
 export default function HistoryPurchase() {
     const queryParams: { status?: string } = useQueryParams()
     const status: number = Number(queryParams.status) || purchaseStatus.all
-    const { data } = useQuery({
+    const { data: historyPurchaseData } = useQuery({
         queryKey: ['purchases', { status: status }],
         queryFn: () => purchasesApi.getPurchases({ status: status as PurchasesListStatus }),
         staleTime: 60 * 1000
     })
 
-    console.log(data)
     return (
         <div>
-            <div className='sticky top-0 flex items-center rounded bg-[#FFFFFF] shadow'>
-                {tabLinkList.map((tabLink) => {
-                    const isActive = tabLink.id === status
-                    return (
-                        <Link
-                            key={tabLink.id}
-                            to={{
-                                pathname: path.historyPurchase,
-                                search: createSearchParams({ status: String(tabLink.id) }).toString()
-                            }}
-                            className={classNames('flex-1 py-4 text-center ', {
-                                'border-b-2 border-orange text-orange': isActive
-                            })}
-                        >
-                            {tabLink.name}
-                        </Link>
-                    )
-                })}
+            <div className='overflow-x-auto'>
+                <div className='flex min-w-[800px] items-center rounded bg-[#FFFFFF] shadow'>
+                    {tabLinkList.map((tabLink) => {
+                        const isActive = tabLink.id === status
+                        return (
+                            <Link
+                                key={tabLink.id}
+                                to={{
+                                    pathname: path.historyPurchase,
+                                    search: createSearchParams({ status: String(tabLink.id) }).toString()
+                                }}
+                                className={classNames(
+                                    'flex flex-1 items-center justify-center py-4 text-center hover:text-orange',
+                                    {
+                                        'border-b-2 border-orange text-orange': isActive
+                                    }
+                                )}
+                            >
+                                {tabLink.name}
+                            </Link>
+                        )
+                    })}
+                </div>
             </div>
-            <div>
-                {data?.data.data.map((purchase) => (
-                    <div key={purchase._id}>
-                        <div className='mt-6 rounded bg-[#FFFFFF] p-6 shadow'>
-                            <div className='flex items-center justify-center'>
+            {historyPurchaseData && historyPurchaseData.data.data.length > 0 ? (
+                historyPurchaseData.data.data.map((purchase) => (
+                    <div key={purchase._id} className='mt-6'>
+                        <div className='rounded bg-[#FFFFFF] p-3 shadow sm:p-6'>
+                            <Link
+                                to={`/${generateNameId(purchase.product.name, purchase.product._id)}`}
+                                className='flex items-center justify-center'
+                            >
                                 <div className='h-20 w-20 flex-shrink-0 border border-gray-300'>
                                     <img
                                         src={purchase.product.image}
@@ -78,24 +86,28 @@ export default function HistoryPurchase() {
                                         alt='avatar-purchase'
                                     />
                                 </div>
-                                <div className='min-w-0 flex-1 px-3'>
-                                    <div className='truncate text-base'>{purchase.product.name}</div>
-                                    <span>Số lượng: {purchase.buy_count}</span>
-                                    <div className='mt-2 max-w-[100px] rounded-sm border border-orange text-center text-xs text-orange '>
-                                        7 Ngày đổi trả
+                                <div className='flex min-w-0 flex-1 flex-wrap items-center px-3 sm:flex-nowrap sm:justify-between sm:px-0'>
+                                    <div className='min-w-0 sm:px-3'>
+                                        <div className='truncate text-sm sm:text-base'>{purchase.product.name}</div>
+                                        <span className='text-xs text-gray-500 sm:text-sm'>
+                                            Số lượng: {purchase.buy_count}
+                                        </span>
+                                        <div className='mt-1 w-[100px] rounded-sm border border-orange text-center text-xs text-orange sm:mt-2 '>
+                                            7 Ngày đổi trả
+                                        </div>
+                                    </div>
+                                    <div className='mt-1 flex items-center sm:mt-0'>
+                                        <span className='mr-2 text-xs text-gray-400 line-through sm:text-sm'>
+                                            {formatCurrency(purchase.price_before_discount)}
+                                        </span>{' '}
+                                        <span className='text-base text-orange sm:text-lg'>
+                                            ₫{formatCurrency(purchase.product.price)}
+                                        </span>
                                     </div>
                                 </div>
-                                <div>
-                                    <span className='mr-2 text-sm text-gray-400 line-through'>
-                                        {formatCurrency(purchase.price_before_discount)}
-                                    </span>{' '}
-                                    <span className='text-lg text-orange'>
-                                        ₫{formatCurrency(purchase.product.price)}
-                                    </span>
-                                </div>
-                            </div>
+                            </Link>
                         </div>
-                        <div className='rounded border-t border-gray-300 bg-[#FFFEFB] px-6 py-4 text-right'>
+                        <div className='rounded border-t border-gray-300 bg-[#FFFEFB] px-3 py-3 text-right sm:px-6 sm:py-4'>
                             <div className=' flex items-center justify-end'>
                                 <svg
                                     width={16}
@@ -124,13 +136,23 @@ export default function HistoryPurchase() {
                                     ₫{formatCurrency(purchase.price * purchase.buy_count)}
                                 </span>
                             </div>
-                            <button className='mt-3 rounded border border-[#cd3011] bg-orange px-8 py-2 text-white hover:bg-[#d73211]'>
+                            <Link
+                                to={`/${generateNameId(purchase.product.name, purchase.product._id)}`}
+                                className='mt-1 inline-block rounded  bg-orange px-6 py-1 text-sm text-white hover:bg-[#d73211] sm:mt-3 sm:px-8 sm:py-2'
+                            >
                                 Mua lại
-                            </button>
+                            </Link>
                         </div>
                     </div>
-                ))}
-            </div>
+                ))
+            ) : (
+                <div className='mt-6 flex min-h-[500px] flex-col items-center justify-center rounded bg-[#FFFFFF] shadow'>
+                    <div className='mb-4 h-32 w-32'>
+                        <img src={nopurchase} alt='nopurchase' className='h-full w-full object-cover' />
+                    </div>
+                    <span>Chưa có đơn hàng</span>
+                </div>
+            )}
         </div>
     )
 }
