@@ -6,7 +6,7 @@ import Input from 'src/components/Input'
 import { path } from 'src/constants/path'
 import { UserSchema, userSchema } from 'src/utils/rules'
 import { Controller, useForm } from 'react-hook-form'
-import { useContext, useEffect, useMemo, useState } from 'react'
+import { useContext, useMemo, useState } from 'react'
 import InputNumber from 'src/components/InputNumber'
 import { yupResolver } from '@hookform/resolvers/yup'
 import DateSelect from '../../components/DateSelect'
@@ -16,6 +16,7 @@ import { toast } from 'react-toastify'
 import { getAvatarUrl, isAxiosUnprocessableEntityError } from 'src/utils/utils'
 import { ErrorResponse } from 'src/types/utils.type'
 import InputFile from 'src/components/InputFile'
+import Loading from 'src/components/Loading'
 
 type FormData = Pick<UserSchema, 'name' | 'address' | 'avatar' | 'phone' | 'date_of_birth'>
 type FormDataError = Omit<FormData, 'date_of_birth'> & {
@@ -50,24 +51,21 @@ export default function Profile() {
         return file ? URL.createObjectURL(file) : ''
     }, [file])
 
-    const { data: profileData, refetch } = useQuery({
+    const { isFetching, refetch } = useQuery({
         queryKey: ['profile'],
-        queryFn: userApi.getUser
-    })
-    const profile = profileData?.data.data
-
-    const updateMutation = useMutation({ mutationFn: userApi.updateProfile })
-    const uploadAvatarMutation = useMutation({ mutationFn: userApi.uploadAvatar })
-
-    useEffect(() => {
-        if (profile) {
+        queryFn: userApi.getUser,
+        onSuccess: (data) => {
+            const profile = data.data.data
             setValue('name', profile.name)
             setValue('address', profile.address)
             setValue('phone', profile.phone)
             setValue('avatar', profile.avatar)
             setValue('date_of_birth', profile.date_of_birth ? new Date(profile.date_of_birth) : new Date(1990, 0, 1))
         }
-    }, [profile, setValue])
+    })
+
+    const updateMutation = useMutation({ mutationFn: userApi.updateProfile })
+    const uploadAvatarMutation = useMutation({ mutationFn: userApi.uploadAvatar })
 
     const handleUpdate = handleSubmit(async (data) => {
         try {
@@ -109,6 +107,7 @@ export default function Profile() {
 
     return (
         <div className='rounded bg-[#FFFFFF] px-4 py-4 shadow sm:px-8 sm:py-8'>
+            <Loading visible={isFetching} />
             <div className='border-b border-gray-300 pb-5'>
                 <h1 className='text-lg'>Hồ sơ của tôi</h1>
                 <p className='text-sm text-gray-500'>Quản lý thông tin hồ sơ để bảo mật tài khoản</p>

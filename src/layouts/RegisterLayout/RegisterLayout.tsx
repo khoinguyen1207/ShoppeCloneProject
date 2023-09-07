@@ -7,7 +7,7 @@ interface Props {
 
 export default function RegisterLayout({ children }: Props) {
     return (
-        <div>
+        <div className='flex min-h-[100vh] flex-col justify-between'>
             <RegisterHeader />
             {children}
             <Footer />

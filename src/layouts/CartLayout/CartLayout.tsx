@@ -6,7 +6,7 @@ interface Props {
 }
 export default function CartLayout({ children }: Props) {
     return (
-        <div>
+        <div className='flex min-h-[100vh] flex-col justify-between'>
             <CartHeader />
             {children}
             <Footer />
