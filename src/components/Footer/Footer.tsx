@@ -1,3 +1,6 @@
+import bocongthuong from 'src/assets/BoCongThuong.png'
+import bcthanggia from 'src/assets/bctHanggia.png'
+
 export default function Footer() {
     return (
         <footer className='bg-[#EDEDED] py-8 text-center text-sm text-[#0000008a]  sm:py-16'>
@@ -19,23 +22,15 @@ export default function Footer() {
                     <div className='lg:px-3'>Chính sách vận chuyển</div>
                     <div className='lg:px-3'>Chính sách trả hàng và hoàn tiền</div>
                 </div>
-                <div className='mt-5 flex justify-center'>
-                    <div className='px-2 lg:px-8'>
-                        <img
-                            className='h-8  lg:h-12 '
-                            src='https://cdn.dangkywebsitevoibocongthuong.com/wp-content/uploads/2018/06/logo.png'
-                            alt='icon'
-                        />
+                <div className='mt-5 flex h-8 justify-center md:h-12'>
+                    <div className='mx-2 lg:mx-8'>
+                        <img className='h-full w-full' src={bocongthuong} alt='icon' />
                     </div>
-                    <div className='px-2 lg:px-8'>
-                        <img
-                            className='h-8 lg:h-12'
-                            src='https://cdn.dangkywebsitevoibocongthuong.com/wp-content/uploads/2018/06/logo.png'
-                            alt='icon'
-                        />
+                    <div className='mx-2 lg:mx-8'>
+                        <img className='h-full w-full' src={bocongthuong} alt='icon' />
                     </div>
-                    <div className='px-2 lg:px-8'>
-                        <img className='h-8 lg:h-12' src='https://vnnsoft.com/images/bct-hanggia.png' alt='icon' />
+                    <div className='mx-2 lg:mx-8'>
+                        <img className='h-full w-full' src={bcthanggia} alt='icon' />
                     </div>
                 </div>
                 <div className='mb-10 mt-4'>Công ty TNHH Shopee</div>

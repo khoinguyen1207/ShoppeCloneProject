@@ -104,7 +104,10 @@ export default function SortProductList({ queryConfig, pageSize }: PropsType) {
                     <span className='text-orange'>{page}</span>/{pageSize}
                 </span>
                 {page === 1 ? (
-                    <button className='flex cursor-not-allowed items-center justify-center rounded-bl-sm rounded-tl-sm bg-white/40 px-3 py-[11px] shadow'>
+                    <button
+                        aria-label='Previous page'
+                        className='flex cursor-not-allowed items-center justify-center rounded-bl-sm rounded-tl-sm bg-white/40 px-3 py-[11px] shadow'
+                    >
                         <svg
                             xmlns='http://www.w3.org/2000/svg'
                             fill='none'
@@ -125,6 +128,7 @@ export default function SortProductList({ queryConfig, pageSize }: PropsType) {
                                 page: (page - 1).toString()
                             }).toString()
                         }}
+                        aria-label='Previous page'
                         className='flex items-center justify-center rounded-bl-sm rounded-tl-sm bg-white px-3 py-[11px] shadow'
                     >
                         <svg
@@ -141,7 +145,10 @@ export default function SortProductList({ queryConfig, pageSize }: PropsType) {
                 )}
 
                 {page === pageSize ? (
-                    <button className='flex cursor-not-allowed items-center justify-center rounded-br-sm rounded-tr-sm bg-white/40 px-3 py-[11px] shadow'>
+                    <button
+                        aria-label='Next page'
+                        className='flex cursor-not-allowed items-center justify-center rounded-br-sm rounded-tr-sm bg-white/40 px-3 py-[11px] shadow'
+                    >
                         <svg
                             xmlns='http://www.w3.org/2000/svg'
                             fill='none'
@@ -162,6 +169,7 @@ export default function SortProductList({ queryConfig, pageSize }: PropsType) {
                                 page: (page + 1).toString()
                             }).toString()
                         }}
+                        aria-label='Next page'
                         className='flex items-center justify-center rounded-br-sm rounded-tr-sm bg-white px-3 py-[11px] shadow'
                     >
                         <svg
