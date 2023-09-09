@@ -46,6 +46,7 @@ export default function Pagination({ queryConfig, pageSize }: PropsType) {
                 )
             }
         }
+
         const renderDotBefore = (index: number) => {
             if (!dotBefore) {
                 dotBefore = true
@@ -62,14 +63,26 @@ export default function Pagination({ queryConfig, pageSize }: PropsType) {
             .map((_, index) => {
                 const pageNumber = index + 1
 
-                if (page <= RANGE * 2 + 1 && pageNumber > page + RANGE && pageNumber < pageSize - RANGE + 1) {
+                // if (page <= RANGE * 2 + 1 && pageNumber > page + RANGE && pageNumber < pageSize - RANGE + 1) {
+                //     return renderDotAfter(index)
+                // } else if (page >= pageSize - RANGE * 2 && pageNumber > RANGE && pageNumber < page - RANGE) {
+                //     return renderDotBefore(index)
+                // } else if (page < pageSize - RANGE * 2 && page > RANGE * 2 + 1) {
+                //     if (pageNumber > RANGE && pageNumber < page - RANGE) {
+                //         return renderDotBefore(index)
+                //     } else if (pageNumber > page + RANGE && pageNumber < pageSize - RANGE + 1) {
+                //         return renderDotAfter(index)
+                //     }
+                // }
+
+                if (pageNumber > page + RANGE && pageNumber <= pageSize - RANGE) {
                     return renderDotAfter(index)
-                } else if (page >= pageSize - RANGE * 2 && pageNumber > RANGE && pageNumber < page - RANGE) {
+                } else if (pageNumber > RANGE && pageNumber < page - RANGE) {
                     return renderDotBefore(index)
-                } else if (page < pageSize - RANGE * 2 && page > RANGE * 2 + 1) {
+                } else if (page <= pageSize - RANGE && page > RANGE) {
                     if (pageNumber > RANGE && pageNumber < page - RANGE) {
                         return renderDotBefore(index)
-                    } else if (pageNumber > page + RANGE && pageNumber < pageSize - RANGE + 1) {
+                    } else if (pageNumber > page + RANGE && pageNumber <= pageSize - RANGE) {
                         return renderDotAfter(index)
                     }
                 }
