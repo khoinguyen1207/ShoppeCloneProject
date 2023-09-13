@@ -1,0 +1,50 @@
+{
+    "aside filter": {
+        "all categories": "Tất cả danh mục",
+        "filter": "Bộ lọc tìm kiếm",
+        "price range": "Khoản giá",
+        "min": "TỪ",
+        "max": "ĐẾN",
+        "apply": "Áp dụng",
+        "rating": "Đánh giá",
+        "up": "trở lên",
+        "clear all": "Xóa tất cả"
+    },
+    "nav header": {
+        "english": "Tiếng Anh",
+        "vietnamese": "Tiếng việt",
+        "login": "Đăng nhập",
+        "register": "Đăng ký",
+        "logout": "Đăng xuất",
+        "seller centre": "Kênh người bán",
+        "download": "Tải ứng dụng",
+        "follow us on": "Kết nối",
+        "Have an account?": "Bạn đã có tài khoản?",
+        "Need help?": "Bạn cần giúp đỡ ?",
+        "New to Shopee?": "Bạn chưa có tài khoản?"
+    },
+    "sortProductList": {
+        "sort by": "Sắp xếp theo",
+        "popular": "Phổ biến",
+        "lastest": "Mới nhất",
+        "top sales": "Bán chạy",
+        "price": "Giá",
+        "price low to high": "Giá: Thấp đến Cao",
+        "price high to low": "Giá: Cao đến Thấp"
+    },
+    "searchPlacehoder": "NHẬP TỪ KHÓA TÌM KIẾM",
+    "not found product": "Không tìm thấy sản phẩm phù hợp",
+    "footer": {
+        "1": "© 2023 Shopee. Tất cả các quyền được bảo lưu.",
+        "Country & Region": "Quốc gia & Khu vực: Singapore Indonesia Đài Loan Thái Lan Malaysia Việt Nam Philippines Brazil México Colombia Chile",
+        "PRIVACY POLICY": "CHÍNH SÁCH BẢO MẬT",
+        "TERM OF SERVICE": "QUY CHẾ HOẠT ĐỘNG",
+        "SHIPPING POLICY": "CHÍNH SÁCH VẬN CHUYỂN",
+        "VIOLATION": "CHÍNH SÁCH TRẢ HÀNG VÀ HOÀN TIỀN",
+        "Shopee Company Limited": "Công ty TNHH Shopee",
+        "2": "Địa chỉ: Tầng 4-2-6, Tòa nhà Capital Place, số 29 đường Liễu Giai, Phường Ngọc Khánh, Quận Ba Đình, Thành phố Hà Nội, Việt Nam. Tổng đài hỗ trợ: 19001221 - Email: cskh@hotro.shopee.vn",
+        "3": "Chịu Trách Nhiệm Quản Lý Nội Dung: Nguyễn Đức Trí - Điện thoại liên hệ: 024 73081221 (ext 4678)",
+        "4": "Mã số doanh nghiệp: 0106773786 do Sở Kế hoạch & Đầu tư TP Hà Nội cấp lần đầu ngày 10/02/2015",
+        "5": "© 2015 - Bản quyền thuộc về Công ty TNHH Shopee"
+    }
+}

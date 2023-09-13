@@ -1,0 +1,45 @@
+{
+    "sideNav": {
+        "Edit Profile": "Edit Profile",
+        "my account": "My Account",
+        "my purchase": "My Purchase",
+        "Change Password": "Change Password",
+        "Notifications": "Notifications",
+        "My Vouchers": "My Vouchers",
+        "My Shopee Coins": "My Shopee Coins"
+    },
+    "profile": {
+        "My Profile": "My Profile",
+        "Profile description": "Manage and protect your account",
+        "Name": "Name",
+        "Password": "Password",
+        "Change": "Change",
+        "Phone Number": "Phone Number",
+        "Address": "Address",
+        "Date of birth": "Date of birth",
+        "Month": "Month",
+        "Select Image": "Select Image",
+        "File size": "File size: maximum 1 MB",
+        "File extension": "File extension: .JPEG, .PNG"
+    },
+    "changePassword": {
+        "Change Password": "Change Password",
+        "changePassword desc": "For your account's security, do not share your password with anyone else",
+        "New Password": "New Password",
+        "Confirm Password": "Confirm Password",
+        "Save": "Save"
+    },
+    "purchase": {
+        "0": "All",
+        "1": "Wait For Confirmation",
+        "2": "Wait For Getting",
+        "3": "To Receive",
+        "4": "Completed",
+        "5": "Cancelled",
+        "Order Total": "Order Total",
+        "7 Days Return": "7 Days Return",
+        "Quantity": "Quantity",
+        "Buy Again": "Buy Again",
+        "No orders yet": "No orders yet"
+    }
+}

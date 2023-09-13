@@ -9,6 +9,7 @@ import { PurchasesListStatus } from 'src/types/purchases.type'
 import { formatCurrency, generateNameId } from 'src/utils/utils'
 import nopurchase from 'src/assets/no-purchase.png'
 import Loading from 'src/components/Loading'
+import { useTranslation } from 'react-i18next'
 
 const tabLinkList = [
     {
@@ -40,11 +41,14 @@ const tabLinkList = [
 export default function HistoryPurchase() {
     const queryParams: { status?: string } = useQueryParams()
     const status: number = Number(queryParams.status) || purchaseStatus.all
-    const { data: historyPurchaseData, isLoading } = useQuery({
+    const { t } = useTranslation('profile')
+
+    const { data, isLoading } = useQuery({
         queryKey: ['purchases', { status: status }],
         queryFn: () => purchasesApi.getPurchases({ status: status as PurchasesListStatus }),
         staleTime: 60 * 1000
     })
+    const historyPurchaseData = data?.data.data
 
     return (
         <div>
@@ -60,21 +64,21 @@ export default function HistoryPurchase() {
                                     search: createSearchParams({ status: String(tabLink.id) }).toString()
                                 }}
                                 className={classNames(
-                                    'flex flex-1 items-center justify-center py-4 text-center hover:text-orange',
+                                    'flex h-14 flex-1 items-center justify-center text-center hover:text-orange',
                                     {
                                         'border-b-2 border-orange text-orange': isActive
                                     }
                                 )}
                             >
-                                {tabLink.name}
+                                {t(`purchase.${tabLink.id}`)}
                             </Link>
                         )
                     })}
                 </div>
             </div>
             {historyPurchaseData &&
-                (historyPurchaseData.data.data.length > 0 ? (
-                    historyPurchaseData.data.data.map((purchase) => (
+                (historyPurchaseData.length > 0 ? (
+                    historyPurchaseData.slice(0, 5).map((purchase) => (
                         <div key={purchase._id} className='mt-6'>
                             <div className='rounded bg-[#FFFFFF] p-3 shadow sm:p-6'>
                                 <Link
@@ -92,10 +96,10 @@ export default function HistoryPurchase() {
                                         <div className='min-w-0 sm:px-3'>
                                             <div className='truncate text-sm sm:text-base'>{purchase.product.name}</div>
                                             <span className='text-xs text-gray-500 sm:text-sm'>
-                                                Số lượng: {purchase.buy_count}
+                                                {t('purchase.Quantity')}: {purchase.buy_count}
                                             </span>
                                             <div className='mt-1 w-[100px] rounded-sm border border-orange text-center text-xs text-orange sm:mt-2 '>
-                                                7 Ngày đổi trả
+                                                {t('purchase.7 Days Return')}
                                             </div>
                                         </div>
                                         <div className='mt-1 flex items-center sm:mt-0'>
@@ -133,7 +137,7 @@ export default function HistoryPurchase() {
                                             fill='#fff'
                                         />
                                     </svg>
-                                    Thành tiền:{' '}
+                                    {t('purchase.Order Total')}:{' '}
                                     <span className='ml-3 text-xl text-orange'>
                                         ₫{formatCurrency(purchase.price * purchase.buy_count)}
                                     </span>
@@ -142,7 +146,7 @@ export default function HistoryPurchase() {
                                     to={`/${generateNameId(purchase.product.name, purchase.product._id)}`}
                                     className='mt-1 inline-block rounded  bg-orange px-6 py-1 text-sm text-white hover:bg-[#d73211] sm:mt-3 sm:px-8 sm:py-2'
                                 >
-                                    Mua lại
+                                    {t('purchase.Buy Again')}
                                 </Link>
                             </div>
                         </div>
@@ -152,7 +156,7 @@ export default function HistoryPurchase() {
                         <div className='mb-4 h-32 w-32'>
                             <img src={nopurchase} alt='nopurchase' className='h-full w-full object-cover' />
                         </div>
-                        <span>Chưa có đơn hàng</span>
+                        <span>{t('purchase.No orders yet')}</span>
                     </div>
                 ))}
             <Loading visible={isLoading} />

@@ -1,0 +1,25 @@
+{
+    "errorMessage": {
+        "invalid price": "Giá không phù hợp",
+        "notTypeError": "Lỗi",
+        "email": {
+            "required": "Email không được để trống",
+            "email": "Email không đúng định dạng",
+            "min": "Độ dài phải từ 5 - 160 ký tự",
+            "max": "Độ dài phải từ 5 - 160 ký tự",
+            "Server": "Email đã tồn tại"
+        },
+        "password": {
+            "required": "Mật khẩu không được để trống",
+            "min": "Độ dài phải từ 6 - 160 ký tự",
+            "max": "Độ dài phải từ 6 - 160 ký tự",
+            "Server": "Email hoặc password không đúng"
+        },
+        "confirm password": {
+            "required": "Xác nhận mật khẩu không được để trống",
+            "oneOf": "Nhập lại password không khớp",
+            "min": "Độ dài phải từ 6 - 160 ký tự",
+            "max": "Độ dài phải từ 6 - 160 ký tự"
+        }
+    }
+}

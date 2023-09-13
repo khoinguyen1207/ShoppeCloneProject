@@ -3,9 +3,12 @@ import { Link, NavLink } from 'react-router-dom'
 import { path } from 'src/constants/path'
 import { AppContext } from 'src/contexts/app.context'
 import { getAvatarUrl } from 'src/utils/utils'
+import { useTranslation } from 'react-i18next'
 
 export default function UserSideNav() {
     const { profile } = useContext(AppContext)
+    const { t } = useTranslation('profile')
+
     return (
         <div className='text-base'>
             <div className='flex items-center justify-center md:justify-start md:py-8'>
@@ -28,7 +31,7 @@ export default function UserSideNav() {
                                 fillRule='evenodd'
                             />
                         </svg>
-                        Sửa hồ sơ
+                        {t('sideNav.Edit Profile')}
                     </Link>
                 </div>
             </div>
@@ -49,7 +52,7 @@ export default function UserSideNav() {
                         />
                     </div>
 
-                    <div className='flex-1 capitalize'>Tài khoản của tôi</div>
+                    <div className='flex-1 capitalize'>{t('sideNav.my account')}</div>
                 </NavLink>
                 <NavLink
                     to={path.changePassword}
@@ -75,7 +78,7 @@ export default function UserSideNav() {
                             />
                         </svg>
                     </div>
-                    <div className='flex-1 capitalize'>Đổi mật khẩu</div>
+                    <div className='flex-1 capitalize'>{t('sideNav.Change Password')}</div>
                 </NavLink>
                 <NavLink
                     to={path.historyPurchase}
@@ -92,7 +95,7 @@ export default function UserSideNav() {
                             alt=''
                         />
                     </div>
-                    <div className='flex-1 capitalize'>Đơn mua</div>
+                    <div className='flex-1 capitalize'>{t('sideNav.my purchase')}</div>
                 </NavLink>
                 <NavLink to={path.profile} className='mb-4 flex items-center px-3 md:px-0'>
                     <div className='mr-2 h-5 w-5'>
@@ -102,7 +105,7 @@ export default function UserSideNav() {
                             alt=''
                         />
                     </div>
-                    <div className='flex-1 capitalize'>Thông báo</div>
+                    <div className='flex-1 capitalize'>{t('sideNav.Notifications')}</div>
                 </NavLink>
                 <NavLink to={path.profile} className='mb-4 flex items-center px-3 md:px-0'>
                     <div className='mr-2 h-5 w-5'>
@@ -112,7 +115,7 @@ export default function UserSideNav() {
                             alt=''
                         />
                     </div>
-                    <div className='flex-1 capitalize'>Kho voucher</div>
+                    <div className='flex-1 capitalize'>{t('sideNav.My Vouchers')}</div>
                 </NavLink>
                 <NavLink to={path.profile} className='mb-4 flex items-center px-3 md:px-0'>
                     <div className='mr-2 h-5 w-5'>
@@ -122,7 +125,7 @@ export default function UserSideNav() {
                             alt=''
                         />
                     </div>
-                    <div className='flex-1 capitalize'>Shoppe xu</div>
+                    <div className='flex-1 capitalize'>{t('sideNav.My Shopee Coins')}</div>
                 </NavLink>
             </div>
         </div>

@@ -15,6 +15,7 @@ import { AppContext } from 'src/contexts/app.context'
 import { path } from 'src/constants/path'
 import Loading from 'src/components/Loading'
 import NotExist from '../NotExist'
+import { useTranslation } from 'react-i18next'
 
 export default function ProductDetail() {
     const { nameId } = useParams()
@@ -26,6 +27,7 @@ export default function ProductDetail() {
     const queryClient = useQueryClient()
     const { isAuthenticated } = useContext(AppContext)
     const navigate = useNavigate()
+    const { t } = useTranslation('product')
 
     //Call api chi tiết sản phẩm
     const { data: productDetailData, isLoading } = useQuery({
@@ -136,6 +138,7 @@ export default function ProductDetail() {
     if (isLoading) return <Loading visible={true} />
     return (
         <>
+            <Loading visible={addToCartMutation.isLoading} />
             {product ? (
                 <div className='bg-[#F5F5F5] py-6'>
                     <div className='container'>
@@ -217,7 +220,7 @@ export default function ProductDetail() {
                                 <div className='text-sm sm:text-base md:col-span-7 md:px-4'>
                                     <h1 className='text-base sm:text-xl'>
                                         <div className='mr-2 inline-block rounded-sm bg-orange px-2 text-xs text-white md:text-sm'>
-                                            Yêu thích
+                                            {t('favorite')}
                                         </div>
                                         {product.name}
                                     </h1>
@@ -235,7 +238,7 @@ export default function ProductDetail() {
                                         <div className='mx-4 h-5 w-[1px] bg-gray-300' />
                                         <div className='flex items-center'>
                                             <span>{formatNumberToSocialStyle(product.sold)}</span>
-                                            <span className='ml-2 text-gray-500'>Đã bán</span>
+                                            <span className='ml-2 text-gray-500'>{t('sold')}</span>
                                         </div>
                                     </div>
                                     <div className='mt-4 bg-gray-100 px-3 py-2 sm:px-5 sm:py-4 md:mt-8'>
@@ -247,7 +250,7 @@ export default function ProductDetail() {
                                                 ₫{formatCurrency(product.price)}
                                             </div>
                                             <div className='ml-4 rounded-sm bg-orange px-2 text-xs font-semibold uppercase text-white sm:text-sm'>
-                                                {rateSale(product.price_before_discount, product.price)} Giảm
+                                                {rateSale(product.price_before_discount, product.price)} {t('sale off')}
                                             </div>
                                         </div>
                                         <div className='flex items-center sm:mt-2'>
@@ -317,21 +320,21 @@ export default function ProductDetail() {
                                                 />
                                             </svg>
                                             <div className='ml-4'>
-                                                <div className='text-orange'>Gì cũng rẻ</div>
-                                                <div className='text-xs text-gray-500'>
-                                                    Giá tốt nhất so với các sản phẩm cùng loại trên Shopee!
-                                                </div>
+                                                <div className='text-orange'>{t('Lowest Price')}</div>
+                                                <div className='text-xs text-gray-500'>{t('Lowest Price desc')}</div>
                                             </div>
                                         </div>
                                     </div>
                                     <div className='mt-4 flex items-center sm:mt-8'>
-                                        <div className='min-w-[120px] capitalize text-gray-500'>Deal sốc</div>
+                                        <div className='min-w-[120px] capitalize text-gray-500'>
+                                            {t('hot deal title')}
+                                        </div>
                                         <div className='rounded-sm bg-orange/10 px-2 py-1 text-orange'>
-                                            Mua kèm deal sốc
+                                            {t('add-on deal')}
                                         </div>
                                     </div>
                                     <div className='mt-4 flex items-start sm:mt-8'>
-                                        <div className='min-w-[120px] capitalize text-gray-500'>Vận chuyển</div>
+                                        <div className='min-w-[120px] capitalize text-gray-500'>{t('Shipping')}</div>
                                         <div>
                                             <div className='flex items-center'>
                                                 <img
@@ -339,7 +342,7 @@ export default function ProductDetail() {
                                                     alt='iconcar'
                                                     className='h-5 w-6'
                                                 />
-                                                <div className='ml-2 text-gray-500'>Miễn phí vận chuyển</div>
+                                                <div className='ml-2 text-gray-500'>{t('Free ship')}</div>
                                             </div>
                                             <div className='mt-3 flex items-start'>
                                                 <svg
@@ -396,12 +399,10 @@ export default function ProductDetail() {
                                                     </g>
                                                 </svg>
                                                 <div className='ml-2 text-gray-500'>
-                                                    <div>
-                                                        Vận Chuyển Tới{' '}
-                                                        <span className='ml-2 text-base text-black'>Vĩnh Long</span>
-                                                    </div>
-                                                    <div className='mt-2'>
-                                                        Phí vận chuyển{' '}
+                                                    {t('Shipping To')}{' '}
+                                                    <span className='ml-2 text-base text-black'>Vĩnh Long</span>
+                                                    <div className='mt-2 capitalize'>
+                                                        {t('Shipping Fee')}{' '}
                                                         <span className='ml-2 text-base text-black'>₫0</span>
                                                     </div>
                                                 </div>
@@ -409,7 +410,7 @@ export default function ProductDetail() {
                                         </div>
                                     </div>
                                     <div className='mt-4 flex items-center sm:mt-8'>
-                                        <div className='min-w-[120px] capitalize text-gray-500'>Số lượng</div>
+                                        <div className='min-w-[120px] capitalize text-gray-500'>{t('Quantity')}</div>
                                         <QuantityController
                                             onDecrease={handleBuyCount}
                                             onIncrease={handleBuyCount}
@@ -417,14 +418,14 @@ export default function ProductDetail() {
                                             value={buyCount}
                                             max={product.quantity}
                                         />
-                                        <div className='ml-4 text-xs text-gray-500 sm:text-sm'>
-                                            {product.quantity} sản phẩm có sẵn
+                                        <div className='ml-4 text-xs lowercase text-gray-500 sm:text-sm'>
+                                            {product.quantity} {t('Available')}
                                         </div>
                                     </div>
                                     <div className='mt-4 flex items-center sm:mt-8'>
                                         <button
                                             onClick={handleAddToCart}
-                                            className='flex items-center rounded-sm border border-orange bg-orange/10 px-3 py-2 text-orange hover:bg-orange/5 sm:px-5 sm:py-3'
+                                            className='flex items-center rounded-sm border border-orange bg-orange/10 px-3 py-2 capitalize text-orange hover:bg-orange/5 sm:px-5 sm:py-3'
                                         >
                                             <svg
                                                 enableBackground='new 0 0 15 15'
@@ -465,13 +466,13 @@ export default function ProductDetail() {
                                                     />
                                                 </g>
                                             </svg>
-                                            Thêm vào giỏ hàng
+                                            {t('add to cart')}
                                         </button>
                                         <button
                                             onClick={buyNow}
-                                            className='ml-6 rounded-sm bg-orange px-3 py-2 text-white hover:bg-orange/80 sm:px-5 sm:py-3'
+                                            className='ml-6 rounded-sm bg-orange px-3 py-2 capitalize text-white hover:bg-orange/80 sm:px-5 sm:py-3'
                                         >
-                                            Mua ngay
+                                            {t('buy now')}
                                         </button>
                                     </div>
                                 </div>
@@ -479,14 +480,14 @@ export default function ProductDetail() {
                         </div>
                         <div className='mt-8 bg-white p-4 shadow-sm'>
                             <div className='caption-top rounded-sm bg-gray-100 p-2 text-sm sm:p-4 sm:text-lg'>
-                                Mô tả sản phẩm
+                                {t('Product Description')}
                             </div>
-                            <div className='mt-4 px-4 text-xs sm:mt-8 sm:text-base'>
+                            <div className='mt-4 px-2 text-xs sm:mt-8 sm:px-4 sm:text-base'>
                                 <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(product.description) }} />
                             </div>
                         </div>
                         <div className='mt-8'>
-                            <div className='uppercase'>CÓ THỂ BẠN CŨNG THÍCH</div>
+                            <div className='uppercase'>{t('YOU MAY ALSO LIKE')}</div>
                             {productData && (
                                 <div className='mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6'>
                                     {productData.data.data.products.map((product) => {

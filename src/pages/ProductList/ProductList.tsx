@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
+import { useTranslation } from 'react-i18next'
 import categoryApi from 'src/apis/category.api'
 import productApi from 'src/apis/product.api'
 import AsideFilter from 'src/components/AsideFilter'
@@ -11,6 +12,8 @@ import { ProductListConfig } from 'src/types/product.type'
 
 export default function ProductList() {
     const queryConfig = useQueryConfig()
+    const { t } = useTranslation('home')
+
     const { data: productData } = useQuery({
         queryKey: ['products', queryConfig],
         queryFn: () => productApi.getProduct(queryConfig as ProductListConfig),
@@ -60,7 +63,7 @@ export default function ProductList() {
                                         alt='ImageNotFound'
                                         className='mx-auto w-[8.375rem]'
                                     />
-                                    <div className='text-center text-lg'>Không tìm thấy sản phẩm phù hợp</div>
+                                    <div className='text-center text-lg'>{t('not found product')}</div>
                                 </div>
                             )}
                         </div>

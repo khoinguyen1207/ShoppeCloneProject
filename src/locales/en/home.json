@@ -1,0 +1,50 @@
+{
+    "aside filter": {
+        "all categories": "All categories",
+        "filter": "Search Filter",
+        "price range": "Price range",
+        "min": "MIN",
+        "max": "MAX",
+        "apply": "Apply",
+        "rating": "Rating",
+        "up": "& Up",
+        "clear all": "Clear all"
+    },
+    "nav header": {
+        "english": "English",
+        "vietnamese": "Vietnamese",
+        "login": "Login",
+        "register": "Register",
+        "logout": "Logout",
+        "seller centre": "Seller Centre",
+        "download": "Download",
+        "follow us on": "Follow us on",
+        "Have an account?": "Have an account?",
+        "Need help?": "Need help?",
+        "New to Shopee?": "New to Shopee?"
+    },
+    "sortProductList": {
+        "sort by": "Sort by",
+        "popular": "Popular",
+        "lastest": "Lastest",
+        "top sales": "Top Sales",
+        "price": "Price",
+        "price low to high": "Price: Low to High",
+        "price high to low": "Price: High to Low"
+    },
+    "searchPlacehoder": "ENTER SEARCH KEYWORDS",
+    "not found product": "Uh oh! We couldn't find any listings",
+    "footer": {
+        "1": "© 2023 Shopee. All Rights Reserved.",
+        "Country & Region": "Country & Region: Singapore Indonesia Taiwan Thailand Malaysia Vietnam Philippines Brazil México Colombia Chile",
+        "PRIVACY POLICY": "PRIVACY POLICY",
+        "TERM OF SERVICE": "TERM OF SERVICE",
+        "SHIPPING POLICY": "SHIPPING POLICY",
+        "VIOLATION": "VIOLATION",
+        "Shopee Company Limited": "Shopee Company Limited",
+        "2": "Floors 4-5-6, Capital Place Building, No. 29, Lieu Giai Street, Ngoc Khanh ward, Ba Dinh District, Hanoi, Vietnam",
+        "3": "Person in charge of information management: Nguyen Duc Tri",
+        "4": "Business Registration Certificate No: 0106773786",
+        "5": "© 2015 - Copyright belongs to Shopee Company Limited"
+    }
+}

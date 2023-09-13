@@ -1,0 +1,25 @@
+{
+    "errorMessage": {
+        "invalid price": "Please input valid price range",
+        "notTypeError": "Error",
+        "email": {
+            "required": "Email is required",
+            "email": "Email invalidate",
+            "min": "Length must be between 5 - 160 characters",
+            "max": "Length must be between 5 - 160 characters",
+            "Server": "Email already exists"
+        },
+        "password": {
+            "required": "Password is required",
+            "min": "Length must be between 6 - 160 characters",
+            "max": "Length must be between 6 - 160 characters",
+            "Server": "Email or password is incorrect"
+        },
+        "confirm password": {
+            "required": "Password confirmation is required",
+            "oneOf": "Password does not match",
+            "min": "Length must be between 6 - 160 characters",
+            "max": "Length must be between 6 - 160 characters"
+        }
+    }
+}

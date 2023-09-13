@@ -287,7 +287,7 @@ export default function Cart() {
                                         </div>
                                     </div>
                                     <button
-                                        disabled={buyProductMutation.isLoading}
+                                        disabled={updatePurchaseMutation.isLoading || buyProductMutation.isLoading}
                                         onClick={handleBuyProduct}
                                         className={classNames(
                                             'rounded-sm bg-orange px-6 py-1 text-white hover:bg-orange/80 lg:px-14 lg:py-0',

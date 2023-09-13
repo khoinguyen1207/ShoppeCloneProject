@@ -9,6 +9,7 @@ import Input from 'src/components/Input'
 import { ErrorResponse } from 'src/types/utils.type'
 import { UserSchema, userSchema } from 'src/utils/rules'
 import { isAxiosUnprocessableEntityError } from 'src/utils/utils'
+import { useTranslation } from 'react-i18next'
 
 type FormData = Pick<UserSchema, 'password' | 'new_password' | 'confirm_password'>
 const passwordSchema = userSchema.pick(['password', 'new_password', 'confirm_password'])
@@ -28,6 +29,7 @@ export default function ChangePassword() {
         },
         resolver: yupResolver(passwordSchema)
     })
+    const { t } = useTranslation('profile')
     const updateMutation = useMutation({ mutationFn: userApi.updateProfile })
 
     const updatePassword = handleSubmit(async (data) => {
@@ -53,17 +55,17 @@ export default function ChangePassword() {
     return (
         <div className='rounded bg-[#FFFFFF] px-4 py-4 shadow sm:px-8 sm:py-8'>
             <div className='border-b border-gray-300 pb-5'>
-                <h1 className='text-lg'>Đổi mật khẩu</h1>
-                <p className='text-sm text-gray-500'>
-                    Để bảo mật tài khoản, vui lòng không chia sẻ mật khẩu cho người khác
-                </p>
+                <h1 className='text-lg'>{t('changePassword.Change Password')}</h1>
+                <p className='text-sm text-gray-500'>{t('changePassword.changePassword desc')}</p>
             </div>
             <form className='mt-8 max-w-2xl text-sm' onSubmit={updatePassword}>
                 <div className='items-center md:flex'>
-                    <div className='truncate capitalize text-gray-500 md:w-[20%] md:pb-5 md:text-right'>Mật khẩu</div>
+                    <div className='truncate capitalize text-gray-500 md:w-[20%] md:pb-5 md:text-right'>
+                        {t('profile.Password')}
+                    </div>
                     <div className='md:w-[80%] md:pl-5'>
                         <Input
-                            placeholder='Mật khẩu'
+                            placeholder={t('profile.Password')}
                             register={register}
                             name='password'
                             type='password'
@@ -75,12 +77,12 @@ export default function ChangePassword() {
                 </div>
                 <div className='mt-3 items-center md:mt-3 md:flex'>
                     <div className='truncate capitalize text-gray-500 md:w-[20%] md:pb-5 md:text-right'>
-                        Mật khẩu mới
+                        {t('changePassword.New Password')}
                     </div>
                     <div className='md:w-[80%] md:pl-5'>
                         <Input
                             register={register}
-                            placeholder='Mật khẩu mới'
+                            placeholder={t('changePassword.New Password')}
                             name='new_password'
                             type='password'
                             errorMessage={errors.new_password?.message}
@@ -91,12 +93,12 @@ export default function ChangePassword() {
                 </div>
                 <div className='mt-3 items-center md:mt-3 md:flex'>
                     <div className='truncate capitalize text-gray-500 md:w-[20%] md:pb-5 md:text-right'>
-                        Xác nhận mật khẩu
+                        {t('changePassword.Confirm Password')}
                     </div>
                     <div className='md:w-[80%] md:pl-5'>
                         <Input
                             register={register}
-                            placeholder='Xác nhận mật khẩu'
+                            placeholder={t('changePassword.Confirm Password')}
                             name='confirm_password'
                             type='password'
                             errorMessage={errors.confirm_password?.message}
@@ -114,7 +116,7 @@ export default function ChangePassword() {
                             // disabled={updateMutation.isLoading}
                             className='rounded-sm bg-orange px-5 py-2 text-white hover:bg-orange/80'
                         >
-                            Lưu
+                            {t('changePassword.Save')}
                         </Button>
                     </div>
                 </div>

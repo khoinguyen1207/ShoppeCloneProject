@@ -10,11 +10,14 @@ import { formatCurrency, generateNameId } from 'src/utils/utils'
 import noproduct from 'src/assets/no-product.png'
 import NavHeader from '../NavHeader'
 import useSearchProduct from 'src/hooks/useSearchProduct'
+import { useTranslation } from 'react-i18next'
 
 export default function Header() {
     const { isAuthenticated } = useContext(AppContext)
     const { onSubmitSearch, register } = useSearchProduct()
     const [isOpen, setIsOpen] = useState(false)
+    const { t } = useTranslation()
+
     const { data: purchaseInCartData } = useQuery({
         queryKey: ['purchases', { status: purchaseStatus.inCart }],
         queryFn: () => purchasesApi.getPurchases({ status: purchaseStatus.inCart }),
@@ -43,7 +46,7 @@ export default function Header() {
                         <div className='flex rounded-sm bg-white p-1'>
                             <input
                                 type='text'
-                                placeholder='LÀM ĐẸP LÊN SHOPEE'
+                                placeholder={t('searchPlacehoder')}
                                 className='flex-grow px-2 text-black outline-none'
                                 {...register('name')}
                             />

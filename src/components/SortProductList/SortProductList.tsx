@@ -5,7 +5,7 @@ import { path } from 'src/constants/path'
 import { order as orderConstant, sortBy } from 'src/constants/product'
 import { QueryConfig } from 'src/hooks/useQueryConfig'
 import { ProductListConfig } from 'src/types/product.type'
-
+import { useTranslation } from 'react-i18next'
 interface PropsType {
     queryConfig: QueryConfig
     pageSize: number
@@ -16,6 +16,7 @@ export default function SortProductList({ queryConfig, pageSize }: PropsType) {
     const page = Number(queryConfig.page)
     const order = queryConfig.order
     const navigate = useNavigate()
+    const { t } = useTranslation('home')
 
     const isActiveSortBy = (isSortBy: Exclude<ProductListConfig['sort_by'], undefined>) => {
         return sort_by === isSortBy
@@ -50,7 +51,7 @@ export default function SortProductList({ queryConfig, pageSize }: PropsType) {
     return (
         <div className='flex flex-wrap items-center justify-center gap-3 rounded-sm bg-[#EDEDED] px-4 py-3 lg:justify-between'>
             <div className='text-center text-sm'>
-                <span className='mb-2 mr-3 md:mb-0'>Sắp xếp theo</span>
+                <span className='mb-2 mr-3 md:mb-0'>{t('sortProductList.sort by')}</span>
                 <button
                     className={classNames('shadow-s mb-2 mr-4 rounded-sm px-3 py-2 capitalize lg:mb-0', {
                         'bg-orange text-white hover:bg-orange/75': isActiveSortBy(sortBy.view),
@@ -58,7 +59,7 @@ export default function SortProductList({ queryConfig, pageSize }: PropsType) {
                     })}
                     onClick={() => handleSort(sortBy.view)}
                 >
-                    Phổ biến
+                    {t('sortProductList.popular')}
                 </button>
                 <button
                     className={classNames('shadow-s mb-2 mr-4 rounded-sm px-3 py-2 capitalize lg:mb-0', {
@@ -67,7 +68,7 @@ export default function SortProductList({ queryConfig, pageSize }: PropsType) {
                     })}
                     onClick={() => handleSort(sortBy.createdAt)}
                 >
-                    Mới nhất
+                    {t('sortProductList.lastest')}
                 </button>
                 <button
                     className={classNames('shadow-s mb-2 mr-4 rounded-sm px-3 py-2 capitalize lg:mb-0', {
@@ -76,7 +77,7 @@ export default function SortProductList({ queryConfig, pageSize }: PropsType) {
                     })}
                     onClick={() => handleSort(sortBy.sold)}
                 >
-                    Bán chạy
+                    {t('sortProductList.top sales')}
                 </button>
                 <select
                     className={classNames('mr-4 rounded-sm px-3 py-2 shadow-sm outline-none', {
@@ -89,13 +90,13 @@ export default function SortProductList({ queryConfig, pageSize }: PropsType) {
                     value={order || ''}
                 >
                     <option value='' disabled className='bg-white text-black'>
-                        Giá
+                        {t('sortProductList.price')}
                     </option>
                     <option value={orderConstant.asc} className='bg-white text-black'>
-                        Giá: Thấp đến Cao
+                        {t('sortProductList.price low to high')}
                     </option>
                     <option value={orderConstant.desc} className='bg-white text-black'>
-                        Giá: Cao đến Thấp
+                        {t('sortProductList.price high to low')}
                     </option>
                 </select>
             </div>

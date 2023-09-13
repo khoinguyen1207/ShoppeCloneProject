@@ -17,6 +17,7 @@ import { getAvatarUrl, isAxiosUnprocessableEntityError } from 'src/utils/utils'
 import { ErrorResponse } from 'src/types/utils.type'
 import InputFile from 'src/components/InputFile'
 import Loading from 'src/components/Loading'
+import { useTranslation } from 'react-i18next'
 
 type FormData = Pick<UserSchema, 'name' | 'address' | 'avatar' | 'phone' | 'date_of_birth'>
 type FormDataError = Omit<FormData, 'date_of_birth'> & {
@@ -43,9 +44,10 @@ export default function Profile() {
         },
         resolver: yupResolver(profileSchema)
     })
-    const { setProfile } = useContext(AppContext)
+    const { setProfile, profile } = useContext(AppContext)
     const [file, setFile] = useState<File>()
     const avatar = watch('avatar')
+    const { t } = useTranslation('profile')
 
     const previewImage = useMemo(() => {
         return file ? URL.createObjectURL(file) : ''
@@ -63,6 +65,12 @@ export default function Profile() {
             setValue('date_of_birth', profile.date_of_birth ? new Date(profile.date_of_birth) : new Date(1990, 0, 1))
         }
     })
+    const emailString = useMemo(() => {
+        if (profile) {
+            const { email } = profile
+            return email.replace(email.substring(3, email.indexOf('@')), '***********')
+        }
+    }, [profile])
 
     const updateMutation = useMutation({ mutationFn: userApi.updateProfile })
     const uploadAvatarMutation = useMutation({ mutationFn: userApi.uploadAvatar })
@@ -109,29 +117,33 @@ export default function Profile() {
         <div className='rounded bg-[#FFFFFF] px-4 py-4 shadow sm:px-8 sm:py-8'>
             <Loading visible={isFetching} />
             <div className='border-b border-gray-300 pb-5'>
-                <h1 className='text-lg'>Hồ sơ của tôi</h1>
-                <p className='text-sm text-gray-500'>Quản lý thông tin hồ sơ để bảo mật tài khoản</p>
+                <h1 className='text-lg'>{t('profile.My Profile')}</h1>
+                <p className='text-sm text-gray-500'>{t('profile.Profile description')}</p>
             </div>
             <form className='mt-5 flex flex-wrap items-start text-sm' onSubmit={handleUpdate}>
                 <div className='flex-grow lg:border-r lg:border-gray-300 lg:pr-10'>
                     <div className='items-center md:flex'>
                         <div className='truncate capitalize text-gray-500 md:w-[20%] md:text-right'>Email</div>
-                        <div className='mt-1 md:mt-0 md:w-[80%] md:pl-5'>kh************@gmail.com</div>
+                        <div className='mt-1 md:mt-0 md:w-[80%] md:pl-5'>{emailString}</div>
                     </div>
                     <div className='mt-4 items-center md:mt-6 md:flex'>
-                        <div className='truncate capitalize text-gray-500 md:w-[20%] md:text-right'>Mật khẩu</div>
+                        <div className='truncate capitalize text-gray-500 md:w-[20%] md:text-right'>
+                            {t('profile.Password')}
+                        </div>
                         <div className='mt-1 md:mt-0 md:w-[80%] md:pl-5'>
                             ***************{' '}
                             <Link className='ml-3 text-sm text-blue-500 underline' to={path.changePassword}>
-                                Thay đổi
+                                {t('profile.Change')}
                             </Link>
                         </div>
                     </div>
                     <div className='mt-3 items-center md:mt-6 md:flex'>
-                        <div className='truncate capitalize text-gray-500 md:w-[20%] md:pb-5 md:text-right'>Tên</div>
+                        <div className='truncate capitalize text-gray-500 md:w-[20%] md:pb-5 md:text-right'>
+                            {t('profile.Name')}
+                        </div>
                         <div className='md:w-[80%] md:pl-5'>
                             <Input
-                                placeholder='Họ tên'
+                                placeholder={t('profile.Name')}
                                 register={register}
                                 name='name'
                                 errorMessage={errors.name?.message}
@@ -142,7 +154,7 @@ export default function Profile() {
                     </div>
                     <div className='mt-3 items-center md:mt-3 md:flex'>
                         <div className='truncate capitalize  text-gray-500 md:w-[20%] md:pb-5 md:text-right'>
-                            Số điện thoại
+                            {t('profile.Phone Number')}
                         </div>
                         <div className='md:w-[80%] md:pl-5'>
                             <Controller
@@ -152,7 +164,7 @@ export default function Profile() {
                                     return (
                                         <InputNumber
                                             value={field.value}
-                                            placeholder='Số điện thoại'
+                                            placeholder={t('profile.Phone Number')}
                                             classNameInput='w-full rounded-sm border border-gray-300 px-3 py-2 outline-none focus:border-gray-500'
                                             onChange={field.onChange}
                                             errorMessage={errors.phone?.message}
@@ -165,7 +177,7 @@ export default function Profile() {
                     </div>
                     <div className='mt-3 items-center md:mt-3 md:flex'>
                         <div className='truncate capitalize text-gray-500 md:w-[20%] md:pb-5 md:text-right'>
-                            Địa chỉ
+                            {t('profile.Address')}
                         </div>
                         <div className='md:w-[80%] md:pl-5'>
                             <Input
@@ -173,7 +185,7 @@ export default function Profile() {
                                 name='address'
                                 errorMessage={errors.address?.message}
                                 classNameError='mt-1 min-h-[1rem] text-red-600 text-xs'
-                                placeholder='Địa chỉ'
+                                placeholder={t('profile.Address')}
                                 classNameInput='w-full rounded-sm border border-gray-300 px-3 py-2 outline-none focus:border-gray-500'
                             />
                         </div>
@@ -198,7 +210,7 @@ export default function Profile() {
                                 disabled={updateMutation.isLoading}
                                 className='rounded-sm bg-orange px-5 py-2 text-white hover:bg-orange/80'
                             >
-                                Lưu
+                                {t('changePassword.Save')}
                             </Button>
                         </div>
                     </div>
@@ -213,8 +225,8 @@ export default function Profile() {
                             />
                         </div>
                         <InputFile onChange={handleChangeFile} />
-                        <div className='mt-3 text-gray-400'>Dung lượng file tối đa 1 MB </div>
-                        <div className='text-gray-400'>Định dạng: .JPG, .JPEG, .PNG</div>
+                        <div className='mt-3 text-gray-400'>{t('profile.File size')}</div>
+                        <div className='text-gray-400'>{t('profile.File extension')}</div>
                     </div>
                 </div>
             </form>

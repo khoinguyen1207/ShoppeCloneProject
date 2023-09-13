@@ -11,6 +11,7 @@ import { NoUndefinedField } from 'src/types/utils.type'
 import RatingStars from '../RatingStars'
 import omit from 'lodash/omit'
 import { QueryConfig } from 'src/hooks/useQueryConfig'
+import { useTranslation } from 'react-i18next'
 
 interface Props {
     queryConfig: QueryConfig
@@ -23,6 +24,7 @@ const priceSchema = schema.pick(['price_max', 'price_min'])
 export default function AsideFilter({ queryConfig, categories }: Props) {
     const { category } = queryConfig
     const navigate = useNavigate()
+    const { t } = useTranslation(['home', 'error'])
 
     const {
         control,
@@ -81,7 +83,7 @@ export default function AsideFilter({ queryConfig, categories }: Props) {
                         </g>
                     </g>
                 </svg>
-                <span>Tất cả Danh mục</span>
+                <span>{t('aside filter.all categories')}</span>
             </Link>
             <div className='mt-3 border-[1px] border-gray-200' />
             <div className='my-3'>
@@ -142,11 +144,11 @@ export default function AsideFilter({ queryConfig, categories }: Props) {
                         />
                     </g>
                 </svg>
-                <span>Bộ lọc tìm kiếm</span>
+                <span>{t('aside filter.filter')}</span>
             </Link>
             <div className='mt-3 border-[1px] border-gray-200' />
             <div className='py-3 text-sm font-normal'>
-                <div>Khoản Giá</div>
+                <div>{t('aside filter.price range')}</div>
                 <form onSubmit={onSubmit}>
                     <div className='mt-4 flex items-center justify-between'>
                         <Controller
@@ -156,7 +158,7 @@ export default function AsideFilter({ queryConfig, categories }: Props) {
                                 return (
                                     <InputNumber
                                         value={field.value}
-                                        placeholder='₫ TỪ'
+                                        placeholder={'₫ ' + t('aside filter.min')}
                                         classNameInput='w-full rounded-sm border border-gray-400 px-2 py-1 outline-none focus:shadow-sm'
                                         onChange={(event) => {
                                             field.onChange(event)
@@ -174,7 +176,7 @@ export default function AsideFilter({ queryConfig, categories }: Props) {
                                 return (
                                     <InputNumber
                                         value={field.value}
-                                        placeholder='₫ ĐẾN'
+                                        placeholder={'₫ ' + t('aside filter.max')}
                                         classNameInput='w-full rounded-sm border border-gray-400 px-2 py-1 outline-none focus:shadow-sm'
                                         onChange={(event) => {
                                             field.onChange(event)
@@ -185,15 +187,17 @@ export default function AsideFilter({ queryConfig, categories }: Props) {
                             }}
                         />
                     </div>
-                    <div className='py-2  text-center text-orange'>{errors.price_min?.message}</div>
+                    <div className='py-2  text-center text-orange'>
+                        {errors.price_min?.message && t(`error:errorMessage.invalid price`)}
+                    </div>
                     <Button className='w-full rounded-sm bg-orange p-[5px] text-sm uppercase text-white'>
-                        Áp dụng
+                        {t('aside filter.apply')}
                     </Button>
                 </form>
             </div>
             <div className='mt-3 border-[1px] border-gray-200' />
             <div className='py-3 text-sm font-normal'>
-                <div>Đánh giá</div>
+                <div>{t('aside filter.rating')}</div>
                 <RatingStars queryConfig={queryConfig} />
             </div>
             <div className='mt-3 border-[1px] border-gray-200' />
@@ -201,7 +205,7 @@ export default function AsideFilter({ queryConfig, categories }: Props) {
                 onClick={handleRemoveFilter}
                 className='mt-5 w-full rounded-sm bg-orange p-[5px] text-sm font-normal uppercase text-white'
             >
-                Xóa tất cả
+                {t('aside filter.clear all')}
             </Button>
         </div>
     )

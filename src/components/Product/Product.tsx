@@ -2,12 +2,15 @@ import { Link } from 'react-router-dom'
 import { Product as ProductType } from 'src/types/product.type'
 import { formatCurrency, formatNumberToSocialStyle, generateNameId } from 'src/utils/utils'
 import ProductRating from '../ProductRating'
+import { useTranslation } from 'react-i18next'
 
 interface PropsType {
     product: ProductType
 }
 
 export default function Product({ product }: PropsType) {
+    const { t, i18n } = useTranslation('product')
+
     return (
         <Link to={`/${generateNameId(product.name, product._id)}`}>
             <div className='overflow-hidden rounded-sm border border-gray-200 bg-[#FFFFFF] shadow transition-transform duration-100 hover:translate-y-[-0.0625rem] hover:shadow-md'>
@@ -33,8 +36,17 @@ export default function Product({ product }: PropsType) {
                     <div className='mt-2 flex flex-wrap items-center justify-between sm:mt-3 sm:justify-start'>
                         <ProductRating rating={product.rating} />
                         <div className='ml-0 mt-1 flex items-center text-xs sm:ml-3 sm:mt-0'>
-                            <span>Đã bán</span>
-                            <span className='ml-1'>{formatNumberToSocialStyle(product.sold)}</span>
+                            {i18n.language === 'en' ? (
+                                <>
+                                    <span className='mr-1'>{formatNumberToSocialStyle(product.sold)}</span>
+                                    <span>{t('sold')}</span>
+                                </>
+                            ) : (
+                                <>
+                                    <span>{t('sold')}</span>
+                                    <span className='ml-1'>{formatNumberToSocialStyle(product.sold)}</span>
+                                </>
+                            )}
                         </div>
                     </div>
                 </div>

@@ -1,6 +1,7 @@
 import { createSearchParams, useNavigate } from 'react-router-dom'
 import { path } from 'src/constants/path'
 import { QueryConfig } from 'src/hooks/useQueryConfig'
+import { useTranslation } from 'react-i18next'
 
 /* 
 index = 0, có 5 ngôi sao, indexStars < 5 - 0 = 5
@@ -15,6 +16,7 @@ interface Props {
 }
 export default function RatingStars({ queryConfig }: Props) {
     const navigate = useNavigate()
+    const { t } = useTranslation('home')
 
     const handleFilterStar = (star: number) => {
         navigate({
@@ -108,7 +110,7 @@ export default function RatingStars({ queryConfig }: Props) {
                                             </svg>
                                         )
                                     })}
-                                {index !== 0 && <span className='ml-3'>trở lên</span>}
+                                {index !== 0 && <span className='ml-3'>{t('aside filter.up')}</span>}
                             </div>
                         </li>
                     )

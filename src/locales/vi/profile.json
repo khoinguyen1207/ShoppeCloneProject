@@ -1,0 +1,45 @@
+{
+    "sideNav": {
+        "Edit Profile": "Sửa hồ sơ",
+        "my account": "Tài khoản của tôi",
+        "my purchase": "Đơn mua",
+        "Change Password": "Đổi mật khẩu",
+        "Notifications": "Thông báo",
+        "My Vouchers": "Kho Voucher",
+        "My Shopee Coins": "Shopee Xu"
+    },
+    "profile": {
+        "My Profile": "Hồ sơ của tôi",
+        "Profile description": "Quản lý thông tin hồ sơ để bảo mật tài khoản",
+        "Name": "Họ tên",
+        "Password": "Mật Khẩu",
+        "Change": "Thay đổi",
+        "Phone Number": "Số điện thoại",
+        "Address": "Địa chỉ",
+        "Date of birth": "Ngày Sinh",
+        "Month": "Tháng",
+        "Select Image": "Chọn ảnh",
+        "File size": "Dung lượng file tối đa 1 MB",
+        "File extension": "Định dạng: .JPG, .JPEG, .PNG"
+    },
+    "changePassword": {
+        "Change Password": "Đổi mật khẩu",
+        "changePassword desc": "Để bảo mật tài khoản, vui lòng không chia sẻ mật khẩu cho người khác",
+        "New Password": "Mật Khẩu Mới",
+        "Confirm Password": "Xác Nhận Mật Khẩu",
+        "Save": "Lưu"
+    },
+    "purchase": {
+        "0": "Tất cả",
+        "1": "Chờ xác nhận",
+        "2": "Chờ lấy hàng",
+        "3": "Đang vận chuyển",
+        "4": "Hoàn thành",
+        "5": "Đã hủy",
+        "Order Total": "Thành tiền",
+        "7 Days Return": "7 Ngày đổi trả",
+        "Quantity": "Số lượng",
+        "Buy Again": "Mua lại",
+        "No orders yet": "Chưa có đơn hàng"
+    }
+}

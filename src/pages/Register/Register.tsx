@@ -12,6 +12,7 @@ import { useContext } from 'react'
 import { AppContext } from 'src/contexts/app.context'
 import Button from 'src/components/Button'
 import { path } from 'src/constants/path'
+import { useTranslation } from 'react-i18next'
 
 type FormData = Pick<Schema, 'password' | 'email' | 'confirm_password'>
 const registerSchema = schema.pick(['email', 'password', 'confirm_password'])
@@ -19,6 +20,8 @@ const registerSchema = schema.pick(['email', 'password', 'confirm_password'])
 export default function Register() {
     const { setIsAuthenticated, setProfile } = useContext(AppContext)
     const navigate = useNavigate()
+    const { t } = useTranslation(['home', 'profile', 'error'])
+
     const {
         register,
         handleSubmit,
@@ -66,30 +69,48 @@ export default function Register() {
                 <div className='grid grid-cols-1 py-10 lg:grid-cols-5 lg:py-28 lg:pr-12'>
                     <div className='lg:col-span-2 lg:col-start-4'>
                         <form className='rounded bg-white p-5 shadow-sm sm:p-10' onSubmit={onSubmit}>
-                            <div className='text-xl sm:text-2xl'>Đăng ký</div>
+                            <div className='text-xl sm:text-2xl'>{t('nav header.register')}</div>
                             <Input
                                 type='text'
                                 register={register}
                                 name='email'
                                 placeholder='Email'
                                 className='mt-2 sm:mt-6'
-                                errorMessage={errors.email?.message}
+                                errorMessage={
+                                    errors.email &&
+                                    t(
+                                        `error:errorMessage.email.${errors.email.type}`,
+                                        'error:errorMessage.notTypeError'
+                                    )
+                                }
                             />
                             <Input
                                 type='password'
                                 register={register}
                                 name='password'
-                                placeholder='Password'
+                                placeholder={t('profile:profile.Password')}
                                 className='mt-2'
-                                errorMessage={errors.password?.message}
+                                errorMessage={
+                                    errors.password &&
+                                    t(
+                                        `error:errorMessage.password.${errors.password.type}`,
+                                        'error:errorMessage.notTypeError'
+                                    )
+                                }
                             />
                             <Input
                                 type='password'
                                 register={register}
                                 name='confirm_password'
-                                placeholder='Confirm Password'
+                                placeholder={t('profile:changePassword.Confirm Password')}
                                 className='mt-2'
-                                errorMessage={errors.confirm_password?.message}
+                                errorMessage={
+                                    errors.confirm_password &&
+                                    t(
+                                        `error:errorMessage.confirm password.${errors.confirm_password.type}`,
+                                        'error:errorMessage.notTypeError'
+                                    )
+                                }
                             />
                             <div className='mt-2'>
                                 <Button
@@ -98,14 +119,16 @@ export default function Register() {
                                     isLoading={registerAccountMutation.isLoading}
                                     disabled={registerAccountMutation.isLoading}
                                 >
-                                    Đăng ký
+                                    {t('nav header.register')}
                                 </Button>
                             </div>
                             <div className='mt-3 sm:mt-4'>
                                 <div className='flex flex-wrap justify-center'>
-                                    <span className='text-xs text-gray-400 sm:text-base'>Bạn đã có tài khoản?</span>
+                                    <span className='text-xs text-gray-400 sm:text-base'>
+                                        {t('nav header.Have an account?')}
+                                    </span>
                                     <Link to={path.login} className='ml-2 text-xs text-red-500 sm:text-base'>
-                                        Đăng nhập
+                                        {t('nav header.login')}
                                     </Link>
                                 </div>
                             </div>

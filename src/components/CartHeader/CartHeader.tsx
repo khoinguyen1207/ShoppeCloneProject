@@ -30,7 +30,7 @@ export default function CartHeader() {
                             <div className='flex h-full rounded-sm border-2 border-orange'>
                                 <input
                                     type='text'
-                                    placeholder='CƠ HỘI CUỐI - GIẢM ĐẾN 42%'
+                                    placeholder='NHẬP TỪ KHÓA TÌM KIẾM'
                                     className='flex-grow px-2 text-black outline-none'
                                     {...register('name')}
                                 />
