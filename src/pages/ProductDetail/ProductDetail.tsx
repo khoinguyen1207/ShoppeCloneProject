@@ -16,6 +16,8 @@ import { path } from 'src/constants/path'
 import Loading from 'src/components/Loading'
 import NotExist from '../NotExist'
 import { useTranslation } from 'react-i18next'
+import { Helmet } from 'react-helmet-async'
+import { convert } from 'html-to-text'
 
 export default function ProductDetail() {
     const { nameId } = useParams()
@@ -142,6 +144,17 @@ export default function ProductDetail() {
             {product ? (
                 <div className='bg-[#F5F5F5] py-6'>
                     <div className='container'>
+                        <Helmet>
+                            <title>{product.name}</title>
+                            <meta
+                                name='description'
+                                content={convert(product.description, {
+                                    limits: {
+                                        maxInputLength: 150
+                                    }
+                                })}
+                            />
+                        </Helmet>
                         <div className='bg-white p-4 shadow-sm'>
                             <div className='grid grid-cols-1 gap-5 sm:gap-9 md:grid-cols-12'>
                                 <div className='md:col-span-5'>

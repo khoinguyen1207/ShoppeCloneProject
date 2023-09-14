@@ -10,6 +10,7 @@ import { formatCurrency, generateNameId } from 'src/utils/utils'
 import nopurchase from 'src/assets/no-purchase.png'
 import Loading from 'src/components/Loading'
 import { useTranslation } from 'react-i18next'
+import { Helmet } from 'react-helmet-async'
 
 const tabLinkList = [
     {
@@ -52,6 +53,10 @@ export default function HistoryPurchase() {
 
     return (
         <div>
+            <Helmet>
+                <title>Đơn hàng | Shopee Clone</title>
+                <meta name='description' content='Trang đơn hàng dự án Shoppe Clone' />
+            </Helmet>
             <div className='overflow-x-auto'>
                 <div className='flex min-w-[800px] items-center rounded bg-[#FFFFFF] shadow'>
                     {tabLinkList.map((tabLink) => {

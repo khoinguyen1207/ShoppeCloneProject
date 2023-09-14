@@ -18,6 +18,7 @@ import { ErrorResponse } from 'src/types/utils.type'
 import InputFile from 'src/components/InputFile'
 import Loading from 'src/components/Loading'
 import { useTranslation } from 'react-i18next'
+import { Helmet } from 'react-helmet-async'
 
 type FormData = Pick<UserSchema, 'name' | 'address' | 'avatar' | 'phone' | 'date_of_birth'>
 type FormDataError = Omit<FormData, 'date_of_birth'> & {
@@ -116,6 +117,10 @@ export default function Profile() {
     return (
         <div className='rounded bg-[#FFFFFF] px-4 py-4 shadow sm:px-8 sm:py-8'>
             <Loading visible={isFetching} />
+            <Helmet>
+                <title>Hồ sơ | Shopee Clone</title>
+                <meta name='description' content='Trang hồ sơ dự án Shoppe Clone' />
+            </Helmet>
             <div className='border-b border-gray-300 pb-5'>
                 <h1 className='text-lg'>{t('profile.My Profile')}</h1>
                 <p className='text-sm text-gray-500'>{t('profile.Profile description')}</p>

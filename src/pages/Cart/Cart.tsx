@@ -11,6 +11,7 @@ import { toast } from 'react-toastify'
 import noproduct from 'src/assets/no-product.png'
 import { path } from 'src/constants/path'
 import { AppContext } from 'src/contexts/app.context'
+import { Helmet } from 'react-helmet-async'
 
 export default function Cart() {
     const { extendPurchase, setExtendPurchase } = useContext(AppContext)
@@ -144,6 +145,10 @@ export default function Cart() {
 
     return (
         <div className='bg-[#F5F5F5] py-10 text-base'>
+            <Helmet>
+                <title>Giỏ hàng | Shopee Clone</title>
+                <meta name='description' content='Trang giỏ hàng dự án Shoppe Clone' />
+            </Helmet>
             <div className='container'>
                 {purchaseInCart && purchaseInCart.length > 0 ? (
                     <>

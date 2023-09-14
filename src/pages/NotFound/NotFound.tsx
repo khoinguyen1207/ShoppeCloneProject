@@ -1,8 +1,13 @@
+import { Helmet } from 'react-helmet-async'
 import { Link } from 'react-router-dom'
 
 export default function NotFound() {
     return (
         <div className='flex h-[calc(100vh-80px)] w-full items-center justify-center bg-white p-5'>
+            <Helmet>
+                <title>Error | Shoppe Clone</title>
+                <meta name='description' content='Hệ thống hiện đang gặp lỗi' />
+            </Helmet>
             <div className='text-center'>
                 <div className='inline-flex rounded-full bg-yellow-100 p-4'>
                     <div className='rounded-full bg-yellow-200 stroke-yellow-600 p-4'>

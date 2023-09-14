@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
+import { Helmet } from 'react-helmet-async'
 import { useTranslation } from 'react-i18next'
 import categoryApi from 'src/apis/category.api'
 import productApi from 'src/apis/product.api'
@@ -29,6 +30,10 @@ export default function ProductList() {
     return (
         <div className='bg-[#F5F5F5] py-6'>
             <Loading visible={Boolean(!productData && !categoryData)} />
+            <Helmet>
+                <title>Trang chủ | Shopee Clone</title>
+                <meta name='description' content='Trang chủ của dự án Shoppe Clone' />
+            </Helmet>
             <div className='container'>
                 <div className='grid grid-cols-1 md:grid-cols-12'>
                     <div className='md:col-span-3'>

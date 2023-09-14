@@ -12,6 +12,7 @@ import { AppContext } from 'src/contexts/app.context'
 import Button from 'src/components/Button'
 import { path } from 'src/constants/path'
 import { useTranslation } from 'react-i18next'
+import { Helmet } from 'react-helmet-async'
 
 type FormData = Pick<Schema, 'password' | 'email'>
 const loginSchema = schema.pick(['email', 'password'])
@@ -64,6 +65,10 @@ export default function Login() {
     return (
         <div className=' bg-registerImage bg-cover bg-center bg-no-repeat'>
             <div className='container'>
+                <Helmet>
+                    <title>Đăng nhập | Shoppe Clone</title>
+                    <meta name='description' content='Đăng nhập vào dự án Shoppe Clone' />
+                </Helmet>
                 <div className='grid grid-cols-1 py-10 lg:grid-cols-5 lg:py-28 lg:pr-12'>
                     <div className='lg:col-span-2 lg:col-start-4'>
                         <form className='rounded bg-white p-5 shadow-sm sm:p-10' onSubmit={onSubmit}>

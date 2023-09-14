@@ -10,6 +10,7 @@ import { ErrorResponse } from 'src/types/utils.type'
 import { UserSchema, userSchema } from 'src/utils/rules'
 import { isAxiosUnprocessableEntityError } from 'src/utils/utils'
 import { useTranslation } from 'react-i18next'
+import { Helmet } from 'react-helmet-async'
 
 type FormData = Pick<UserSchema, 'password' | 'new_password' | 'confirm_password'>
 const passwordSchema = userSchema.pick(['password', 'new_password', 'confirm_password'])
@@ -54,6 +55,10 @@ export default function ChangePassword() {
 
     return (
         <div className='rounded bg-[#FFFFFF] px-4 py-4 shadow sm:px-8 sm:py-8'>
+            <Helmet>
+                <title>Đổi mật khẩu | Shopee Clone</title>
+                <meta name='description' content='Đổi mật khẩu cho tài khoản của dự án Shoppe Clone' />
+            </Helmet>
             <div className='border-b border-gray-300 pb-5'>
                 <h1 className='text-lg'>{t('changePassword.Change Password')}</h1>
                 <p className='text-sm text-gray-500'>{t('changePassword.changePassword desc')}</p>
