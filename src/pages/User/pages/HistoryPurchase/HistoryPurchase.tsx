@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query'
 import classNames from 'classnames'
 import { Link, createSearchParams } from 'react-router-dom'
 import purchasesApi from 'src/apis/purchases.api'
-import { path } from 'src/constants/path'
+import { ROUTES } from 'src/constants/routes'
 import { purchaseStatus } from 'src/constants/purchases'
 import useQueryParams from 'src/hooks/useQueryParams'
 import { PurchasesListStatus } from 'src/types/purchases.type'
@@ -65,15 +65,12 @@ export default function HistoryPurchase() {
                             <Link
                                 key={tabLink.id}
                                 to={{
-                                    pathname: path.historyPurchase,
+                                    pathname: ROUTES.HISTORY_PURCHASE,
                                     search: createSearchParams({ status: String(tabLink.id) }).toString()
                                 }}
-                                className={classNames(
-                                    'flex h-14 flex-1 items-center justify-center text-center hover:text-orange',
-                                    {
-                                        'border-b-2 border-orange text-orange': isActive
-                                    }
-                                )}
+                                className={classNames('flex h-14 flex-1 items-center justify-center text-center hover:text-orange', {
+                                    'border-b-2 border-orange text-orange': isActive
+                                })}
                             >
                                 {t(`purchase.${tabLink.id}`)}
                             </Link>
@@ -91,11 +88,7 @@ export default function HistoryPurchase() {
                                     className='flex items-center justify-center'
                                 >
                                     <div className='h-20 w-20 flex-shrink-0 border border-gray-300'>
-                                        <img
-                                            src={purchase.product.image}
-                                            className='h-full w-full object-cover'
-                                            alt='avatar-purchase'
-                                        />
+                                        <img src={purchase.product.image} className='h-full w-full object-cover' alt='avatar-purchase' />
                                     </div>
                                     <div className='flex min-w-0 flex-1 flex-wrap items-center px-3 sm:flex-nowrap sm:justify-between sm:px-0'>
                                         <div className='min-w-0 sm:px-3'>
@@ -111,23 +104,14 @@ export default function HistoryPurchase() {
                                             <span className='mr-2 text-xs text-gray-400 line-through sm:text-sm'>
                                                 {formatCurrency(purchase.price_before_discount)}
                                             </span>{' '}
-                                            <span className='text-base text-orange sm:text-lg'>
-                                                ₫{formatCurrency(purchase.product.price)}
-                                            </span>
+                                            <span className='text-base text-orange sm:text-lg'>₫{formatCurrency(purchase.product.price)}</span>
                                         </div>
                                     </div>
                                 </Link>
                             </div>
                             <div className='rounded border-t border-gray-300 bg-[#FFFEFB] px-3 py-3 text-right sm:px-6 sm:py-4'>
                                 <div className=' flex items-center justify-end'>
-                                    <svg
-                                        width={16}
-                                        height={17}
-                                        viewBox='0 0 253 263'
-                                        fill='none'
-                                        xmlns='http://www.w3.org/2000/svg'
-                                        className='mr-2'
-                                    >
+                                    <svg width={16} height={17} viewBox='0 0 253 263' fill='none' xmlns='http://www.w3.org/2000/svg' className='mr-2'>
                                         <title>Shopee Guarantee</title>
                                         <path
                                             fillRule='evenodd'
@@ -143,9 +127,7 @@ export default function HistoryPurchase() {
                                         />
                                     </svg>
                                     {t('purchase.Order Total')}:{' '}
-                                    <span className='ml-3 text-xl text-orange'>
-                                        ₫{formatCurrency(purchase.price * purchase.buy_count)}
-                                    </span>
+                                    <span className='ml-3 text-xl text-orange'>₫{formatCurrency(purchase.price * purchase.buy_count)}</span>
                                 </div>
                                 <Link
                                     to={`/${generateNameId(purchase.product.name, purchase.product._id)}`}

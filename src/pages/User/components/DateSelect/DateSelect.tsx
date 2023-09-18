@@ -38,9 +38,7 @@ export default function DateSelect({ onChange, errorMessage, value }: Props) {
 
     return (
         <div className='mt-3 items-center md:mt-3 md:flex'>
-            <div className='truncate capitalize  text-gray-500 md:w-[20%] md:pb-5 md:text-right'>
-                {t('profile.Date of birth')}
-            </div>
+            <div className='truncate capitalize  text-gray-500 md:w-[20%] md:pb-5 md:text-right'>{t('profile.Date of birth')}</div>
             <div className='md:w-[80%] md:pl-5'>
                 <div className='flex items-center justify-between'>
                     <select

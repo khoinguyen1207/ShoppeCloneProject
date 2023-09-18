@@ -15,11 +15,7 @@ export default function Product({ product }: PropsType) {
         <Link to={`/${generateNameId(product.name, product._id)}`}>
             <div className='overflow-hidden rounded-sm border border-gray-200 bg-[#FFFFFF] shadow transition-transform duration-100 hover:translate-y-[-0.0625rem] hover:shadow-md'>
                 <div className='relative w-full pt-[100%]'>
-                    <img
-                        src={product.image}
-                        alt='item'
-                        className='absolute left-0 top-0 h-full w-full bg-white object-cover'
-                    />
+                    <img src={product.image} alt='item' className='absolute left-0 top-0 h-full w-full bg-white object-cover' />
                 </div>
                 <div className='overflow-hidden px-2 py-3  text-sm'>
                     <div className='line-clamp-2 min-h-[2rem] text-xs '>{product.name}</div>

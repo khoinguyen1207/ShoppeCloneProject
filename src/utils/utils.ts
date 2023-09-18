@@ -1,7 +1,8 @@
 import userImage from 'src/assets/user-image.svg'
 import axios, { AxiosError } from 'axios'
-import { config } from 'src/constants/config'
+import { APP_CONSTANTS } from 'src/constants/appConstants'
 import HttpStatusCode from 'src/constants/httpStatusCode'
+import { ErrorResponse } from 'src/types/utils.type'
 
 // Nếu isAxiosError trả về true thì error có type là AxiosError
 export function isAxiosError<T>(error: unknown): error is AxiosError<T> {
@@ -12,6 +13,16 @@ export function isAxiosError<T>(error: unknown): error is AxiosError<T> {
 // check error có type là AxiosError và có status = 422
 export function isAxiosUnprocessableEntityError<FormError>(error: unknown): error is AxiosError<FormError> {
     return isAxiosError(error) && error.response?.status === HttpStatusCode.UnprocessableEntity
+}
+
+// check error có type là AxiosError và có status = 401
+export function isAxiosUnauthorizedError<UnauthorizedError>(error: unknown): error is AxiosError<UnauthorizedError> {
+    return isAxiosError(error) && error.response?.status === HttpStatusCode.Unauthorized
+}
+
+// check error có type là AxiosError, có status = 401 và lỗi token hết hạn
+export function isAxiosExpiredTokenError<ExpireTokenError>(error: unknown): error is AxiosError<ExpireTokenError> {
+    return isAxiosUnauthorizedError<ErrorResponse<{ name: string; message: string }>>(error) && error.response?.data?.data?.name === 'EXPIRED_TOKEN'
 }
 
 export function formatCurrency(currency: number) {
@@ -46,5 +57,4 @@ export const getIdFromNameId = (nameId: string) => {
     return arr[arr.length - 1]
 }
 
-export const getAvatarUrl = (avatarName?: string) =>
-    avatarName ? `${config.BASE_URL}/images/${avatarName}` : userImage
+export const getAvatarUrl = (avatarName?: string) => (avatarName ? `${APP_CONSTANTS.BASE_URL}/images/${avatarName}` : userImage)

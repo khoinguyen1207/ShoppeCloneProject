@@ -34,10 +34,7 @@ export default function CartHeader() {
                                     className='flex-grow px-2 text-black outline-none'
                                     {...register('name')}
                                 />
-                                <button
-                                    type='submit'
-                                    className='flex-shrink-0 border-none bg-orange px-8 py-2 hover:bg-orange/80'
-                                >
+                                <button type='submit' className='flex-shrink-0 border-none bg-orange px-8 py-2 hover:bg-orange/80'>
                                     <svg
                                         xmlns='http://www.w3.org/2000/svg'
                                         fill='none'

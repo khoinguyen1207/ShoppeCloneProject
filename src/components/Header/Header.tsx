@@ -3,7 +3,7 @@ import Popover from '../Popover/Popover'
 import { useQuery } from '@tanstack/react-query'
 import { useContext, useState } from 'react'
 import { AppContext } from 'src/contexts/app.context'
-import { path } from 'src/constants/path'
+import { ROUTES } from 'src/constants/routes'
 import { purchaseStatus } from 'src/constants/purchases'
 import purchasesApi from 'src/apis/purchases.api'
 import { formatCurrency, generateNameId } from 'src/utils/utils'
@@ -39,10 +39,7 @@ export default function Header() {
                             </svg>
                         </Link>
                     </div>
-                    <form
-                        onSubmit={onSubmitSearch}
-                        className='mx-6 hidden flex-grow bg-slate-500 sm:block md:mx-10 lg:mx-28'
-                    >
+                    <form onSubmit={onSubmitSearch} className='mx-6 hidden flex-grow bg-slate-500 sm:block md:mx-10 lg:mx-28'>
                         <div className='flex rounded-sm bg-white p-1'>
                             <input
                                 type='text'
@@ -97,38 +94,23 @@ export default function Header() {
                                             <div className='px-2 py-3 capitalize text-gray-400'>Sản phẩm mới thêm</div>
                                             {purchaseInCart.slice(0, 5).map((purchase) => {
                                                 return (
-                                                    <Link
-                                                        to={`/${generateNameId(
-                                                            purchase.product.name,
-                                                            purchase.product._id
-                                                        )}`}
-                                                        key={purchase._id}
-                                                    >
+                                                    <Link to={`/${generateNameId(purchase.product.name, purchase.product._id)}`} key={purchase._id}>
                                                         <div className='flex cursor-pointer items-center px-2 py-3 hover:bg-[#f8f8f8]'>
                                                             <div className='flex-shrink-0 border border-gray-300'>
-                                                                <img
-                                                                    src={purchase.product.image}
-                                                                    alt='item-avatar'
-                                                                    className='h-11 w-11'
-                                                                />
+                                                                <img src={purchase.product.image} alt='item-avatar' className='h-11 w-11' />
                                                             </div>
-                                                            <div className='ml-3 mr-10 flex-grow-0 truncate'>
-                                                                {purchase.product.name}
-                                                            </div>
-                                                            <div className='flex-shrink-0 text-orange'>
-                                                                ₫{formatCurrency(purchase.product.price)}
-                                                            </div>
+                                                            <div className='ml-3 mr-10 flex-grow-0 truncate'>{purchase.product.name}</div>
+                                                            <div className='flex-shrink-0 text-orange'>₫{formatCurrency(purchase.product.price)}</div>
                                                         </div>
                                                     </Link>
                                                 )
                                             })}
                                             <div className='flex items-center justify-between px-2 py-3'>
                                                 <div className=' text-xs text-gray-500'>
-                                                    {purchaseInCart.length > 5 && purchaseInCart.length - 5} Thêm hàng
-                                                    vào giỏ
+                                                    {purchaseInCart.length > 5 && purchaseInCart.length - 5} Thêm hàng vào giỏ
                                                 </div>
                                                 <Link
-                                                    to={path.cart}
+                                                    to={ROUTES.CART}
                                                     className='rounded-sm bg-orange px-4 py-2 capitalize text-white hover:opacity-60'
                                                 >
                                                     Xem giỏ hàng
@@ -148,13 +130,8 @@ export default function Header() {
                             setPlacement='bottom-end'
                             crossAxis={20}
                         >
-                            <Link to={path.cart} className='relative' aria-label='Return to the cart page'>
-                                <svg
-                                    xmlns='http://www.w3.org/2000/svg'
-                                    viewBox='0 0 20 20'
-                                    fill='currentColor'
-                                    className='h-6 w-6'
-                                >
+                            <Link to={ROUTES.CART} className='relative' aria-label='Return to the cart page'>
+                                <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='currentColor' className='h-6 w-6'>
                                     <path d='M1 1.75A.75.75 0 011.75 1h1.628a1.75 1.75 0 011.734 1.51L5.18 3a65.25 65.25 0 0113.36 1.412.75.75 0 01.58.875 48.645 48.645 0 01-1.618 6.2.75.75 0 01-.712.513H6a2.503 2.503 0 00-2.292 1.5H17.25a.75.75 0 010 1.5H2.76a.75.75 0 01-.748-.807 4.002 4.002 0 012.716-3.486L3.626 2.716a.25.25 0 00-.248-.216H1.75A.75.75 0 011 1.75zM6 17.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM15.5 19a1.5 1.5 0 100-3 1.5 1.5 0 000 3z' />
                                 </svg>
                                 {purchaseInCart && purchaseInCart?.length > 0 && (
@@ -175,10 +152,7 @@ export default function Header() {
                                 className='flex-grow px-2 text-black outline-none'
                                 {...register('name')}
                             />
-                            <button
-                                type='submit'
-                                className='flex-shrink-0 rounded-sm border-none bg-orange px-4 py-1 hover:opacity-70'
-                            >
+                            <button type='submit' className='flex-shrink-0 rounded-sm border-none bg-orange px-4 py-1 hover:opacity-70'>
                                 <svg
                                     xmlns='http://www.w3.org/2000/svg'
                                     fill='none'

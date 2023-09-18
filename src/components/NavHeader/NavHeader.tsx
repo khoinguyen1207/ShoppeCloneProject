@@ -2,7 +2,7 @@ import { useContext } from 'react'
 import Popover from '../Popover/Popover'
 import { AppContext } from 'src/contexts/app.context'
 import { Link } from 'react-router-dom'
-import { path } from 'src/constants/path'
+import { ROUTES } from 'src/constants/routes'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import authApi from 'src/apis/auth.api'
 import { purchaseStatus } from 'src/constants/purchases'
@@ -40,22 +40,12 @@ export default function NavHeader() {
                 <div className='flex cursor-pointer items-center border-l-[1px] px-2 hover:text-gray-200'>
                     <div className=''> {t('nav header.follow us on')}</div>
                     <a href='https://www.facebook.com/profile.php?id=100023516113906' className='px-2'>
-                        <svg
-                            className='h-4 w-4 fill-white'
-                            role='img'
-                            xmlns='http://www.w3.org/2000/svg'
-                            viewBox='0 0 24 24'
-                        >
+                        <svg className='h-4 w-4 fill-white' role='img' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'>
                             <path d='M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z' />
                         </svg>
                     </a>
                     <a href='https://www.linkedin.com/in/khoi-nguyen-ba7966201/'>
-                        <svg
-                            xmlns='http://www.w3.org/2000/svg'
-                            className='h-[18px] w-[18px] fill-white'
-                            role='img'
-                            viewBox='0 0 448 512'
-                        >
+                        <svg xmlns='http://www.w3.org/2000/svg' className='h-[18px] w-[18px] fill-white' role='img' viewBox='0 0 448 512'>
                             <path d='M100.28 448H7.4V148.9h92.88zM53.79 108.1C24.09 108.1 0 83.5 0 53.8a53.79 53.79 0 0 1 107.58 0c0 29.7-24.1 54.3-53.79 54.3zM447.9 448h-92.68V302.4c0-34.7-.7-79.2-48.29-79.2-48.29 0-55.69 37.7-55.69 76.7V448h-92.78V148.9h89.08v40.8h1.3c12.4-23.5 42.69-48.3 87.88-48.3 94 0 111.28 61.9 111.28 142.3V448z' />
                         </svg>
                     </a>
@@ -105,11 +95,11 @@ export default function NavHeader() {
                 </Popover>
                 {!isAuthenticated && (
                     <div className='ml-2 flex items-center'>
-                        <Link to={path.login} className='mx-3 cursor-pointer hover:text-gray-200'>
+                        <Link to={ROUTES.LOGIN} className='mx-3 cursor-pointer hover:text-gray-200'>
                             {t('nav header.login')}
                         </Link>
                         <div className='h-4 border-r border-r-white' />
-                        <Link to={path.register} className='ml-3 cursor-pointer hover:text-gray-200'>
+                        <Link to={ROUTES.REGISTER} className='ml-3 cursor-pointer hover:text-gray-200'>
                             {t('nav header.register')}
                         </Link>
                     </div>
@@ -120,10 +110,10 @@ export default function NavHeader() {
                         renderPopover={
                             <div className='relative rounded-sm bg-white shadow-md'>
                                 <div className='flex flex-col px-2 py-1 '>
-                                    <Link to={path.profile} className='px-3 py-2 text-left hover:text-orange'>
+                                    <Link to={ROUTES.PROFILE} className='px-3 py-2 text-left hover:text-orange'>
                                         {t('profile:sideNav.my account')}
                                     </Link>
-                                    <Link to={path.historyPurchase} className='px-3 py-2 text-left hover:text-orange'>
+                                    <Link to={ROUTES.HISTORY_PURCHASE} className='px-3 py-2 text-left hover:text-orange'>
                                         {t('profile:sideNav.my purchase')}
                                     </Link>
                                     <button onClick={handleLogout} className='px-3 py-2 text-left hover:text-orange'>
@@ -134,11 +124,7 @@ export default function NavHeader() {
                         }
                     >
                         <div className='mr-1 h-5 w-5 overflow-hidden rounded-full '>
-                            <img
-                                src={getAvatarUrl(profile?.avatar)}
-                                alt='Avatar'
-                                className='h-full w-full object-cover'
-                            />
+                            <img src={getAvatarUrl(profile?.avatar)} alt='Avatar' className='h-full w-full object-cover' />
                         </div>
                         <span className='max-w-[130px] truncate'>{profile?.name || profile?.email}</span>
                     </Popover>

@@ -7,17 +7,21 @@ interface BodyUpdateUser extends Omit<User, '_id' | 'roles' | 'email' | 'created
     new_password?: string
 }
 
+const URL_GET_PROFILE = 'me'
+const URL_UPDATE_PROFILE = 'user'
+const URL_UPLOAD_AVATAR = 'user/upload-avatar'
+
 const userApi = {
     getUser() {
-        return http.get<SuccessResponse<User>>('/me')
+        return http.get<SuccessResponse<User>>(URL_GET_PROFILE)
     },
 
     updateProfile(body: BodyUpdateUser) {
-        return http.put<SuccessResponse<User>>('/user', body)
+        return http.put<SuccessResponse<User>>(URL_UPDATE_PROFILE, body)
     },
 
     uploadAvatar(body: FormData) {
-        return http.post<SuccessResponse<string>>('/user/upload-avatar', body, {
+        return http.post<SuccessResponse<string>>(URL_UPLOAD_AVATAR, body, {
             headers: { 'Content-Type': 'multipart/form-data' }
         })
     }

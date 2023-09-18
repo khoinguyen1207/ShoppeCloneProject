@@ -12,7 +12,7 @@ import { formatCurrency, formatNumberToSocialStyle, getIdFromNameId, rateSale } 
 import { toast } from 'react-toastify'
 import { purchaseStatus } from 'src/constants/purchases'
 import { AppContext } from 'src/contexts/app.context'
-import { path } from 'src/constants/path'
+import { ROUTES } from 'src/constants/routes'
 import Loading from 'src/components/Loading'
 import NotExist from '../NotExist'
 import { useTranslation } from 'react-i18next'
@@ -119,7 +119,7 @@ export default function ProductDetail() {
                 }
             )
         } else {
-            navigate(path.login)
+            navigate(ROUTES.LOGIN)
         }
     }
 
@@ -127,13 +127,13 @@ export default function ProductDetail() {
         if (isAuthenticated) {
             const res = await addToCartMutation.mutateAsync({ buy_count: buyCount, product_id: product?._id as string })
             const purchaseId = res.data.data._id
-            navigate(path.cart, {
+            navigate(ROUTES.CART, {
                 state: {
                     purchaseId
                 }
             })
         } else {
-            navigate(path.login)
+            navigate(ROUTES.LOGIN)
         }
     }
 
@@ -171,10 +171,7 @@ export default function ProductDetail() {
                                         />
                                     </div>
                                     <div className='relative mt-4 grid grid-cols-5 gap-2'>
-                                        <button
-                                            onClick={previous}
-                                            className='absolute left-0 top-1/2 z-10 h-9 w-5 -translate-y-1/2 bg-black/30'
-                                        >
+                                        <button onClick={previous} className='absolute left-0 top-1/2 z-10 h-9 w-5 -translate-y-1/2 bg-black/30'>
                                             <svg
                                                 xmlns='http://www.w3.org/2000/svg'
                                                 fill='none'
@@ -183,36 +180,23 @@ export default function ProductDetail() {
                                                 stroke='currentColor'
                                                 className='h-6 w-6 text-white'
                                             >
-                                                <path
-                                                    strokeLinecap='round'
-                                                    strokeLinejoin='round'
-                                                    d='M15.75 19.5L8.25 12l7.5-7.5'
-                                                />
+                                                <path strokeLinecap='round' strokeLinejoin='round' d='M15.75 19.5L8.25 12l7.5-7.5' />
                                             </svg>
                                         </button>
                                         {currentImages.map((img) => {
                                             const isActive = img === activeImage
                                             return (
-                                                <div
-                                                    key={img}
-                                                    className='relative w-full pt-[100%]'
-                                                    onMouseEnter={() => chooseImages(img)}
-                                                >
+                                                <div key={img} className='relative w-full pt-[100%]' onMouseEnter={() => chooseImages(img)}>
                                                     <img
                                                         src={img}
                                                         alt={product.name}
                                                         className='absolute left-0 top-0 h-full w-full cursor-pointer bg-white object-cover'
                                                     />
-                                                    {isActive && (
-                                                        <div className='absolute inset-0 border-2 border-orange' />
-                                                    )}
+                                                    {isActive && <div className='absolute inset-0 border-2 border-orange' />}
                                                 </div>
                                             )
                                         })}
-                                        <button
-                                            onClick={next}
-                                            className='absolute right-0 top-1/2 z-10 h-9 w-5 -translate-y-1/2 bg-black/30'
-                                        >
+                                        <button onClick={next} className='absolute right-0 top-1/2 z-10 h-9 w-5 -translate-y-1/2 bg-black/30'>
                                             <svg
                                                 xmlns='http://www.w3.org/2000/svg'
                                                 fill='none'
@@ -221,11 +205,7 @@ export default function ProductDetail() {
                                                 stroke='currentColor'
                                                 className='h-6 w-6 text-white'
                                             >
-                                                <path
-                                                    strokeLinecap='round'
-                                                    strokeLinejoin='round'
-                                                    d='M8.25 4.5l7.5 7.5-7.5 7.5'
-                                                />
+                                                <path strokeLinecap='round' strokeLinejoin='round' d='M8.25 4.5l7.5 7.5-7.5 7.5' />
                                             </svg>
                                         </button>
                                     </div>
@@ -239,9 +219,7 @@ export default function ProductDetail() {
                                     </h1>
                                     <div className='mt-2 flex items-center md:mt-6'>
                                         <div className='flex items-start'>
-                                            <span className='mr-2 border-b border-b-orange text-orange'>
-                                                {product.rating}
-                                            </span>
+                                            <span className='mr-2 border-b border-b-orange text-orange'>{product.rating}</span>
                                             <ProductRating
                                                 rating={product.rating}
                                                 activeClassName='h-4 w-4 fill-orange'
@@ -259,9 +237,7 @@ export default function ProductDetail() {
                                             <div className='text-xs text-gray-500 line-through md:text-base'>
                                                 ₫{formatCurrency(product.price_before_discount)}
                                             </div>
-                                            <div className='ml-3 text-2xl font-medium text-orange sm:text-3xl'>
-                                                ₫{formatCurrency(product.price)}
-                                            </div>
+                                            <div className='ml-3 text-2xl font-medium text-orange sm:text-3xl'>₫{formatCurrency(product.price)}</div>
                                             <div className='ml-4 rounded-sm bg-orange px-2 text-xs font-semibold uppercase text-white sm:text-sm'>
                                                 {rateSale(product.price_before_discount, product.price)} {t('sale off')}
                                             </div>
@@ -339,12 +315,8 @@ export default function ProductDetail() {
                                         </div>
                                     </div>
                                     <div className='mt-4 flex items-center sm:mt-8'>
-                                        <div className='min-w-[120px] capitalize text-gray-500'>
-                                            {t('hot deal title')}
-                                        </div>
-                                        <div className='rounded-sm bg-orange/10 px-2 py-1 text-orange'>
-                                            {t('add-on deal')}
-                                        </div>
+                                        <div className='min-w-[120px] capitalize text-gray-500'>{t('hot deal title')}</div>
+                                        <div className='rounded-sm bg-orange/10 px-2 py-1 text-orange'>{t('add-on deal')}</div>
                                     </div>
                                     <div className='mt-4 flex items-start sm:mt-8'>
                                         <div className='min-w-[120px] capitalize text-gray-500'>{t('Shipping')}</div>
@@ -375,28 +347,9 @@ export default function ProductDetail() {
                                                             y1='9.8'
                                                             y2='9.8'
                                                         />
-                                                        <circle
-                                                            cx={3}
-                                                            cy='11.2'
-                                                            fill='none'
-                                                            r={2}
-                                                            strokeMiterlimit={10}
-                                                        />
-                                                        <circle
-                                                            cx={10}
-                                                            cy='11.2'
-                                                            fill='none'
-                                                            r={2}
-                                                            strokeMiterlimit={10}
-                                                        />
-                                                        <line
-                                                            fill='none'
-                                                            strokeMiterlimit={10}
-                                                            x1='10.5'
-                                                            x2='14.4'
-                                                            y1='7.3'
-                                                            y2='7.3'
-                                                        />
+                                                        <circle cx={3} cy='11.2' fill='none' r={2} strokeMiterlimit={10} />
+                                                        <circle cx={10} cy='11.2' fill='none' r={2} strokeMiterlimit={10} />
+                                                        <line fill='none' strokeMiterlimit={10} x1='10.5' x2='14.4' y1='7.3' y2='7.3' />
                                                         <polyline
                                                             fill='none'
                                                             points='1.5 9.8 .5 9.8 .5 1.8 10 1.8 10 9.1'
@@ -412,11 +365,9 @@ export default function ProductDetail() {
                                                     </g>
                                                 </svg>
                                                 <div className='ml-2 text-gray-500'>
-                                                    {t('Shipping To')}{' '}
-                                                    <span className='ml-2 text-base text-black'>Vĩnh Long</span>
+                                                    {t('Shipping To')} <span className='ml-2 text-base text-black'>Vĩnh Long</span>
                                                     <div className='mt-2 capitalize'>
-                                                        {t('Shipping Fee')}{' '}
-                                                        <span className='ml-2 text-base text-black'>₫0</span>
+                                                        {t('Shipping Fee')} <span className='ml-2 text-base text-black'>₫0</span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -459,24 +410,8 @@ export default function ProductDetail() {
                                                         <circle cx={6} cy='13.5' r={1} stroke='none' />
                                                         <circle cx='11.5' cy='13.5' r={1} stroke='none' />
                                                     </g>
-                                                    <line
-                                                        fill='none'
-                                                        strokeLinecap='round'
-                                                        strokeMiterlimit={10}
-                                                        x1='7.5'
-                                                        x2='10.5'
-                                                        y1={7}
-                                                        y2={7}
-                                                    />
-                                                    <line
-                                                        fill='none'
-                                                        strokeLinecap='round'
-                                                        strokeMiterlimit={10}
-                                                        x1={9}
-                                                        x2={9}
-                                                        y1='8.5'
-                                                        y2='5.5'
-                                                    />
+                                                    <line fill='none' strokeLinecap='round' strokeMiterlimit={10} x1='7.5' x2='10.5' y1={7} y2={7} />
+                                                    <line fill='none' strokeLinecap='round' strokeMiterlimit={10} x1={9} x2={9} y1='8.5' y2='5.5' />
                                                 </g>
                                             </svg>
                                             {t('add to cart')}
@@ -492,9 +427,7 @@ export default function ProductDetail() {
                             </div>
                         </div>
                         <div className='mt-8 bg-white p-4 shadow-sm'>
-                            <div className='caption-top rounded-sm bg-gray-100 p-2 text-sm sm:p-4 sm:text-lg'>
-                                {t('Product Description')}
-                            </div>
+                            <div className='caption-top rounded-sm bg-gray-100 p-2 text-sm sm:p-4 sm:text-lg'>{t('Product Description')}</div>
                             <div className='mt-4 px-2 text-xs sm:mt-8 sm:px-4 sm:text-base'>
                                 <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(product.description) }} />
                             </div>

@@ -1,5 +1,5 @@
 import { Link, createSearchParams, useNavigate } from 'react-router-dom'
-import { path } from 'src/constants/path'
+import { ROUTES } from 'src/constants/routes'
 import Button from '../Button'
 import { Category } from 'src/types/category.type'
 import classNames from 'classnames'
@@ -42,7 +42,7 @@ export default function AsideFilter({ queryConfig, categories }: Props) {
 
     const onSubmit = handleSubmit((data) => {
         navigate({
-            pathname: path.home,
+            pathname: ROUTES.HOME,
             search: createSearchParams({
                 ...queryConfig,
                 price_min: data.price_min,
@@ -53,10 +53,8 @@ export default function AsideFilter({ queryConfig, categories }: Props) {
 
     const handleRemoveFilter = () => {
         navigate({
-            pathname: path.home,
-            search: createSearchParams(
-                omit(queryConfig, ['price_min', 'price_max', 'category', 'rating_filter', 'name'])
-            ).toString()
+            pathname: ROUTES.HOME,
+            search: createSearchParams(omit(queryConfig, ['price_min', 'price_max', 'category', 'rating_filter', 'name'])).toString()
         })
         reset()
     }
@@ -64,7 +62,7 @@ export default function AsideFilter({ queryConfig, categories }: Props) {
     return (
         <div className='mr-0 py-4 font-bold md:mr-6 '>
             <Link
-                to={path.home}
+                to={ROUTES.HOME}
                 className={classNames('flex items-center capitalize', {
                     'text-orange': !category,
                     'text-black': category
@@ -94,7 +92,7 @@ export default function AsideFilter({ queryConfig, categories }: Props) {
                             <li className='py-2' key={categoryItem._id}>
                                 <Link
                                     to={{
-                                        pathname: path.home,
+                                        pathname: ROUTES.HOME,
                                         search: createSearchParams(
                                             omit(
                                                 {
@@ -126,14 +124,8 @@ export default function AsideFilter({ queryConfig, categories }: Props) {
                     })}
                 </ul>
             </div>
-            <Link to={path.home} className='flex items-center pt-5 uppercase'>
-                <svg
-                    enableBackground='new 0 0 15 15'
-                    viewBox='0 0 15 15'
-                    x={0}
-                    y={0}
-                    className='mr-3 h-3 w-3 fill-black stroke-current'
-                >
+            <Link to={ROUTES.HOME} className='flex items-center pt-5 uppercase'>
+                <svg enableBackground='new 0 0 15 15' viewBox='0 0 15 15' x={0} y={0} className='mr-3 h-3 w-3 fill-black stroke-current'>
                     <g>
                         <polyline
                             fill='none'
@@ -187,12 +179,8 @@ export default function AsideFilter({ queryConfig, categories }: Props) {
                             }}
                         />
                     </div>
-                    <div className='py-2  text-center text-orange'>
-                        {errors.price_min?.message && t(`error:errorMessage.invalid price`)}
-                    </div>
-                    <Button className='w-full rounded-sm bg-orange p-[5px] text-sm uppercase text-white'>
-                        {t('aside filter.apply')}
-                    </Button>
+                    <div className='py-2  text-center text-orange'>{errors.price_min?.message && t(`error:errorMessage.invalid price`)}</div>
+                    <Button className='w-full rounded-sm bg-orange p-[5px] text-sm uppercase text-white'>{t('aside filter.apply')}</Button>
                 </form>
             </div>
             <div className='mt-3 border-[1px] border-gray-200' />
@@ -201,10 +189,7 @@ export default function AsideFilter({ queryConfig, categories }: Props) {
                 <RatingStars queryConfig={queryConfig} />
             </div>
             <div className='mt-3 border-[1px] border-gray-200' />
-            <Button
-                onClick={handleRemoveFilter}
-                className='mt-5 w-full rounded-sm bg-orange p-[5px] text-sm font-normal uppercase text-white'
-            >
+            <Button onClick={handleRemoveFilter} className='mt-5 w-full rounded-sm bg-orange p-[5px] text-sm font-normal uppercase text-white'>
                 {t('aside filter.clear all')}
             </Button>
         </div>

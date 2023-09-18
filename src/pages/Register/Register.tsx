@@ -11,7 +11,7 @@ import { ErrorResponse } from 'src/types/utils.type'
 import { useContext } from 'react'
 import { AppContext } from 'src/contexts/app.context'
 import Button from 'src/components/Button'
-import { path } from 'src/constants/path'
+import { ROUTES } from 'src/constants/routes'
 import { useTranslation } from 'react-i18next'
 import { Helmet } from 'react-helmet-async'
 
@@ -27,8 +27,13 @@ export default function Register() {
         register,
         handleSubmit,
         setError,
-        formState: { errors }
+        formState: { errors, isDirty }
     } = useForm<FormData>({
+        defaultValues: {
+            email: '',
+            password: '',
+            confirm_password: ''
+        },
         resolver: yupResolver(registerSchema)
     })
 
@@ -81,13 +86,7 @@ export default function Register() {
                                 name='email'
                                 placeholder='Email'
                                 className='mt-2 sm:mt-6'
-                                errorMessage={
-                                    errors.email &&
-                                    t(
-                                        `error:errorMessage.email.${errors.email.type}`,
-                                        'error:errorMessage.notTypeError'
-                                    )
-                                }
+                                errorMessage={errors.email && t(`error:errorMessage.email.${errors.email.type}`, 'error:errorMessage.notTypeError')}
                             />
                             <Input
                                 type='password'
@@ -96,11 +95,7 @@ export default function Register() {
                                 placeholder={t('profile:profile.Password')}
                                 className='mt-2'
                                 errorMessage={
-                                    errors.password &&
-                                    t(
-                                        `error:errorMessage.password.${errors.password.type}`,
-                                        'error:errorMessage.notTypeError'
-                                    )
+                                    errors.password && t(`error:errorMessage.password.${errors.password.type}`, 'error:errorMessage.notTypeError')
                                 }
                             />
                             <Input
@@ -111,10 +106,7 @@ export default function Register() {
                                 className='mt-2'
                                 errorMessage={
                                     errors.confirm_password &&
-                                    t(
-                                        `error:errorMessage.confirm password.${errors.confirm_password.type}`,
-                                        'error:errorMessage.notTypeError'
-                                    )
+                                    t(`error:errorMessage.confirm password.${errors.confirm_password.type}`, 'error:errorMessage.notTypeError')
                                 }
                             />
                             <div className='mt-2'>
@@ -122,17 +114,15 @@ export default function Register() {
                                     type='submit'
                                     className='w-full rounded-sm bg-red-500 py-2 text-center text-sm uppercase text-white hover:bg-red-400 sm:py-4'
                                     isLoading={registerAccountMutation.isLoading}
-                                    disabled={registerAccountMutation.isLoading}
+                                    disabled={!isDirty}
                                 >
                                     {t('nav header.register')}
                                 </Button>
                             </div>
                             <div className='mt-3 sm:mt-4'>
                                 <div className='flex flex-wrap justify-center'>
-                                    <span className='text-xs text-gray-400 sm:text-base'>
-                                        {t('nav header.Have an account?')}
-                                    </span>
-                                    <Link to={path.login} className='ml-2 text-xs text-red-500 sm:text-base'>
+                                    <span className='text-xs text-gray-400 sm:text-base'>{t('nav header.Have an account?')}</span>
+                                    <Link to={ROUTES.LOGIN} className='ml-2 text-xs text-red-500 sm:text-base'>
                                         {t('nav header.login')}
                                     </Link>
                                 </div>

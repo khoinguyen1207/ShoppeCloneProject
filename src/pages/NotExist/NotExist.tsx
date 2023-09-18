@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { path } from 'src/constants/path'
+import { ROUTES } from 'src/constants/routes'
 
 export default function NotExist() {
     return (
@@ -20,16 +20,11 @@ export default function NotExist() {
                 <h1 className='mt-5 text-[20px] font-bold text-slate-800 lg:text-[30px]'>Sản phẩm không tồn tại</h1>
                 <div className='mt-6 inline-block'>
                     <Link
-                        to={path.home}
+                        to={ROUTES.HOME}
                         className='flex items-center space-x-2 rounded bg-orange px-4 py-2 text-white transition duration-150 hover:bg-[#d73211]'
                         title='Return Home'
                     >
-                        <svg
-                            xmlns='http://www.w3.org/2000/svg'
-                            className='h-5 w-5'
-                            viewBox='0 0 20 20'
-                            fill='currentColor'
-                        >
+                        <svg xmlns='http://www.w3.org/2000/svg' className='h-5 w-5' viewBox='0 0 20 20' fill='currentColor'>
                             <path
                                 fillRule='evenodd'
                                 d='M9.707 14.707a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 1.414L7.414 9H15a1 1 0 110 2H7.414l2.293 2.293a1 1 0 010 1.414z'

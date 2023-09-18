@@ -17,9 +17,7 @@ export default function RegisterHeader() {
                                 </g>
                             </svg>
                         </Link>
-                        <div className='px-4 text-base lg:text-2xl'>
-                            {isModeRegister ? t('nav header.register') : t('nav header.login')}
-                        </div>
+                        <div className='px-4 text-base lg:text-2xl'>{isModeRegister ? t('nav header.register') : t('nav header.login')}</div>
                     </div>
                     <div className=' cursor-pointer text-sm text-orange lg:text-sm'>{t('nav header.Need help?')}</div>
                 </nav>

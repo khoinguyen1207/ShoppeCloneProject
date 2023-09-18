@@ -10,7 +10,7 @@ import Input from 'src/components/Input'
 import { useContext } from 'react'
 import { AppContext } from 'src/contexts/app.context'
 import Button from 'src/components/Button'
-import { path } from 'src/constants/path'
+import { ROUTES } from 'src/constants/routes'
 import { useTranslation } from 'react-i18next'
 import { Helmet } from 'react-helmet-async'
 
@@ -26,8 +26,12 @@ export default function Login() {
         register,
         handleSubmit,
         setError,
-        formState: { errors }
+        formState: { errors, isDirty }
     } = useForm<FormData>({
+        defaultValues: {
+            email: '',
+            password: ''
+        },
         resolver: yupResolver(loginSchema)
     })
 
@@ -79,13 +83,7 @@ export default function Login() {
                                 name='email'
                                 placeholder='Email'
                                 className='mt-2 sm:mt-6'
-                                errorMessage={
-                                    errors.email &&
-                                    t(
-                                        `error:errorMessage.email.${errors.email.type}`,
-                                        'error:errorMessage.notTypeError'
-                                    )
-                                }
+                                errorMessage={errors.email && t(`error:errorMessage.email.${errors.email.type}`, 'error:errorMessage.notTypeError')}
                             />
                             <Input
                                 type='password'
@@ -94,11 +92,7 @@ export default function Login() {
                                 placeholder={t('profile:profile.Password')}
                                 className='mt-2'
                                 errorMessage={
-                                    errors.password &&
-                                    t(
-                                        `error:errorMessage.password.${errors.password.type}`,
-                                        'error:errorMessage.notTypeError'
-                                    )
+                                    errors.password && t(`error:errorMessage.password.${errors.password.type}`, 'error:errorMessage.notTypeError')
                                 }
                             />
                             <div className='mt-2'>
@@ -106,17 +100,15 @@ export default function Login() {
                                     type='submit'
                                     className='w-full rounded-sm bg-red-500 py-2 text-center text-sm uppercase text-white hover:bg-red-400 sm:py-4'
                                     isLoading={loginMutation.isLoading}
-                                    disabled={loginMutation.isLoading}
+                                    disabled={!isDirty}
                                 >
                                     {t('nav header.login')}
                                 </Button>
                             </div>
                             <div className='mt-3 sm:mt-4'>
                                 <div className='flex flex-wrap justify-center'>
-                                    <span className='text-xs text-gray-400 sm:text-base'>
-                                        {t('nav header.New to Shopee?')}
-                                    </span>
-                                    <Link to={path.register} className='ml-2 text-xs text-red-500 sm:text-base'>
+                                    <span className='text-xs text-gray-400 sm:text-base'>{t('nav header.New to Shopee?')}</span>
+                                    <Link to={ROUTES.REGISTER} className='ml-2 text-xs text-red-500 sm:text-base'>
                                         {t('nav header.register')}
                                     </Link>
                                 </div>

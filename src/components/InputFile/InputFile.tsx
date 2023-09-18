@@ -1,6 +1,6 @@
 import { Fragment, useRef } from 'react'
 import { toast } from 'react-toastify'
-import { config } from 'src/constants/config'
+import { APP_CONSTANTS } from 'src/constants/appConstants'
 import { useTranslation } from 'react-i18next'
 
 interface Props {
@@ -17,10 +17,7 @@ export default function InputFile({ onChange }: Props) {
 
     const handleOnChangeFile = (event: React.ChangeEvent<HTMLInputElement>) => {
         const fileFromLocal = event.target.files?.[0]
-        if (
-            fileFromLocal &&
-            (fileFromLocal.size >= config.maxsizeUploadAvatar || !fileFromLocal.type.includes('image'))
-        ) {
+        if (fileFromLocal && (fileFromLocal.size >= APP_CONSTANTS.MAX_SIZE_UPLOAD_AVATAR || !fileFromLocal.type.includes('image'))) {
             toast.error(`Dung lượng file tối đa 1 MB. Định dạng: .JPG, .JPEG, .PNG`, { autoClose: 1500 })
         } else {
             onChange && onChange(fileFromLocal)

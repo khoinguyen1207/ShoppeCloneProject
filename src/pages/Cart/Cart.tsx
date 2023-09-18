@@ -9,7 +9,7 @@ import { produce } from 'immer'
 import classNames from 'classnames'
 import { toast } from 'react-toastify'
 import noproduct from 'src/assets/no-product.png'
-import { path } from 'src/constants/path'
+import { ROUTES } from 'src/constants/routes'
 import { AppContext } from 'src/contexts/app.context'
 import { Helmet } from 'react-helmet-async'
 
@@ -196,20 +196,11 @@ export default function Cart() {
                                                         </div>
                                                         <div className='col-span-7 text-black'>
                                                             <Link
-                                                                to={`/${generateNameId(
-                                                                    purchase.product.name,
-                                                                    purchase.product._id
-                                                                )}`}
+                                                                to={`/${generateNameId(purchase.product.name, purchase.product._id)}`}
                                                                 className='flex items-center'
                                                             >
-                                                                <img
-                                                                    src={purchase.product.image}
-                                                                    alt='purchase'
-                                                                    className='h-20 w-20'
-                                                                />
-                                                                <span className='line-clamp-2 px-3'>
-                                                                    {purchase.product.name}
-                                                                </span>
+                                                                <img src={purchase.product.image} alt='purchase' className='h-20 w-20' />
+                                                                <span className='line-clamp-2 px-3'>{purchase.product.name}</span>
                                                             </Link>
                                                         </div>
                                                     </div>
@@ -218,8 +209,7 @@ export default function Cart() {
                                                     <div className='grid grid-cols-5 items-center text-center'>
                                                         <div className='col-span-2 flex justify-center'>
                                                             <span className='mr-2 text-gray-500 line-through'>
-                                                                ₫
-                                                                {formatCurrency(purchase.product.price_before_discount)}
+                                                                ₫{formatCurrency(purchase.product.price_before_discount)}
                                                             </span>
                                                             <span>₫{formatCurrency(purchase.product.price)}</span>
                                                         </div>
@@ -238,17 +228,11 @@ export default function Cart() {
                                                         </div>
                                                         <div className='col-span-1'>
                                                             <span className='text-orange'>
-                                                                ₫
-                                                                {formatCurrency(
-                                                                    purchase.product.price * purchase.buy_count
-                                                                )}
+                                                                ₫{formatCurrency(purchase.product.price * purchase.buy_count)}
                                                             </span>
                                                         </div>
                                                         <div className='col-span-1'>
-                                                            <button
-                                                                onClick={() => handleDelete(index)}
-                                                                className='hover:text-orange'
-                                                            >
+                                                            <button onClick={() => handleDelete(index)} className='hover:text-orange'>
                                                                 Xóa
                                                             </button>
                                                         </div>
@@ -280,26 +264,19 @@ export default function Cart() {
                                     <div className='py-3 text-sm md:mr-3 md:py-0 md:text-end lg:text-base'>
                                         <div className='flex items-center'>
                                             <div>Tổng thanh toán ({checkedPurchase.length} sản phẩm):</div>
-                                            <span className='ml-2 text-lg text-orange lg:text-xl'>
-                                                ₫{formatCurrency(totalAmount)}
-                                            </span>
+                                            <span className='ml-2 text-lg text-orange lg:text-xl'>₫{formatCurrency(totalAmount)}</span>
                                         </div>
                                         <div className='text-sm'>
                                             Tiết kiệm
-                                            <span className='ml-4 text-orange'>
-                                                ₫{formatNumberToSocialStyle(totalDiscount)}
-                                            </span>
+                                            <span className='ml-4 text-orange'>₫{formatNumberToSocialStyle(totalDiscount)}</span>
                                         </div>
                                     </div>
                                     <button
                                         disabled={updatePurchaseMutation.isLoading || buyProductMutation.isLoading}
                                         onClick={handleBuyProduct}
-                                        className={classNames(
-                                            'rounded-sm bg-orange px-6 py-1 text-white hover:bg-orange/80 lg:px-14 lg:py-0',
-                                            {
-                                                'cursor-not-allowed bg-orange/80': Boolean(totalAmount === 0)
-                                            }
-                                        )}
+                                        className={classNames('rounded-sm bg-orange px-6 py-1 text-white hover:bg-orange/80 lg:px-14 lg:py-0', {
+                                            'cursor-not-allowed bg-orange/80': Boolean(totalAmount === 0)
+                                        })}
                                     >
                                         Mua ngay
                                     </button>
@@ -314,7 +291,7 @@ export default function Cart() {
                         </div>
                         <div className='mt-3 capitalize'>Giỏ hàng của bạn còn trống</div>
                         <Link
-                            to={path.home}
+                            to={ROUTES.HOME}
                             className='mt-3 inline-block rounded-sm bg-orange px-12 py-2 text-white hover:bg-orange/80 lg:px-12 lg:py-2'
                         >
                             Mua ngay

@@ -16,11 +16,7 @@ export const schema = yup.object({
         .email('Email không đúng định dạng')
         .min(5, 'Độ dài phải từ 5 - 160 ký tự')
         .max(160, 'Độ dài phải từ 5 - 160 ký tự'),
-    password: yup
-        .string()
-        .required('Password không được để trống')
-        .min(6, 'Độ dài phải từ 6 - 160 ký tự')
-        .max(160, 'Độ dài phải từ 6 - 160 ký tự'),
+    password: yup.string().required('Password không được để trống').min(6, 'Độ dài phải từ 6 - 160 ký tự').max(160, 'Độ dài phải từ 6 - 160 ký tự'),
     confirm_password: handlePasswordSchema('password'),
     price_min: yup.string().test({
         name: 'price-not-allowed',

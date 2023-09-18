@@ -6,15 +6,7 @@ export interface InputNumberProps extends InputHTMLAttributes<HTMLInputElement> 
     classNameError?: string
 }
 
-export default function InputNumber({
-    placeholder,
-    onChange,
-    classNameInput,
-    value = '',
-    errorMessage,
-    classNameError,
-    ...rest
-}: InputNumberProps) {
+export default function InputNumber({ placeholder, onChange, classNameInput, value = '', errorMessage, classNameError, ...rest }: InputNumberProps) {
     const [localValue, setLocalValue] = useState<string>(value as string)
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { value } = event.target
@@ -25,14 +17,7 @@ export default function InputNumber({
     }
     return (
         <div>
-            <input
-                type='text'
-                className={classNameInput}
-                placeholder={placeholder}
-                value={value || localValue}
-                onChange={handleChange}
-                {...rest}
-            />
+            <input type='text' className={classNameInput} placeholder={placeholder} value={value || localValue} onChange={handleChange} {...rest} />
             <div className={classNameError}>{errorMessage}</div>
         </div>
     )

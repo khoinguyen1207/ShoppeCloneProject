@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { createSearchParams, useNavigate } from 'react-router-dom'
 import omit from 'lodash/omit'
-import { path } from 'src/constants/path'
+import { ROUTES } from 'src/constants/routes'
 
 type FormData = Pick<Schema, 'name'>
 const nameSchema = schema.pick(['name'])
@@ -35,7 +35,7 @@ export default function useSearchProduct() {
               )
 
         navigate({
-            pathname: path.home,
+            pathname: ROUTES.HOME,
             search: createSearchParams(config).toString()
         })
     })

@@ -41,10 +41,7 @@ export default function ProductList() {
                     </div>
                     {productData && (
                         <div className='md:col-span-9'>
-                            <SortProductList
-                                queryConfig={queryConfig}
-                                pageSize={productData.data.data.pagination.page_size}
-                            />
+                            <SortProductList queryConfig={queryConfig} pageSize={productData.data.data.pagination.page_size} />
                             {productData.data.data.products.length > 0 ? (
                                 <>
                                     <div className='mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5'>
@@ -56,10 +53,7 @@ export default function ProductList() {
                                             )
                                         })}
                                     </div>
-                                    <Pagination
-                                        queryConfig={queryConfig}
-                                        pageSize={productData.data.data.pagination.page_size}
-                                    />
+                                    <Pagination queryConfig={queryConfig} pageSize={productData.data.data.pagination.page_size} />
                                 </>
                             ) : (
                                 <div className='my-20'>

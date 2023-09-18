@@ -1,7 +1,7 @@
 import classNames from 'classnames'
 import omit from 'lodash/omit'
 import { Link, createSearchParams, useNavigate } from 'react-router-dom'
-import { path } from 'src/constants/path'
+import { ROUTES } from 'src/constants/routes'
 import { order as orderConstant, sortBy } from 'src/constants/product'
 import { QueryConfig } from 'src/hooks/useQueryConfig'
 import { ProductListConfig } from 'src/types/product.type'
@@ -24,7 +24,7 @@ export default function SortProductList({ queryConfig, pageSize }: PropsType) {
 
     const handleSort = (sortByValue: Exclude<ProductListConfig['sort_by'], undefined>) => {
         navigate({
-            pathname: path.home,
+            pathname: ROUTES.HOME,
             search: createSearchParams(
                 omit(
                     {
@@ -39,7 +39,7 @@ export default function SortProductList({ queryConfig, pageSize }: PropsType) {
 
     const handlePriceOrder = (orderValue: Exclude<ProductListConfig['order'], undefined>) => {
         navigate({
-            pathname: path.home,
+            pathname: ROUTES.HOME,
             search: createSearchParams({
                 ...queryConfig,
                 sort_by: sortBy.price,
@@ -84,9 +84,7 @@ export default function SortProductList({ queryConfig, pageSize }: PropsType) {
                         'bg-orange text-white hover:bg-orange/75': isActiveSortBy(sortBy.price),
                         'bg-white text-black hover:bg-white/60': !isActiveSortBy(sortBy.price)
                     })}
-                    onChange={(event) =>
-                        handlePriceOrder(event.target.value as Exclude<ProductListConfig['order'], undefined>)
-                    }
+                    onChange={(event) => handlePriceOrder(event.target.value as Exclude<ProductListConfig['order'], undefined>)}
                     value={order || ''}
                 >
                     <option value='' disabled className='bg-white text-black'>
@@ -123,7 +121,7 @@ export default function SortProductList({ queryConfig, pageSize }: PropsType) {
                 ) : (
                     <Link
                         to={{
-                            pathname: '/',
+                            pathname: ROUTES.HOME,
                             search: createSearchParams({
                                 ...queryConfig,
                                 page: (page - 1).toString()
@@ -164,7 +162,7 @@ export default function SortProductList({ queryConfig, pageSize }: PropsType) {
                 ) : (
                     <Link
                         to={{
-                            pathname: '/',
+                            pathname: ROUTES.HOME,
                             search: createSearchParams({
                                 ...queryConfig,
                                 page: (page + 1).toString()

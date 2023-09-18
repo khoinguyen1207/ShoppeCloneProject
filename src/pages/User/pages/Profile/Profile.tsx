@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import userApi from 'src/apis/user.api'
 import Button from 'src/components/Button'
 import Input from 'src/components/Input'
-import { path } from 'src/constants/path'
+import { ROUTES } from 'src/constants/routes'
 import { UserSchema, userSchema } from 'src/utils/rules'
 import { Controller, useForm } from 'react-hook-form'
 import { useContext, useMemo, useState } from 'react'
@@ -33,7 +33,7 @@ export default function Profile() {
         handleSubmit,
         setValue,
         setError,
-        formState: { errors },
+        formState: { errors, isDirty },
         watch
     } = useForm<FormData>({
         defaultValues: {
@@ -132,20 +132,16 @@ export default function Profile() {
                         <div className='mt-1 md:mt-0 md:w-[80%] md:pl-5'>{emailString}</div>
                     </div>
                     <div className='mt-4 items-center md:mt-6 md:flex'>
-                        <div className='truncate capitalize text-gray-500 md:w-[20%] md:text-right'>
-                            {t('profile.Password')}
-                        </div>
+                        <div className='truncate capitalize text-gray-500 md:w-[20%] md:text-right'>{t('profile.Password')}</div>
                         <div className='mt-1 md:mt-0 md:w-[80%] md:pl-5'>
                             ***************{' '}
-                            <Link className='ml-3 text-sm text-blue-500 underline' to={path.changePassword}>
+                            <Link className='ml-3 text-sm text-blue-500 underline' to={ROUTES.CHANGE_PASSWORD}>
                                 {t('profile.Change')}
                             </Link>
                         </div>
                     </div>
                     <div className='mt-3 items-center md:mt-6 md:flex'>
-                        <div className='truncate capitalize text-gray-500 md:w-[20%] md:pb-5 md:text-right'>
-                            {t('profile.Name')}
-                        </div>
+                        <div className='truncate capitalize text-gray-500 md:w-[20%] md:pb-5 md:text-right'>{t('profile.Name')}</div>
                         <div className='md:w-[80%] md:pl-5'>
                             <Input
                                 placeholder={t('profile.Name')}
@@ -158,9 +154,7 @@ export default function Profile() {
                         </div>
                     </div>
                     <div className='mt-3 items-center md:mt-3 md:flex'>
-                        <div className='truncate capitalize  text-gray-500 md:w-[20%] md:pb-5 md:text-right'>
-                            {t('profile.Phone Number')}
-                        </div>
+                        <div className='truncate capitalize  text-gray-500 md:w-[20%] md:pb-5 md:text-right'>{t('profile.Phone Number')}</div>
                         <div className='md:w-[80%] md:pl-5'>
                             <Controller
                                 control={control}
@@ -181,9 +175,7 @@ export default function Profile() {
                         </div>
                     </div>
                     <div className='mt-3 items-center md:mt-3 md:flex'>
-                        <div className='truncate capitalize text-gray-500 md:w-[20%] md:pb-5 md:text-right'>
-                            {t('profile.Address')}
-                        </div>
+                        <div className='truncate capitalize text-gray-500 md:w-[20%] md:pb-5 md:text-right'>{t('profile.Address')}</div>
                         <div className='md:w-[80%] md:pl-5'>
                             <Input
                                 register={register}
@@ -199,11 +191,7 @@ export default function Profile() {
                         control={control}
                         name='date_of_birth'
                         render={({ field }) => (
-                            <DateSelect
-                                value={field.value}
-                                errorMessage={errors.date_of_birth?.message}
-                                onChange={field.onChange}
-                            />
+                            <DateSelect value={field.value} errorMessage={errors.date_of_birth?.message} onChange={field.onChange} />
                         )}
                     />
                     <div className='mt-3 items-center md:flex'>
@@ -212,7 +200,7 @@ export default function Profile() {
                             <Button
                                 type='submit'
                                 isLoading={updateMutation.isLoading}
-                                disabled={updateMutation.isLoading}
+                                disabled={!isDirty}
                                 className='rounded-sm bg-orange px-5 py-2 text-white hover:bg-orange/80'
                             >
                                 {t('changePassword.Save')}
@@ -223,11 +211,7 @@ export default function Profile() {
                 <div className='mt-6 flex w-full justify-center lg:mt-0 lg:w-64 '>
                     <div className='flex flex-col items-center'>
                         <div className='my-4 h-24 w-24 overflow-hidden rounded-full'>
-                            <img
-                                className='h-full w-full object-cover'
-                                src={previewImage || getAvatarUrl(avatar)}
-                                alt=''
-                            />
+                            <img className='h-full w-full object-cover' src={previewImage || getAvatarUrl(avatar)} alt='' />
                         </div>
                         <InputFile onChange={handleChangeFile} />
                         <div className='mt-3 text-gray-400'>{t('profile.File size')}</div>

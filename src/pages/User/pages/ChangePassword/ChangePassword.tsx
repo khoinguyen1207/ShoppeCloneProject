@@ -21,7 +21,7 @@ export default function ChangePassword() {
         handleSubmit,
         setError,
         reset,
-        formState: { errors }
+        formState: { errors, isDirty }
     } = useForm<FormData>({
         defaultValues: {
             password: '',
@@ -65,9 +65,7 @@ export default function ChangePassword() {
             </div>
             <form className='mt-8 max-w-2xl text-sm' onSubmit={updatePassword}>
                 <div className='items-center md:flex'>
-                    <div className='truncate capitalize text-gray-500 md:w-[20%] md:pb-5 md:text-right'>
-                        {t('profile.Password')}
-                    </div>
+                    <div className='truncate capitalize text-gray-500 md:w-[20%] md:pb-5 md:text-right'>{t('profile.Password')}</div>
                     <div className='md:w-[80%] md:pl-5'>
                         <Input
                             placeholder={t('profile.Password')}
@@ -81,9 +79,7 @@ export default function ChangePassword() {
                     </div>
                 </div>
                 <div className='mt-3 items-center md:mt-3 md:flex'>
-                    <div className='truncate capitalize text-gray-500 md:w-[20%] md:pb-5 md:text-right'>
-                        {t('changePassword.New Password')}
-                    </div>
+                    <div className='truncate capitalize text-gray-500 md:w-[20%] md:pb-5 md:text-right'>{t('changePassword.New Password')}</div>
                     <div className='md:w-[80%] md:pl-5'>
                         <Input
                             register={register}
@@ -97,9 +93,7 @@ export default function ChangePassword() {
                     </div>
                 </div>
                 <div className='mt-3 items-center md:mt-3 md:flex'>
-                    <div className='truncate capitalize text-gray-500 md:w-[20%] md:pb-5 md:text-right'>
-                        {t('changePassword.Confirm Password')}
-                    </div>
+                    <div className='truncate capitalize text-gray-500 md:w-[20%] md:pb-5 md:text-right'>{t('changePassword.Confirm Password')}</div>
                     <div className='md:w-[80%] md:pl-5'>
                         <Input
                             register={register}
@@ -117,8 +111,8 @@ export default function ChangePassword() {
                     <div className='md:w-[80%] md:pl-5'>
                         <Button
                             type='submit'
-                            // isLoading={updateMutation.isLoading}
-                            // disabled={updateMutation.isLoading}
+                            isLoading={updateMutation.isLoading}
+                            disabled={!isDirty}
                             className='rounded-sm bg-orange px-5 py-2 text-white hover:bg-orange/80'
                         >
                             {t('changePassword.Save')}

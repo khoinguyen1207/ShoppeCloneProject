@@ -1,6 +1,6 @@
 import classNames from 'classnames'
 import { Link, createSearchParams } from 'react-router-dom'
-import { path } from 'src/constants/path'
+import { ROUTES } from 'src/constants/routes'
 import { QueryConfig } from 'src/hooks/useQueryConfig'
 
 /*
@@ -90,7 +90,7 @@ export default function Pagination({ queryConfig, pageSize }: PropsType) {
                 return (
                     <Link
                         to={{
-                            pathname: path.home,
+                            pathname: ROUTES.HOME,
                             search: createSearchParams({
                                 ...queryConfig,
                                 page: pageNumber.toString()
@@ -110,13 +110,11 @@ export default function Pagination({ queryConfig, pageSize }: PropsType) {
     return (
         <div className='mt-6 flex flex-wrap justify-center'>
             {page <= 1 ? (
-                <span className=' mx-2 mb-2 cursor-not-allowed rounded border bg-gray-100 px-3 py-2 shadow-sm'>
-                    Prev
-                </span>
+                <span className=' mx-2 mb-2 cursor-not-allowed rounded border bg-gray-100 px-3 py-2 shadow-sm'>Prev</span>
             ) : (
                 <Link
                     to={{
-                        pathname: path.home,
+                        pathname: ROUTES.HOME,
                         search: createSearchParams({
                             ...queryConfig,
                             page: (page - 1).toString()
@@ -129,13 +127,11 @@ export default function Pagination({ queryConfig, pageSize }: PropsType) {
             )}
             {renderPagination()}
             {page >= pageSize ? (
-                <span className=' mx-2 mb-2 cursor-not-allowed rounded border bg-gray-100 px-3 py-2 shadow-sm'>
-                    Next
-                </span>
+                <span className=' mx-2 mb-2 cursor-not-allowed rounded border bg-gray-100 px-3 py-2 shadow-sm'>Next</span>
             ) : (
                 <Link
                     to={{
-                        pathname: path.home,
+                        pathname: ROUTES.HOME,
                         search: createSearchParams({
                             ...queryConfig,
                             page: (page + 1).toString()

@@ -1,7 +1,7 @@
 import { Navigate, Outlet, useRoutes } from 'react-router-dom'
 import { useContext, Suspense } from 'react'
 import { AppContext } from './contexts/app.context'
-import { path } from './constants/path'
+import { ROUTES } from './constants/routes'
 import RegisterLayout from './layouts/RegisterLayout'
 import MainLayout from './layouts/MainLayout'
 import CartLayout from './layouts/CartLayout'
@@ -39,7 +39,7 @@ const RejectedRoute = () => {
 export default function useRouteElements() {
     const element = useRoutes([
         {
-            path: path.home,
+            path: ROUTES.HOME,
             index: true,
             element: (
                 <MainLayout>
@@ -50,11 +50,11 @@ export default function useRouteElements() {
             )
         },
         {
-            path: '',
+            path: ROUTES.HOME,
             element: <ProtectedRoute />,
             children: [
                 {
-                    path: path.user,
+                    path: ROUTES.USER,
                     element: (
                         <MainLayout>
                             <UserLayout />
@@ -62,7 +62,7 @@ export default function useRouteElements() {
                     ),
                     children: [
                         {
-                            path: path.profile,
+                            path: ROUTES.PROFILE,
                             element: (
                                 <Suspense>
                                     <Profile />
@@ -70,7 +70,7 @@ export default function useRouteElements() {
                             )
                         },
                         {
-                            path: path.changePassword,
+                            path: ROUTES.CHANGE_PASSWORD,
                             element: (
                                 <Suspense>
                                     <ChangePassword />
@@ -78,7 +78,7 @@ export default function useRouteElements() {
                             )
                         },
                         {
-                            path: path.historyPurchase,
+                            path: ROUTES.HISTORY_PURCHASE,
                             element: (
                                 <Suspense>
                                     <HistoryPurchase />
@@ -88,7 +88,7 @@ export default function useRouteElements() {
                     ]
                 },
                 {
-                    path: path.cart,
+                    path: ROUTES.CART,
                     element: (
                         <CartLayout>
                             <Suspense>
@@ -100,11 +100,11 @@ export default function useRouteElements() {
             ]
         },
         {
-            path: '',
+            path: ROUTES.HOME,
             element: <RejectedRoute />,
             children: [
                 {
-                    path: path.login,
+                    path: ROUTES.LOGIN,
                     element: (
                         <RegisterLayout>
                             <Suspense>
@@ -114,7 +114,7 @@ export default function useRouteElements() {
                     )
                 },
                 {
-                    path: path.register,
+                    path: ROUTES.REGISTER,
                     element: (
                         <RegisterLayout>
                             <Suspense>
@@ -126,7 +126,7 @@ export default function useRouteElements() {
             ]
         },
         {
-            path: path.productDetail,
+            path: ROUTES.PRODUCT_DETAIL,
             index: true,
             element: (
                 <MainLayout>
